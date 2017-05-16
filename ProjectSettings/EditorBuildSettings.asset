@@ -6,8 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main scene.unity
+    path: Assets/Scenes/Loader scene.unity
   - enabled: 1
-    path: Assets/Scenes/Garage scene.unity
+    path: Assets/Scenes/Base scene.unity
   - enabled: 1
-    path: Assets/Scenes/Collection UI scene.unity
+    path: Assets/Scenes/UI collection scene.unity
+  - enabled: 1
+    path: Assets/Scenes/Hangar scene.unity
