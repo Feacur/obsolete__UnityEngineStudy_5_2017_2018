@@ -5,6 +5,9 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 
+# VSCode project directory
+/.vscode/
+
 # Rider project directory
 /.idea/
 
