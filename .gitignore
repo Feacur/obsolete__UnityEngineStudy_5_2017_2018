@@ -5,6 +5,10 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 
+# Asset bundles directory
+/Assets/StreamingAssets/AssetBundles/
+/Assets/StreamingAssets/AssetBundles.meta
+
 # VSCode project directory
 /.vscode/
 
