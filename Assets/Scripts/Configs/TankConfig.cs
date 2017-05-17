@@ -1,3 +1,6 @@
+///
+/// Specific tank configuration file layout.
+///
 public class TankConfig {
 	public string name { get; set; }
 	public string type { get; set; }

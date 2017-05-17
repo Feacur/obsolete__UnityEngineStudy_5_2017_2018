@@ -3,8 +3,14 @@ using System.Collections;
 using UnityEngine;
 
 public static class DataLoader {
-
-	public static IEnumerator LoadCoroutine<T>(AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
+	///
+	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
+	/// Result will be sent async as a <param name="callback"> param.
+	///
+	/// Intended to be used something like StartCoroutine(LoadAsyncCoroutine<T>(assetBundle, assetName, (resultValue) => { ... }));
+	/// It is advised to make a wrapper handling StartCoroutine(); part.
+	///
+	public static IEnumerator LoadAsyncCoroutine<T>(AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
 		T result = null;
 		
 		if (!assetBundle) {
@@ -24,8 +30,16 @@ public static class DataLoader {
 		}
 	}
 
-	public static IEnumerator LoadCoroutine<T>(string url, Action<T> callback) where T : class {
+	///
+	/// Loads an asset from <param name="url">.
+	/// Result will be sent async as a <param name="callback"> param.
+	///
+	/// Intended to be used something like StartCoroutine(LoadAsyncCoroutine<T>(url, (resultValue) => { ... }));
+	/// It is advised to make a wrapper handling StartCoroutine(); part.
+	///
+	public static IEnumerator LoadAsyncCoroutine<T>(string url, Action<T> callback) where T : class {
 		T result = null;
+
 		using(var www = new WWW(url)) {
 			yield return www;
 			if (!string.IsNullOrEmpty(www.error)) {
@@ -44,6 +58,7 @@ public static class DataLoader {
 				result = www.assetBundle as T;
 			}
 		}
+
 		if (callback != null) {
 			callback.Invoke(result);
 		}

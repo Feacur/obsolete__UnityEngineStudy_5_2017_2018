@@ -5,7 +5,10 @@ using UnityEditor;
 using UnityEngine;
 
 ///
-/// Testing out asset bundles building
+/// Wannabe generic build scripts for asset bundles.
+///
+/// There is a function exposed to editor to use:
+/// <see cref="BuildActiveTarget"> builds asset bundles using current chosen platform.
 ///
 public static class AssetBundlesBuilder {
 	

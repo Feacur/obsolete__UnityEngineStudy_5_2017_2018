@@ -3,16 +3,20 @@ using UnityEditor;
 using UnityEngine;
 
 ///
-/// Testing out project building
+/// Wannabe generic build scripts for project
+///
+/// There are functions exposed to editor to use:
+/// <see cref="BuildActiveTarget"> builds project using current chosen platform.
+/// <see cref="BuildWithAssetBundlesActiveTarget"> builds asset bundles AND project using current chosen platform.
 ///
 public static class ProjectBuilder {
-	private static readonly Dictionary<BuildTarget, string> locationPathNames = new Dictionary<BuildTarget, string> {
-		{BuildTarget.StandaloneWindows,        "Builds/Windows/Tanks.exe"},
-		{BuildTarget.StandaloneOSXUniversal,   "Builds/OSX/Tanks.app"},
-		{BuildTarget.StandaloneLinuxUniversal, "Builds/Linux/Tanks.app"},
-		{BuildTarget.WebGL,                    "Builds/WebGL"},
-		{BuildTarget.iOS,                      "Builds/iOS"},
-		{BuildTarget.Android,                  "Builds/Android"}
+	private static readonly Dictionary<BuildTarget, string> locationPathTemplates = new Dictionary<BuildTarget, string> {
+		{BuildTarget.StandaloneWindows,        "Builds/Windows/{0}.exe"},
+		{BuildTarget.StandaloneOSXUniversal,   "Builds/OSX/{0}.app"},
+		{BuildTarget.StandaloneLinuxUniversal, "Builds/Linux/{0}.app"},
+		{BuildTarget.WebGL,                    "Builds/WebGL/{0}"},
+		{BuildTarget.iOS,                      "Builds/iOS/{0}"},
+		{BuildTarget.Android,                  "Builds/Android/{0}"}
 	};
 
 	private static readonly Dictionary<BuildTarget, BuildOptions> buildOptions = new Dictionary<BuildTarget, BuildOptions> {
@@ -27,7 +31,7 @@ public static class ProjectBuilder {
 	public static string Build (BuildTarget buildTarget)
 	{
 		var options = new BuildPlayerOptions();
-		options.locationPathName = locationPathNames[buildTarget];
+		options.locationPathName = string.Format(locationPathTemplates[buildTarget], PlayerSettings.productName);
 		options.options = buildOptions[buildTarget];
 		options.scenes = EditorBuildSettingsScene.GetActiveSceneList(EditorBuildSettings.scenes);
 		options.assetBundleManifestPath = AssetBundlesBuilder.AssetBundlesManifestPath;
