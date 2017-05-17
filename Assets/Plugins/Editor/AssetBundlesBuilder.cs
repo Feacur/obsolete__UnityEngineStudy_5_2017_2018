@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
@@ -12,9 +13,24 @@ public static class AssetBundlesBuilder {
 		"Assets", "StreamingAssets", "AssetBundles"
 	};
 
+	private static readonly Dictionary<BuildTarget, BuildAssetBundleOptions> buildOptions = new Dictionary<BuildTarget, BuildAssetBundleOptions> {
+		{BuildTarget.StandaloneWindows,        BuildAssetBundleOptions.None},
+		{BuildTarget.StandaloneOSXUniversal,   BuildAssetBundleOptions.None},
+		{BuildTarget.StandaloneLinuxUniversal, BuildAssetBundleOptions.None},
+		{BuildTarget.WebGL,                    BuildAssetBundleOptions.None},
+		{BuildTarget.iOS,                      BuildAssetBundleOptions.None},
+		{BuildTarget.Android,                  BuildAssetBundleOptions.None}
+	};
+
 	public static string AssetBundlesPath {
 		get {
 			return string.Join("/", assetBundlesPathRaw);
+		}
+	}
+
+	public static string AssetBundlesManifestPath {
+		get {
+			return string.Format("{0}/AssetBundles.manifest", AssetBundlesPath);
 		}
 	}
 	
@@ -22,16 +38,14 @@ public static class AssetBundlesBuilder {
 	{
 		EnsureAssetBundlesFolderExists();
 		return BuildPipeline.BuildAssetBundles(
-			AssetBundlesPath,
-			BuildAssetBundleOptions.None,
-			buildTarget
+			AssetBundlesPath, buildOptions[buildTarget], buildTarget
 		);
 	}
 
-	[MenuItem ("WGTestAssignment/Build asset bundles, Windows")]
-	public static AssetBundleManifest BuildAssetBundlesWindows ()
+	[MenuItem ("WGTestAssignment/Build asset bundles")]
+	public static AssetBundleManifest BuildActiveTarget ()
 	{
-		return Build(BuildTarget.StandaloneWindows);
+		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 	
 	private static void EnsureAssetBundlesFolderExists ()

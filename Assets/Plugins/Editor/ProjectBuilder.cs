@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,25 +6,50 @@ using UnityEngine;
 /// Testing out project building
 ///
 public static class ProjectBuilder {
-	public static string Build (BuildTarget buildTarget, string locationPathName)
-	{
-		var assetBundleManifest = AssetBundlesBuilder.Build(buildTarget);
+	private static readonly Dictionary<BuildTarget, string> locationPathNames = new Dictionary<BuildTarget, string> {
+		{BuildTarget.StandaloneWindows,        "Builds/Windows/Tanks.exe"},
+		{BuildTarget.StandaloneOSXUniversal,   "Builds/OSX/Tanks.app"},
+		{BuildTarget.StandaloneLinuxUniversal, "Builds/Linux/Tanks.app"},
+		{BuildTarget.WebGL,                    "Builds/WebGL"},
+		{BuildTarget.iOS,                      "Builds/iOS"},
+		{BuildTarget.Android,                  "Builds/Android"}
+	};
 
+	private static readonly Dictionary<BuildTarget, BuildOptions> buildOptions = new Dictionary<BuildTarget, BuildOptions> {
+		{BuildTarget.StandaloneWindows,        BuildOptions.None},
+		{BuildTarget.StandaloneOSXUniversal,   BuildOptions.None},
+		{BuildTarget.StandaloneLinuxUniversal, BuildOptions.None},
+		{BuildTarget.WebGL,                    BuildOptions.None},
+		{BuildTarget.iOS,                      BuildOptions.None},
+		{BuildTarget.Android,                  BuildOptions.None}
+	};
+
+	public static string Build (BuildTarget buildTarget)
+	{
 		var options = new BuildPlayerOptions();
-		options.locationPathName = locationPathName;
-		options.options = BuildOptions.None;
+		options.locationPathName = locationPathNames[buildTarget];
+		options.options = buildOptions[buildTarget];
 		options.scenes = EditorBuildSettingsScene.GetActiveSceneList(EditorBuildSettings.scenes);
-		options.assetBundleManifestPath = string.Format("{0}/AssetBundles.manifest", AssetBundlesBuilder.AssetBundlesPath);
+		options.assetBundleManifestPath = AssetBundlesBuilder.AssetBundlesManifestPath;
 		options.target = buildTarget;
 		return BuildPipeline.BuildPlayer(options);
 	}
-
-	[MenuItem ("WGTestAssignment/Build, Windows")]
-	public static string BuildProjectWindows ()
+	
+	public static string BuildWithAssetBundles (BuildTarget buildTarget)
 	{
-		return Build(
-			BuildTarget.StandaloneWindows,
-			"../Builds/WGTestAssignment Windows/Tanks.exe"
-		);
+		AssetBundlesBuilder.Build(buildTarget);
+		return Build(buildTarget);
+	}
+
+	[MenuItem ("WGTestAssignment/Build project only")]
+	public static string BuildActiveTarget ()
+	{
+		return Build(EditorUserBuildSettings.activeBuildTarget);
+	}
+
+	[MenuItem ("WGTestAssignment/Build project with asset bundles")]
+	public static string BuildWithAssetBundlesActiveTarget ()
+	{
+		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

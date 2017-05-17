@@ -9,6 +9,5 @@ Test assignment on Unity UI and stuff
 * Convenient scene loading: somewhat emulates one-level-deep nested prefabs
 
 # To do
-* Use WWW.Dispose()
 * Tanks collection yaml config, as opposed to specific tank config
 * Hook up yaml plugin and fill UI from configs
