@@ -1,3 +1,4 @@
 silver: 0
 gold: 0
-tanks: ["tank 1"]
+tanks:
+  - "Tanks collection/tank 1.yml"

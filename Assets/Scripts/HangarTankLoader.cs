@@ -1,53 +1,56 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 ///
 /// Testing out asset bundles loading
 ///
 public class HangarTankLoader : MonoBehaviour {
-	public string assetBundleSubPath = "AssetBundles/tanks";
-	public string prefabPath = "Assets/Prefabs/Tanks/Tank 1.prefab";
 	public Transform tankParentTransform;
 
 	private IEnumerator Start () {
-		string tanksAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, assetBundleSubPath);
-		
-		// Load asset bundle
+		// Get tanks asset bundle
 		AssetBundle tanksAssetBundle = null;
-		using(var www = new WWW(tanksAssetBundleUrl)) {
-			yield return www;
-			if (!string.IsNullOrEmpty(www.error)) {
-				Debug.LogError(www.error);
-			}
-			else if (www.bytesDownloaded == 0) {
-				Debug.LogErrorFormat("Loaded zero bytes for {0}", tanksAssetBundleUrl);
-			}
-			else {
-				tanksAssetBundle = www.assetBundle;
-			}
-		}
+		string tanksAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, "AssetBundles/tanks");
+		yield return LoadData<AssetBundle>(tanksAssetBundleUrl, (value) => {
+			tanksAssetBundle = value;
+		});
+
+		// Get tanks collection config
+		string tankConfigSubPath = string.Empty;
+		string tanksCollectionUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, "tanks.yml");
+		yield return LoadData<string>(tanksCollectionUrl, (value) => {
+			var config = YamlWrapper.Deserialize<TanksCollectionConfig>(value);
+			tankConfigSubPath = config.entries[0];
+		});
+
+		// Get prefab path
+		string prefabPath = string.Empty;
+		string tankConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tankConfigSubPath);
+		yield return LoadData<string>(tankConfigUrl, (value) => {
+			var config = YamlWrapper.Deserialize<TankConfig>(value);
+			prefabPath = config.prefab;
+		});
 		
-		// Get prefab from asset bundle
+		// Get prefab
 		GameObject prefab = null;
-		if (!tanksAssetBundle) {
-			Debug.LogErrorFormat("No matching asset bundle found for {0}", tanksAssetBundleUrl);
-		}
-		else if (!tanksAssetBundle.Contains(prefabPath)) {
-			Debug.LogErrorFormat("No matching prefab found for {0}", prefabPath);
-		}
-		else {
-			var loadAssetAsync = tanksAssetBundle.LoadAssetAsync(prefabPath);
-			yield return loadAssetAsync;
-			prefab = loadAssetAsync.asset as GameObject;
-		}
+		yield return LoadData<GameObject>(tanksAssetBundle, prefabPath, (value) => {
+			prefab = value;
+		});
 
 		// Instantiate prefab
-		if (!prefab) {
-			Debug.LogErrorFormat("Can't load {0} as a GameObject", prefabPath);
-		}
-		else {
+		if (prefab) {
 			var instance = Instantiate(prefab);
 			instance.transform.SetParent(tankParentTransform, worldPositionStays: false);
 		}
+	}
+
+	private Coroutine LoadData<T>(AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
+		return StartCoroutine(DataLoader.LoadCoroutine(assetBundle, assetName, callback));
+	}
+
+
+	private Coroutine LoadData<T>(string url, Action<T> callback) where T : class {
+		return StartCoroutine(DataLoader.LoadCoroutine(url, callback));
 	}
 }

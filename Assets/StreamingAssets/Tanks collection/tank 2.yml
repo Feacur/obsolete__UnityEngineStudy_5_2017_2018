@@ -1,0 +1,10 @@
+name: "tank 2 name"
+type: "type 2"
+# visuals
+prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
+# physics
+mass: 50000 # kg
+speed: 20 # meters/sec
+# price
+price: 0
+currency: SILVER
