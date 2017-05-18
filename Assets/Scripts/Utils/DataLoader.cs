@@ -37,11 +37,19 @@ public static class DataLoader {
 	/// Intended to be used something like StartCoroutine(LoadAsyncCoroutine<T>(url, (resultValue) => { ... }));
 	/// It is advised to make a wrapper handling StartCoroutine(); part.
 	///
-	public static IEnumerator LoadAsyncCoroutine<T>(string url, Action<T> callback) where T : class {
+	public static IEnumerator LoadAsyncCoroutine<T>(string url, Action<T> callback, float idleTimeoutSeconds = 10, float idleProgressThreshold = float.Epsilon) where T : class {
 		T result = null;
 
 		using(var www = new WWW(url)) {
-			yield return www;
+			if (idleTimeoutSeconds <= 0) {
+				yield return www;
+			}
+			else {
+				for (var e = WaitLoadingWithIdleTimeoutCoroutine(www, idleTimeoutSeconds, idleProgressThreshold); e.MoveNext();) {
+					yield return e.Current;
+				}
+			}
+
 			if (!string.IsNullOrEmpty(www.error)) {
 				Debug.LogError(www.error);
 			}
@@ -65,6 +73,23 @@ public static class DataLoader {
 
 		if (callback != null) {
 			callback.Invoke(result);
+		}
+	}
+
+	private static IEnumerator WaitLoadingWithIdleTimeoutCoroutine(WWW www, float idleTimeoutSeconds, float idleProgressThreshold) {
+		float stepSeconds = 0.1f;
+		float idleSeconds = 0;
+		float lastProgress = www.progress;
+		while (!www.isDone && (idleSeconds < idleTimeoutSeconds)) {
+			float progressDelta = www.progress - lastProgress;
+			lastProgress = www.progress;
+			if ((progressDelta < 0) || (progressDelta > idleProgressThreshold)) {
+				idleSeconds = 0;
+			}
+			else {
+				idleSeconds += stepSeconds;
+			}
+			yield return new WaitForSecondsRealtime(stepSeconds);
 		}
 	}
 }
