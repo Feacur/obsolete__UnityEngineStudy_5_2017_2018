@@ -4,6 +4,30 @@ using UnityEngine;
 
 public static class DataLoader {
 	///
+	/// Loads all assets from <param name="assetBundle">.
+	/// Result will be sent async as a <param name="callback"> param.
+	///
+	/// Intended to be used something like StartCoroutine(LoadAsyncCoroutine<T>(assetBundle, (resultValue) => { ... }));
+	/// It is advised to make a wrapper handling StartCoroutine(); part.
+	///
+	public static IEnumerator LoadAsyncCoroutine<T>(AssetBundle assetBundle, Action<T[]> callback) where T : class {
+		T[] result = null;
+		
+		if (!assetBundle) {
+			Debug.LogErrorFormat("Asset bundle is null");
+		}
+		else {
+			var loadAssetAsync = assetBundle.LoadAllAssetsAsync();
+			yield return loadAssetAsync;
+			result = loadAssetAsync.allAssets as T[];
+		}
+
+		if (callback != null) {
+			callback.Invoke(result);
+		}
+	}
+	
+	///
 	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
 	/// Result will be sent async as a <param name="callback"> param.
 	///
@@ -18,6 +42,18 @@ public static class DataLoader {
 		}
 		else if (!assetBundle.Contains(assetName)) {
 			Debug.LogErrorFormat("{0} does not contain {1}", assetBundle.name, assetName);
+		}
+		else if (typeof(T) == typeof(byte[])) {
+			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
+			yield return loadAssetAsync;
+			var textAsset = loadAssetAsync.asset as TextAsset;
+			result = textAsset ? textAsset.bytes as T : null;
+		}
+		else if (typeof(T) == typeof(string)) {
+			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
+			yield return loadAssetAsync;
+			var textAsset = loadAssetAsync.asset as TextAsset;
+			result = textAsset ? textAsset.text as T : null;
 		}
 		else {
 			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
@@ -56,8 +92,7 @@ public static class DataLoader {
 			else if (www.bytesDownloaded == 0) {
 				Debug.LogErrorFormat("Loaded zero bytes from {0}", url);
 			}
-			else if (typeof(T) == typeof(byte[]))
-			{
+			else if (typeof(T) == typeof(byte[])) {
 				result = www.bytes as T;
 			}
 			else if (typeof(T) == typeof(string)){
@@ -65,6 +100,12 @@ public static class DataLoader {
 			}
 			else if (typeof(T) == typeof(Texture2D)){
 				result = www.texture as T;
+			}
+			else if (typeof(T) == typeof(AudioClip)){
+				result = WWWAudioExtensions.GetAudioClipCompressed(www) as T;
+			}
+			else if (typeof(T) == typeof(MovieTexture)){
+				result = WWWAudioExtensions.GetMovieTexture(www) as T;
 			}
 			else if (typeof(T) == typeof(AssetBundle)){
 				result = www.assetBundle as T;

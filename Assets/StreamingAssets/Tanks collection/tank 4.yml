@@ -1,6 +1,7 @@
 name: "tank 4 name"
 type: "type 4"
 # visuals
+assetBundle: "AssetBundles/tanks"
 prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
 # physics
 mass: 50000 # kg

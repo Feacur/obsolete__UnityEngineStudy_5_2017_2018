@@ -51,6 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 310e87cb1473b5243970507de52a2e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetBundleSubPath: AssetBundles/tanks
-  prefabPath: Assets/Prefabs/Tanks/Tank 1.prefab
+  tanksCollectionConfigSubPath: tanks.yml
   tankParentTransform: {fileID: 0}

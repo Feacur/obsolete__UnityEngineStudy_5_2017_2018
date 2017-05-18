@@ -5,6 +5,7 @@ public class TankConfig {
 	public string name { get; set; }
 	public string type { get; set; }
 	// visuals
+	public string assetBundle { get; set; }
 	public string prefab { get; set; }
 	// physics
 	public float mass { get; set; } // kg
