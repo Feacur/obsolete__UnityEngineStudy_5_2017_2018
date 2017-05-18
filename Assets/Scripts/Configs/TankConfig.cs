@@ -11,6 +11,6 @@ public class TankConfig {
 	public float mass { get; set; } // kg
 	public float speed { get; set; } // meters/sec
 	// price
-	public int price { get; set; }
+	public decimal price { get; set; }
 	public CurrencyType currency { get; set; }
 }

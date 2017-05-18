@@ -7,5 +7,5 @@ prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
 mass: 50000 # kg
 speed: 20 # meters/sec
 # price
-price: 0
+price: 10
 currency: SILVER

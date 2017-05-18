@@ -5,17 +5,7 @@ using UnityEngine;
 ///
 /// Hangar scene representation
 ///
-public class Hangar : MonoBehaviour {
-	private static Hangar _instance;
-	public static Hangar instance {
-		get {
-			if (!_instance) {
-				_instance = FindObjectOfType<Hangar>();
-			}
-			return _instance;
-		}
-	}
-
+public class Hangar : StaticInstanceBehaviour<Hangar> {
 	public Transform tankParentTransform;
 	
 	private AssetBundle tanksAssetBundle;
@@ -53,7 +43,7 @@ public class Hangar : MonoBehaviour {
 	}
 
 	private Coroutine LoadDataAsync<T>(AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
-		return StartCoroutine(DataLoader.LoadAsyncCoroutine(assetBundle, assetName, callback));
+		return StartCoroutine(assetBundle.LoadAsyncCoroutine(assetName, callback));
 	}
 
 	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {

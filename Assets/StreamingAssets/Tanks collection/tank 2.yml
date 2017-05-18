@@ -2,10 +2,10 @@ name: "tank 2 name"
 type: "type 2"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
+prefab: "Assets/Prefabs/Tanks/Tank 2.prefab"
 # physics
-mass: 50000 # kg
-speed: 20 # meters/sec
+mass: 30000 # kg
+speed: 30 # meters/sec
 # price
-price: 0
+price: 20
 currency: SILVER

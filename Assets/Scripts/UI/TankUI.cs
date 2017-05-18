@@ -22,6 +22,7 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
 	{
+		HangarUI.instance.SetTankInfo(tankConfig);
 		Hangar.instance.CreateTank(tankConfig);
 	}
 

@@ -17,7 +17,7 @@ Test assignment on Unity UI and stuff
 * Convenient scene loading: somewhat emulates one-level-deep nested prefabs
 * Initial configuration classes generated and filled using yaml config files
 * Fill tanks collection UI from config
-* Show selected tank model
+* Show selected tank model and info
 * Initial API commentaries
 * Additional scenes are loaded from asset bundles
 
@@ -25,7 +25,7 @@ Test assignment on Unity UI and stuff
 * Make data loading/unloading less naive
 * Select a tank UI by default
 * Protect tank model creation code
-* Fill UI from configs: tank info, user data
+* Fill UI from configs: user data
 * Store changes made by user
 * Sketch hangar scene
 * Script fly around camera
