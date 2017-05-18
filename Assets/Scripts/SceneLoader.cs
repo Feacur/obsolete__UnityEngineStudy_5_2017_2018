@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 ///
-/// Asynchronously loads additional scenes in <see cref="sceneNames">
+/// Asynchronously loads additional scenes in <see cref="scenesAssetBundleSubPath">
 ///
 /// It is useful to store UI layout in scenes and load it in runtime.
 ///	This way it is possible to use prefabs for repetitive elements.

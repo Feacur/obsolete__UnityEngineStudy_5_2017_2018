@@ -16,12 +16,16 @@ Test assignment on Unity UI and stuff
 * Generic async data loading by url and from asset bundles
 * Convenient scene loading: somewhat emulates one-level-deep nested prefabs
 * Initial configuration classes generated and filled using yaml config files
-* Initial usage of configs, from which I get tank to display
+* Fill tanks collection UI from config
+* Show selected tank model
 * Initial API commentaries
+* Additional scenes are loaded from asset bundles
 
 # To do
-* Fill UI from configs
+* Make data loading/unloading less naive
+* Select a tank UI by default
+* Protect tank model creation code
+* Fill UI from configs: tank info, user data
 * Store changes made by user
-* Move generic scripts into plugins folder
 * Sketch hangar scene
 * Script fly around camera
