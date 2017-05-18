@@ -51,7 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83e8b05dc8fa4941bdd1f2bfcfe09c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNames:
-  - Base scene
-  - UI collection scene
-  - Hangar scene
+  scenesAssetBundleSubPath: AssetBundles/scenes

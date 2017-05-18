@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,13 +12,25 @@ using UnityEngine.SceneManagement;
 /// Again, it's useful if you want some sort of initial loading screen.
 ///
 public class SceneLoader : MonoBehaviour {
-	public string[] sceneNames;
+	public string scenesAssetBundleSubPath;
 
 	private IEnumerator Start () {
-		foreach (var sceneName in sceneNames)
+		// Get scenes asset bundle
+		AssetBundle scenesAssetBundle = null;
+		string scenesAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, scenesAssetBundleSubPath);
+		yield return LoadDataAsync<AssetBundle>(scenesAssetBundleUrl, (resultValue) => {
+			scenesAssetBundle = resultValue;
+		});
+
+		// Load scenes
+		foreach (var scenePath in scenesAssetBundle.GetAllScenePaths())
 		{
-			var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+			var asyncOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
 			yield return asyncOperation;
 		}
+	}
+
+	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
+		return StartCoroutine(DataLoader.LoadAsyncCoroutine(url, callback));
 	}
 }

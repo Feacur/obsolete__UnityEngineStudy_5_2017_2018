@@ -2,31 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public static class DataLoader {
-	///
-	/// Loads all assets from <param name="assetBundle">.
-	/// Result will be sent async as a <param name="callback"> param.
-	///
-	/// Intended to be used something like StartCoroutine(LoadAsyncCoroutine<T>(assetBundle, (resultValue) => { ... }));
-	/// It is advised to make a wrapper handling StartCoroutine(); part.
-	///
-	public static IEnumerator LoadAsyncCoroutine<T>(AssetBundle assetBundle, Action<T[]> callback) where T : class {
-		T[] result = null;
-		
-		if (!assetBundle) {
-			Debug.LogErrorFormat("Asset bundle is null");
-		}
-		else {
-			var loadAssetAsync = assetBundle.LoadAllAssetsAsync();
-			yield return loadAssetAsync;
-			result = loadAssetAsync.allAssets as T[];
-		}
-
-		if (callback != null) {
-			callback.Invoke(result);
-		}
-	}
-	
+public static class DataLoader {	
 	///
 	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
 	/// Result will be sent async as a <param name="callback"> param.
