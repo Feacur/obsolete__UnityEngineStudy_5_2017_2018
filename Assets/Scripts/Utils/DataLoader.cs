@@ -48,6 +48,10 @@ public static class DataLoader {
 			else if (www.bytesDownloaded == 0) {
 				Debug.LogErrorFormat("Loaded zero bytes from {0}", url);
 			}
+			else if (typeof(T) == typeof(byte[]))
+			{
+				result = www.bytes as T;
+			}
 			else if (typeof(T) == typeof(string)){
 				result = www.text as T;
 			}

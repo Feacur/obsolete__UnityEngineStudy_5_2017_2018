@@ -22,3 +22,6 @@ Test assignment on Unity UI and stuff
 # To do
 * Fill UI from configs
 * Store changes made by user
+* Move generic scripts into plugins folder
+* Sketch hangar scene
+* Script fly around camera
