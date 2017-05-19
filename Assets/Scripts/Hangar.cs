@@ -8,7 +8,6 @@ using UnityEngine;
 public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	public Transform tankParentTransform;
 	
-	private AssetBundle tanksAssetBundle;
 	private Coroutine createTankCoroutine;
 	private TankConfig tankConfig;
 	
@@ -26,12 +25,11 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 		tankParentTransform.DestroyChildren();
 
 		// Get tanks asset bundle
-		if (!tanksAssetBundle) {
-			string tanksAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tankConfig.assetBundle);
-			yield return LoadDataAsync<AssetBundle>(tanksAssetBundleUrl, (resultValue) => {
-				tanksAssetBundle = resultValue;
-			});
-		}
+		AssetBundle tanksAssetBundle = null;
+		string tanksAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tankConfig.assetBundle);
+		yield return CachedAssetBundleLoader.LoadAsync(tanksAssetBundleUrl, (resultValue) => {
+			tanksAssetBundle = resultValue;
+		});
 		
 		// Get tank prefab
 		GameObject tankPrefab = null;

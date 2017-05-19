@@ -32,10 +32,6 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		CreateTankInfoEntryUI("Speed", string.Format("{0:N1} km/h", tankConfig.speed * 3600 / 1000));
 		CreateTankInfoEntryUI("Price", string.Format("{0:N0} {1}", tankConfig.price, tankConfig.currency));
 	}
-
-	private void Awake() {
-		StaticInstanceInit();
-	}
 	
 	private void OnEnable() {
 		string userConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, userConfigSubPath);
