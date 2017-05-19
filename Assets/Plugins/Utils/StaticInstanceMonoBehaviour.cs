@@ -5,16 +5,21 @@ using UnityEngine;
 /// If any is present and belongs to an active game object
 ///
 /// Intended to be used like
-/// public class ClassName : StaticInstanceBehaviour<ClassName> { ... }
+/// public class ClassName : StaticInstanceMonoBehaviour<ClassName> { ... }
 ///
-public abstract class StaticInstanceBehaviour<T> : MonoBehaviour where T : StaticInstanceBehaviour<T> {
+public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour where T : StaticInstanceMonoBehaviour<T> {
 	private static T _instance;
 	public static T instance {
 		get {
 			if (!_instance) {
 				_instance = FindObjectOfType<T>();
+				if (_instance) {
+					_instance.StaticInstanceInit();
+				}
 			}
 			return _instance;
 		}
 	}
+
+	protected virtual void StaticInstanceInit() { }
 }

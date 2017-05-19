@@ -5,7 +5,7 @@ using UnityEngine;
 ///
 /// Hangar scene representation
 ///
-public class Hangar : StaticInstanceBehaviour<Hangar> {
+public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	public Transform tankParentTransform;
 	
 	private AssetBundle tanksAssetBundle;

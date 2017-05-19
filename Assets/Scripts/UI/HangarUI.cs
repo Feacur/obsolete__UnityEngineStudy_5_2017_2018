@@ -5,7 +5,7 @@ using UnityEngine.UI;
 ///
 /// Hangar UI representation
 ///
-public class HangarUI : StaticInstanceBehaviour<HangarUI> {
+public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	[Header("Config")]
 	public string tanksCollectionConfigSubPath = "tanks.yml";
 	[Header("Collection")]

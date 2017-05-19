@@ -31,6 +31,7 @@ public static class UnityUtils {
 	///
 	public static void DestroyChildren(this Transform transform) {
 		foreach (var child in transform.GetPrimaryChildren()) {
+			child.gameObject.SetActive(false);
 			Object.Destroy(child.gameObject);
 		}
 	}
