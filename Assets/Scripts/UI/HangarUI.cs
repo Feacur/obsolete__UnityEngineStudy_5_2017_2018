@@ -34,11 +34,17 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 	
 	private void OnEnable() {
-		string userConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, userConfigSubPath);
-		LoadDataAsync<string>(userConfigUrl, (resultValue) => {
-			var userConfig = YamlWrapper.Deserialize<UserConfig>(resultValue);
-			SetUserInfo(userConfig);
-		});
+		var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
+		if (persistentUserConfig != null) {
+			SetUserInfo(persistentUserConfig);
+		}
+		else {
+			string userConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, userConfigSubPath);
+			LoadDataAsync<string>(userConfigUrl, (resultValue) => {
+				var userConfig = YamlWrapper.Deserialize<UserConfig>(resultValue);
+				SetUserInfo(userConfig);
+			});
+		}
 
 		string tanksCollectionUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tanksCollectionConfigSubPath);
 		LoadDataAsync<string>(tanksCollectionUrl, (resultValue) => {

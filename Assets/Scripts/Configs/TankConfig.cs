@@ -1,6 +1,10 @@
+using System;
+
 ///
 /// Specific tank configuration file layout.
 ///
+
+[Serializable]
 public class TankConfig {
 	public string name { get; set; }
 	public string type { get; set; }

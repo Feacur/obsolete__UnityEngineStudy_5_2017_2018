@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public static class DataLoader {	
+public static class DataLoader {
 	///
 	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
 	/// Result will be sent async as a <param name="callback"> param.
