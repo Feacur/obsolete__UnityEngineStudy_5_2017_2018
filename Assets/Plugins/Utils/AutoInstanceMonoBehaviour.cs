@@ -17,7 +17,7 @@ public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : Aut
 					string instanceName = string.Format("Auto instance: {0}", typeof(T).Name);
 					var instanceGO = new GameObject(instanceName);
 					DontDestroyOnLoad(instanceGO);
-					_instance = instanceGO.GetComponent<T>();
+					_instance = instanceGO.AddComponent<T>();
 				}
 				if (_instance) {
 					_instance.AutoInstanceInit();
