@@ -9,25 +9,17 @@ using System;
 public class TankUI : MonoBehaviour, IPointerClickHandler {
 	public Text caption;
 
-	private TankConfig _tankConfig;
-	public TankConfig tankConfig {
-		get {
-			return _tankConfig;
-		}
-		set {
-			_tankConfig = value;
-			UpdateUI();
-		}
+	private TankConfig tankConfig;
+	
+	public void SetTankInfo(TankConfig tankConfig) {
+		this.tankConfig = tankConfig;
+		name = string.Format("Tank UI: {0}", tankConfig.name);
+		caption.text = tankConfig.name;
 	}
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
 	{
 		HangarUI.instance.SetTankInfo(tankConfig);
-		Hangar.instance.CreateTank(tankConfig);
-	}
-
-	private void UpdateUI() {
-		name = string.Format("Tank UI: ", tankConfig.name);
-		caption.text = tankConfig.name;
+		Hangar.instance.SetTankInfo(tankConfig);
 	}
 }

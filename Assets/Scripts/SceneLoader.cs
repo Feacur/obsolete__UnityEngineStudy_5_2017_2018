@@ -23,8 +23,7 @@ public class SceneLoader : MonoBehaviour {
 		});
 
 		// Load scenes
-		foreach (var scenePath in scenesAssetBundle.GetAllScenePaths())
-		{
+		foreach (var scenePath in scenesAssetBundle.GetAllScenePaths()) {
 			var asyncOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
 			yield return asyncOperation;
 		}

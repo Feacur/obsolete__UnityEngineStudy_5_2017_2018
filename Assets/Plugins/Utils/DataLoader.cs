@@ -67,7 +67,7 @@ public static class DataLoader {
 			}
 
 			if (!string.IsNullOrEmpty(www.error)) {
-				Debug.LogError(www.error);
+				Debug.LogErrorFormat("Error loading {0}\r\n{1}", url, www.error);
 			}
 			else if (www.bytesDownloaded == 0) {
 				Debug.LogErrorFormat("Loaded zero bytes from {0}", url);

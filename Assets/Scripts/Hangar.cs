@@ -10,8 +10,9 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	
 	private AssetBundle tanksAssetBundle;
 	private Coroutine createTankCoroutine;
+	private TankConfig tankConfig;
 	
-	public Coroutine CreateTank(TankConfig tankConfig) {
+	public Coroutine SetTankInfo(TankConfig tankConfig) {
 		if (createTankCoroutine != null) {
 			StopCoroutine(createTankCoroutine);
 		}
@@ -20,6 +21,8 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	}
 	
 	private IEnumerator CreateTankCoroutine(TankConfig tankConfig) {
+		this.tankConfig = tankConfig;
+
 		tankParentTransform.DestroyChildren();
 
 		// Get tanks asset bundle
