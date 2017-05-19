@@ -44,10 +44,6 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	}
 
 	private Coroutine LoadDataAsync<T>(AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
-		return StartCoroutine(assetBundle.LoadAsyncCoroutine(assetName, callback));
-	}
-
-	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
-		return StartCoroutine(DataLoader.LoadAsyncCoroutine(url, callback));
+		return StartCoroutine(assetBundle.LoadCoroutine(assetName, callback));
 	}
 }

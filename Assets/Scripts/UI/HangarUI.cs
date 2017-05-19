@@ -88,6 +88,6 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 
 	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
-		return StartCoroutine(DataLoader.LoadAsyncCoroutine(url, callback));
+		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 	}
 }

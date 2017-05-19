@@ -28,8 +28,4 @@ public class SceneLoader : MonoBehaviour {
 			yield return asyncOperation;
 		}
 	}
-
-	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
-		return StartCoroutine(DataLoader.LoadAsyncCoroutine(url, callback));
-	}
 }

@@ -2,17 +2,18 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public static class DataLoader {
+public static class AsyncDataLoader {
 	///
 	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
 	/// Result will be sent async as a <param name="callback"> param.
 	///
 	/// Intended to be used something like
-	/// StartCoroutine(assetBundle.LoadAsyncCoroutine<T>(assetName, (resultValue) => { ... }));
+	/// StartCoroutine(assetBundle.LoadCoroutine<T>(assetName, (resultValue) => { ... }));
+	/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(assetBundle, assetName, (resultValue) => { ... }));
 	///
 	/// It is advised to make a wrapper handling StartCoroutine(); part.
 	///
-	public static IEnumerator LoadAsyncCoroutine<T>(this AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
+	public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
 		T result = null;
 		
 		if (!assetBundle) {
@@ -49,11 +50,11 @@ public static class DataLoader {
 	/// Result will be sent async as a <param name="callback"> param.
 	///
 	/// Intended to be used something like
-	/// StartCoroutine(LoadAsyncCoroutine<T>(url, (resultValue) => { ... }));
+	/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(url, (resultValue) => { ... }));
 	///
 	/// It is advised to make a wrapper handling StartCoroutine(); part.
 	///
-	public static IEnumerator LoadAsyncCoroutine<T>(string url, Action<T> callback, float idleTimeoutSeconds = 10, float idleProgressThreshold = float.Epsilon) where T : class {
+	public static IEnumerator LoadCoroutine<T>(string url, Action<T> callback, float idleTimeoutSeconds = 10, float idleProgressThreshold = float.Epsilon) where T : class {
 		T result = null;
 
 		using(var www = new WWW(url)) {

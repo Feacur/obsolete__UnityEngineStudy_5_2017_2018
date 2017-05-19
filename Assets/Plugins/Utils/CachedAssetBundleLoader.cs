@@ -31,6 +31,6 @@ public class CachedAssetBundleLoader : AutoInstanceMonoBehaviour<CachedAssetBund
 	}
 
 	private Coroutine LoadDataAsync(string url, Action<AssetBundle> callback) {
-		return StartCoroutine(DataLoader.LoadAsyncCoroutine(url, callback));
+		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 	}
 }
