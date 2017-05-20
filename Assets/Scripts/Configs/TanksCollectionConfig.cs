@@ -6,5 +6,5 @@ using System;
 
 [Serializable]
 public class TanksCollectionConfig {
-	public string[] entries { get; set; }
+	public string[] tankConfigs { get; set; }
 }

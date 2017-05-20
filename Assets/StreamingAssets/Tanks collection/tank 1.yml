@@ -1,11 +1,12 @@
-name: "tank 1 name"
-type: "type 1"
+uid: "tank 1"
+name: "General"
+type: "Normal heavy"
 # visuals
 assetBundle: "AssetBundles/tanks"
 prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
 # physics
 mass: 50000 # kg
-speed: 20 # meters/sec
+speed: 15 # meters/sec
 # price
 price: 10
 currency: SILVER

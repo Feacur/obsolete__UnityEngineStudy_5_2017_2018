@@ -212,11 +212,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1435700023632524, guid: 5c893ca6f3b5ac9408387dfd83405b64, type: 2}
       propertyPath: m_Name
-      value: Buy button
-      objectReference: {fileID: 0}
-    - target: {fileID: 1435700023632524, guid: 5c893ca6f3b5ac9408387dfd83405b64, type: 2}
-      propertyPath: m_IsActive
-      value: 0
+      value: Purchase button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5c893ca6f3b5ac9408387dfd83405b64, type: 2}
@@ -226,6 +222,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224927613182281992, guid: 5c893ca6f3b5ac9408387dfd83405b64,
     type: 2}
   m_PrefabInternal: {fileID: 397925296}
+--- !u!114 &397925298 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114236528728681704, guid: 5c893ca6f3b5ac9408387dfd83405b64,
+    type: 2}
+  m_PrefabInternal: {fileID: 397925296}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &418370119
 Prefab:
   m_ObjectHideFlags: 0
@@ -883,6 +885,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224927613182281992, guid: 5c893ca6f3b5ac9408387dfd83405b64,
     type: 2}
   m_PrefabInternal: {fileID: 1778615950}
+--- !u!114 &1778615952 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114236528728681704, guid: 5c893ca6f3b5ac9408387dfd83405b64,
+    type: 2}
+  m_PrefabInternal: {fileID: 1778615950}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &2031628445
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,6 +979,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userConfigSubPath: user.yml
   tanksCollectionConfigSubPath: tanks.yml
+  battleButton: {fileID: 1778615952}
+  purchaseButton: {fileID: 397925298}
   userSilver: {fileID: 418370121}
   userGold: {fileID: 538516320}
   tankUIPrefab: {fileID: 114170198100492466, guid: 8d80a6540ba655541b33bd49c7359f5c,

@@ -1,5 +1,6 @@
-name: "tank 4 name"
-type: "type 4"
+uid: "tank 4"
+name: "Jaggernaut"
+type: "Heavy slow"
 # visuals
 assetBundle: "AssetBundles/tanks"
 prefab: "Assets/Prefabs/Tanks/Tank 4.prefab"

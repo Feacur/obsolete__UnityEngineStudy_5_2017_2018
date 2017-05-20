@@ -6,6 +6,7 @@ using System;
 
 [Serializable]
 public class TankConfig {
+	public string uid { get; set; }
 	public string name { get; set; }
 	public string type { get; set; }
 	// visuals

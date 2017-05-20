@@ -17,9 +17,7 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 		caption.text = tankConfig.name;
 	}
 
-	void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
-	{
+	void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
 		HangarUI.instance.SetTankInfo(tankConfig);
-		Hangar.instance.SetTankInfo(tankConfig);
 	}
 }

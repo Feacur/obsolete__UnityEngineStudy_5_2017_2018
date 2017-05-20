@@ -1,4 +1,4 @@
 silver: 1000
 gold: 10
-tanks:
-  - "Tanks collection/tank 1.yml"
+ownedTanksUids:
+  - "tank 1"
