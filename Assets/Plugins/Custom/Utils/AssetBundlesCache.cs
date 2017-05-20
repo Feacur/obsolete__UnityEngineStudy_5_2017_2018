@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+///
+/// Class to manage asset bundles
+/// Unity forbids multiple instances of the same asset bundle
+///
 public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 	public List<Entry> cache = new List<Entry>();
 	

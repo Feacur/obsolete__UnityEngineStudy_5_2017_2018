@@ -8,8 +8,15 @@ using UnityEngine;
 public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	public Transform tankParentTransform;
 	
+	public TankConfig tankConfig { get; private set; }
+	
 	private Coroutine createTankCoroutine;
-	private TankConfig tankConfig;
+
+	private void Start() {
+		if (tankConfig == null && HangarUI.instance && HangarUI.instance.tankConfig != null) {
+			SetTankInfo(HangarUI.instance.tankConfig);
+		}
+	}
 	
 	public Coroutine SetTankInfo(TankConfig tankConfig) {
 		if (createTankCoroutine != null) {

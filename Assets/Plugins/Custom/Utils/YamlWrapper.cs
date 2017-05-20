@@ -1,8 +1,17 @@
 using YamlDotNet.Serialization;
 
 public static class YamlWrapper {
-	private static readonly Serializer serializer = new Serializer();
-	private static readonly Deserializer deserializer = new Deserializer();
+	public static readonly Serializer serializer;
+	public static readonly Deserializer deserializer;
+
+	static YamlWrapper() {
+		var serializerBuilder = new SerializerBuilder();
+		serializer = serializerBuilder.Build();
+
+		var deserializerBuilder = new DeserializerBuilder();
+		deserializerBuilder.IgnoreUnmatchedProperties();
+		deserializer = deserializerBuilder.Build();
+	}
 
 	public static string Serialize<T>(T value) where T: class {
 		return serializer.Serialize(value);

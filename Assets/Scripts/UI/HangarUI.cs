@@ -22,15 +22,18 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	[Header("Tank info")]
 	public TankInfoEntryUI tankInfoEntryUIPrefab;
 	public RectTransform tankInfoParentTransform;
-
-	private UserConfig userConfig;
-	private TanksCollectionConfig tanksCollectionConfig;
-	private TankConfig tankConfig;
 	
+	public UserConfig userConfig { get; private set; }
+	public TanksCollectionConfig tanksCollectionConfig { get; private set; }
+	public TankConfig tankConfig { get; private set; }
+
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
-		Hangar.instance.SetTankInfo(tankConfig);
 		UpdateOwnedSelectedTankState();
+
+		if (Hangar.instance) {
+			Hangar.instance.SetTankInfo(tankConfig);
+		}
 
 		tankInfoParentTransform.DestroyChildren();
 		CreateTankInfoEntryUI("Type", tankConfig.type);
@@ -93,13 +96,13 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		if (this.tankConfig == null) { SetTankInfo(tankConfig); }
 
 		var instance = Instantiate(tankUIPrefab);
-		instance.transform.SetParent(tanksCollectionParentTransform, false);
+		instance.transform.SetParent(tanksCollectionParentTransform, worldPositionStays: false);
 		instance.SetTankInfo(tankConfig);
 	}
 
 	private void CreateTankInfoEntryUI(string text1, string text2) {
 		var instance = Instantiate(tankInfoEntryUIPrefab);
-		instance.transform.SetParent(tankInfoParentTransform, false);
+		instance.transform.SetParent(tankInfoParentTransform, worldPositionStays: false);
 		instance.SetText(text1, text2);
 	}
 

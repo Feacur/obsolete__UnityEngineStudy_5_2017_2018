@@ -3,15 +3,16 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using YamlDotNet.Serialization;
 
+///
+/// Code to work with persistent data in Unity
+///
 public static class PersistentData {
 	private static readonly BinaryFormatter binaryFormatter = new BinaryFormatter();
-	private static readonly Serializer serializer = new Serializer();
-	private static readonly Deserializer deserializer = new Deserializer();
 
 	public static void WriteYaml<T>(string subPath, T data) where T : class {
 		string path = CreatePersistentPath(subPath);
 		using (var streamWriter = File.CreateText(path)) {
-			serializer.Serialize(streamWriter, data);
+			YamlWrapper.serializer.Serialize(streamWriter, data);
 		}
 	}
 	
@@ -21,7 +22,7 @@ public static class PersistentData {
 			return null;
 		}
 		using (var streamReader = File.OpenText(path)) {
-			return deserializer.Deserialize<T>(streamReader);
+			return YamlWrapper.deserializer.Deserialize<T>(streamReader);
 		}
 	}
 	

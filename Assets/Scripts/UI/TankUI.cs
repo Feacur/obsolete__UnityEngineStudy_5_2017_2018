@@ -9,7 +9,7 @@ using System;
 public class TankUI : MonoBehaviour, IPointerClickHandler {
 	public Text caption;
 
-	private TankConfig tankConfig;
+	public TankConfig tankConfig { get; private set; }
 	
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
