@@ -13,6 +13,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	[Header("Navigation")]
 	public Button battleButton;
 	public Button purchaseButton;
+	public Button sellButton;
 	[Header("User")]
 	public Text userSilver;
 	public Text userGold;
@@ -29,7 +30,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
-		UpdateOwnedSelectedTankState();
+		UpdateUI();
 
 		if (Hangar.instance) {
 			Hangar.instance.SetTankInfo(tankConfig);
@@ -42,9 +43,22 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		CreateTankInfoEntryUI("Price", string.Format("{0:N0} {1}", tankConfig.price, tankConfig.currency));
 	}
 	
+	public void UpdateUI() {
+		if (userConfig == null) { return; }
+		userSilver.text = string.Format("{0:N0}", userConfig.silver);
+		userGold.text = string.Format("{0:N0}", userConfig.gold);
+
+		if (tankConfig == null) { return; }
+		bool owned = userConfig.ownedTanksUids.Any(uid => uid == tankConfig.uid);
+		battleButton.gameObject.SetActive(owned);
+		purchaseButton.gameObject.SetActive(!owned);
+		sellButton.gameObject.SetActive(owned);
+	}
+
 	private void OnEnable() {
 		battleButton.onClick.AddListener(RequestBattle);
 		purchaseButton.onClick.AddListener(RequestPurchase);
+		sellButton.onClick.AddListener(RequestSell);
 
 		var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
 		if (persistentUserConfig != null) {
@@ -68,6 +82,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	private void OnDisable() {
 		battleButton.onClick.RemoveListener(RequestBattle);
 		purchaseButton.onClick.RemoveListener(RequestPurchase);
+		sellButton.onClick.RemoveListener(RequestSell);
 		tanksCollectionParentTransform.DestroyChildren();
 	}
 
@@ -86,10 +101,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 
 	private void SetUserInfo(UserConfig userConfig) {
 		this.userConfig = userConfig;
-		UpdateOwnedSelectedTankState();
-
-		userSilver.text = string.Format("{0:N0}", userConfig.silver);
-		userGold.text = string.Format("{0:N0}", userConfig.gold);
+		UpdateUI();
 	}
 	
 	private void CreateTankUI(TankConfig tankConfig) {
@@ -106,12 +118,8 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		instance.SetText(text1, text2);
 	}
 
-	private void UpdateOwnedSelectedTankState() {
-		if (userConfig == null) { return; }
-		if (tankConfig == null) { return; }
-		bool owned = userConfig.ownedTanksUids.Any(uid => uid == tankConfig.uid);
-		battleButton.gameObject.SetActive(owned);
-		purchaseButton.gameObject.SetActive(!owned);
+	private void RequestBattle() {
+		
 	}
 
 	private void RequestPurchase() {
@@ -121,8 +129,11 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		purchasePanel.gameObject.SetActive(true);
 	}
 
-	private void RequestBattle() {
-		
+	private void RequestSell() {
+		var sellPanel = PanelsRegistry.Get<SellPanel>();
+		sellPanel.SetUserInfo(userConfig);
+		sellPanel.SetTankInfo(tankConfig);
+		sellPanel.gameObject.SetActive(true);
 	}
 
 	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {

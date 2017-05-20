@@ -23,10 +23,9 @@ Up to the point it has been like 20 hours of pure busy time. Not bad, I believe.
 * Data IO: load by url, load from asset bundles, persistent data
 * One level deep nested prefabs emulation using scene files and actual prefabs
 * Initial API commentaries
+* User data is changable and savable
 
 # To do
-* Ability to purchase tanks
-* Save user changes
 * Sketch better tanks
 * Sketch hangar scene
 * Script fly around camera
