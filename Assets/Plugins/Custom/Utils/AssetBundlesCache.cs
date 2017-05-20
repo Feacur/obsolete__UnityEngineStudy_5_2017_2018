@@ -1,12 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
-	private readonly AsyncDataLoaderCached<AssetBundle> cache = new AsyncDataLoaderCached<AssetBundle>();
+	public List<Entry> cache = new List<Entry>();
 	
 	public static Coroutine LoadAsync(string url, Action<AssetBundle> callback) {
-		return instance.LoadDataAsync(url, (resultValue) => {
+		var result = instance.cache.SingleOrDefault(it => it.key == url);
+		if (result != null) {
+			if (callback != null) {
+				callback(result.value);
+			}
+			return null;
+		}
+
+		return instance.LoadDataAsync<AssetBundle>(url, (resultValue) => {
+			instance.cache.Add(new Entry() {
+				key = url,
+				value = resultValue
+			});
 			if (callback != null) {
 				callback(resultValue);
 			}
@@ -14,13 +27,19 @@ public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 	}
 	
 	public static void Unload(string url, bool unloadAllLoadedObjects = true) {
-		AssetBundle result = instance.cache.RemoveAndGet(url);
-		if (result) {
-			result.Unload(unloadAllLoadedObjects);
+		var result = instance.cache.SingleOrDefault(it => it.key == url);
+		if (result != null) {
+			result.value.Unload(unloadAllLoadedObjects);
 		}
 	}
+	
+	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
+		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
+	}
 
-	private Coroutine LoadDataAsync(string url, Action<AssetBundle> callback) {
-		return StartCoroutine(cache.LoadCoroutine(url, callback));
+	[Serializable]
+	public class Entry {
+		public string key;
+		public AssetBundle value;
 	}
 }
