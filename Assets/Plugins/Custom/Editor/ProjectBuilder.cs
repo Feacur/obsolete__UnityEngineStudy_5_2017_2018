@@ -28,8 +28,7 @@ public static class ProjectBuilder {
 		{BuildTarget.Android,                  BuildOptions.None}
 	};
 
-	public static string Build (BuildTarget buildTarget)
-	{
+	public static string Build (BuildTarget buildTarget) {
 		var options = new BuildPlayerOptions();
 		options.locationPathName = string.Format(locationPathTemplates[buildTarget], PlayerSettings.productName);
 		options.options = buildOptions[buildTarget];
@@ -39,21 +38,18 @@ public static class ProjectBuilder {
 		return BuildPipeline.BuildPlayer(options);
 	}
 	
-	public static string BuildWithAssetBundles (BuildTarget buildTarget)
-	{
+	public static string BuildWithAssetBundles (BuildTarget buildTarget) {
 		AssetBundlesBuilder.Build(buildTarget);
 		return Build(buildTarget);
 	}
 
 	[MenuItem ("WGTestAssignment/Build project only")]
-	public static string BuildActiveTarget ()
-	{
+	public static string BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 
 	[MenuItem ("WGTestAssignment/Build project with asset bundles")]
-	public static string BuildWithAssetBundlesActiveTarget ()
-	{
+	public static string BuildWithAssetBundlesActiveTarget () {
 		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

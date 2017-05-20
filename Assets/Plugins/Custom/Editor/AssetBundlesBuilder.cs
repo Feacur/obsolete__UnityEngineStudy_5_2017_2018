@@ -37,8 +37,7 @@ public static class AssetBundlesBuilder {
 		}
 	}
 	
-	public static AssetBundleManifest Build (BuildTarget buildTarget)
-	{
+	public static AssetBundleManifest Build (BuildTarget buildTarget) {
 		EnsureAssetBundlesFolderExists();
 		return BuildPipeline.BuildAssetBundles(
 			AssetBundlesPath, buildOptions[buildTarget], buildTarget
@@ -46,13 +45,18 @@ public static class AssetBundlesBuilder {
 	}
 
 	[MenuItem ("WGTestAssignment/Build asset bundles")]
-	public static AssetBundleManifest BuildActiveTarget ()
-	{
+	public static AssetBundleManifest BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 	
-	private static void EnsureAssetBundlesFolderExists ()
-	{
+
+	[MenuItem ("WGTestAssignment/List asset bundles")]
+	public static void ListAssetBundles () {
+		var names = AssetDatabase.GetAllAssetBundleNames();
+		Debug.LogFormat("Found asset bundles: {0}", string.Join(", ", names));
+	}
+	
+	private static void EnsureAssetBundlesFolderExists () {
 		StringBuilder assetBundlesPathBuilder = new StringBuilder();
 		assetBundlesPathBuilder.Append(assetBundlesPathRaw[0]);
 		for	(int i = 1; i < assetBundlesPathRaw.Length; i++) {

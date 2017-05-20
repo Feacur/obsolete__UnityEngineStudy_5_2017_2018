@@ -40,6 +40,9 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 	
 	private void OnEnable() {
+		battleButton.onClick.AddListener(RequestBattle);
+		purchaseButton.onClick.AddListener(RequestPurchase);
+
 		var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
 		if (persistentUserConfig != null) {
 			SetUserInfo(persistentUserConfig);
@@ -60,6 +63,8 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 
 	private void OnDisable() {
+		battleButton.onClick.RemoveListener(RequestBattle);
+		purchaseButton.onClick.RemoveListener(RequestPurchase);
 		tanksCollectionParentTransform.DestroyChildren();
 	}
 
@@ -104,6 +109,17 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		bool owned = userConfig.ownedTanksUids.Any(uid => uid == tankConfig.uid);
 		battleButton.gameObject.SetActive(owned);
 		purchaseButton.gameObject.SetActive(!owned);
+	}
+
+	private void RequestPurchase() {
+		var purchasePanel = PanelsRegistry.Get<PurchasePanel>();
+		purchasePanel.SetUserInfo(userConfig);
+		purchasePanel.SetTankInfo(tankConfig);
+		purchasePanel.gameObject.SetActive(true);
+	}
+
+	private void RequestBattle() {
+		
 	}
 
 	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
