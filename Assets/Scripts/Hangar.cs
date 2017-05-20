@@ -27,7 +27,7 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 		// Get tanks asset bundle
 		AssetBundle tanksAssetBundle = null;
 		string tanksAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tankConfig.assetBundle);
-		yield return CachedAssetBundleLoader.LoadAsync(tanksAssetBundleUrl, (resultValue) => {
+		yield return AssetBundlesCache.LoadAsync(tanksAssetBundleUrl, (resultValue) => {
 			tanksAssetBundle = resultValue;
 		});
 		

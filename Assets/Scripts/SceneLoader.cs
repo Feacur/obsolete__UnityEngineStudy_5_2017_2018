@@ -18,7 +18,7 @@ public class SceneLoader : MonoBehaviour {
 		// Get scenes asset bundle
 		AssetBundle scenesAssetBundle = null;
 		string scenesAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, scenesAssetBundleSubPath);
-		yield return CachedAssetBundleLoader.LoadAsync(scenesAssetBundleUrl, (resultValue) => {
+		yield return AssetBundlesCache.LoadAsync(scenesAssetBundleUrl, (resultValue) => {
 			scenesAssetBundle = resultValue;
 		});
 
