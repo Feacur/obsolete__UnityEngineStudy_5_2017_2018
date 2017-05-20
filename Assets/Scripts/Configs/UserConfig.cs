@@ -6,7 +6,7 @@ using System;
 
 [Serializable]
 public class UserConfig {
-	public int silver { get; set; }
-	public int gold { get; set; }
+	public decimal silver { get; set; }
+	public decimal gold { get; set; }
 	public string[] ownedTanksUids { get; set; }
 }
