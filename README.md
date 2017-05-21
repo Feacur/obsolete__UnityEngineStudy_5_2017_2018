@@ -5,6 +5,8 @@ Reference: WoT hangar scene
 
 Up to the point it has been like 20 hours of pure busy time. Not bad, I believe. Besides this project turned out to be extremely instrumental for my current job. Really, you need sometimes sit back, put down your busy work for a while and do some R&D.
 
+And yet another 4 hours in addition.
+
 # How to work with this stuff
 ### Build the project and asset bundles using these
 * See "Assets/Plugins/Custom/Editor/AssetBundlesBuilder.cs"
@@ -24,10 +26,10 @@ Up to the point it has been like 20 hours of pure busy time. Not bad, I believe.
 * One level deep nested prefabs emulation using scene files and actual prefabs
 * Initial API commentaries
 * User data is changable and savable
+* Sketched tanks
+* Sketched hangar
 
 # To do
-* Sketch better tanks
-* Sketch hangar scene
 * Script fly around camera
 * Loader splash screen to hide async loading from user
-* Rective UI changes, probably?
+* Rective UI changes, probably? This is more of a clean code feature.

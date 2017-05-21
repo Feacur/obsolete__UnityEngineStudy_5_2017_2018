@@ -1,12 +1,12 @@
-uid: "tank 2"
-name: "Flash"
-type: "Light fast"
+uid: "uid tank 2"
+name: "Leopard 2A5"
+type: "Main battle tank"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Tank 2.prefab"
+prefab: "Assets/Prefabs/Tanks/Leopard 2A5.prefab"
 # physics
-mass: 30000 # kg
-speed: 30 # meters/sec
+mass: 62000 # kg
+speed: 20 # meters/sec
 # price
-price: 20
-currency: SILVER
+price: 5000
+currency: GOLD

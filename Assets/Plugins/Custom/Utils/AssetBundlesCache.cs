@@ -10,7 +10,7 @@ using UnityEngine;
 public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 	public List<Entry> cache = new List<Entry>();
 	
-	public static Coroutine LoadAsync(string url, Action<AssetBundle> callback) {
+	public static Coroutine LoadAsync(string url, Action<AssetBundle> callback = null) {
 		var result = instance.cache.SingleOrDefault(it => it.key == url);
 		if (result != null) {
 			if (callback != null) {

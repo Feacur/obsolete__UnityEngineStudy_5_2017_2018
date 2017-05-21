@@ -1,12 +1,12 @@
-uid: "tank 1"
-name: "General"
-type: "Normal heavy"
+uid: "uid tank 1"
+name: "Chieftain FV4201"
+type: "Main battle tank"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Tank 1.prefab"
+prefab: "Assets/Prefabs/Tanks/Chieftain FV4201.prefab"
 # physics
-mass: 50000 # kg
-speed: 15 # meters/sec
+mass: 55000 # kg
+speed: 13.3 # meters/sec
 # price
-price: 10
+price: 90000
 currency: SILVER

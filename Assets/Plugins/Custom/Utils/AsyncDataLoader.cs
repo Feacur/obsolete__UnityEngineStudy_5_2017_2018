@@ -13,7 +13,7 @@ public static class AsyncDataLoader {
 	///
 	/// It is advised to make a wrapper handling StartCoroutine(); part.
 	///
-	public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetName, Action<T> callback) where T : class {
+	public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetName, Action<T> callback = null) where T : class {
 		T result = null;
 		
 		if (!assetBundle) {

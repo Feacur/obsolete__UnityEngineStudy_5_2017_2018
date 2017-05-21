@@ -1,4 +1,4 @@
-silver: 1000
-gold: 10
+silver: 100000
+gold: 8000
 ownedTanksUids:
-  - "tank 1"
+  - "uid tank 1"

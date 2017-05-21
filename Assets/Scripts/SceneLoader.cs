@@ -12,9 +12,14 @@ using UnityEngine.SceneManagement;
 /// Again, it's useful if you want some sort of initial loading screen.
 ///
 public class SceneLoader : MonoBehaviour {
+	public string environmentAssetBundleSubPath;
 	public string scenesAssetBundleSubPath;
 
 	private IEnumerator Start () {
+		// Load environment assets
+		string environmentAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, environmentAssetBundleSubPath);
+		yield return AssetBundlesCache.LoadAsync(environmentAssetBundleUrl);
+
 		// Get scenes asset bundle
 		AssetBundle scenesAssetBundle = null;
 		string scenesAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, scenesAssetBundleSubPath);
@@ -27,5 +32,8 @@ public class SceneLoader : MonoBehaviour {
 			var asyncOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
 			yield return asyncOperation;
 		}
+
+		// Unload loader scene
+		SceneManager.UnloadSceneAsync(gameObject.scene);
 	}
 }

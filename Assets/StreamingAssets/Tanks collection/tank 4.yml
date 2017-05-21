@@ -1,12 +1,12 @@
-uid: "tank 4"
-name: "Jaggernaut"
-type: "Heavy slow"
+uid: "uid tank 4"
+name: "Abbot SPG FV433"
+type: "Self-propelled artillery"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Tank 4.prefab"
+prefab: "Assets/Prefabs/Tanks/Abbot SPG FV433.prefab"
 # physics
-mass: 70000 # kg
-speed: 10 # meters/sec
+mass: 16560 # kg
+speed: 13.05 # meters/sec
 # price
-price: 40
+price: 40000
 currency: SILVER

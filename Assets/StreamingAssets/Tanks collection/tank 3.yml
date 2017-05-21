@@ -1,12 +1,12 @@
-uid: "tank 3"
-name: "Sturdy"
-type: "Normal fast"
+uid: "uid tank 3"
+name: "Warrior FV 510"
+type: "Infantry fighting vehicle"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Tank 3.prefab"
+prefab: "Assets/Prefabs/Tanks/Warrior FV 510.prefab"
 # physics
-mass: 40000 # kg
-speed: 25 # meters/sec
+mass: 25400 # kg
+speed: 20.8 # meters/sec
 # price
-price: 30
-currency: SILVER
+price: 1000
+currency: GOLD
