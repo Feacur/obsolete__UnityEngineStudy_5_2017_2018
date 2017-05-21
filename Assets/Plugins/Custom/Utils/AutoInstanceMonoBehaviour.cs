@@ -8,9 +8,12 @@ using UnityEngine;
 /// public class ClassName : AutoInstanceMonoBehaviour<ClassName> { ... }
 ///
 public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : AutoInstanceMonoBehaviour<T> {
+	public static bool destroyed { get; private set; }
+
 	private static T _instance;
 	public static T instance {
 		get {
+			destroyed = false;
 			if (!_instance) {
 				_instance = FindObjectOfType<T>();
 				if (!_instance) {
@@ -28,4 +31,8 @@ public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : Aut
 	}
 
 	protected virtual void AutoInstanceInit() { }
+
+	protected void OnDestroy() {
+		destroyed = true;
+	}
 }
