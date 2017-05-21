@@ -16,22 +16,13 @@ public class SceneLoader : MonoBehaviour {
 	public string scenesAssetBundleSubPath;
 
 	private IEnumerator Start () {
-		// Load environment assets
-		string environmentAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, environmentAssetBundleSubPath);
-		yield return AssetBundlesCache.LoadAsync(environmentAssetBundleUrl);
-
-		// Get scenes asset bundle
-		AssetBundle scenesAssetBundle = null;
-		string scenesAssetBundleUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, scenesAssetBundleSubPath);
-		yield return AssetBundlesCache.LoadAsync(scenesAssetBundleUrl, (resultValue) => {
-			scenesAssetBundle = resultValue;
-		});
+		if (StreamingData.realAssetBundles) {
+			// Load environment assets
+			yield return StreamingData.LoadAssetBundleAsync(environmentAssetBundleSubPath);
+		}
 
 		// Load scenes
-		foreach (var scenePath in scenesAssetBundle.GetAllScenePaths()) {
-			var asyncOperation = SceneManager.LoadSceneAsync(scenePath, LoadSceneMode.Additive);
-			yield return asyncOperation;
-		}
+		yield return StreamingData.LoadScenesAsync(scenesAssetBundleSubPath, LoadSceneMode.Additive);
 
 		// Unload loader scene
 		SceneManager.UnloadSceneAsync(gameObject.scene);

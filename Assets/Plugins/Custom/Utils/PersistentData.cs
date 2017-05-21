@@ -4,7 +4,7 @@ using UnityEngine;
 using YamlDotNet.Serialization;
 
 ///
-/// Code to work with persistent data in Unity
+/// Conveniency script to work with Application.persistentDataPath
 ///
 public static class PersistentData {
 	private static readonly BinaryFormatter binaryFormatter = new BinaryFormatter();

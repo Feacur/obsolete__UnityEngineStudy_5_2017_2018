@@ -17,6 +17,10 @@ And yet another 4 hours in addition.
 ### Probably you want to rebuild asset bundles if you've updated Unity version
 ### Probably you want to rebuild asset bundles if you've changed some code assemblies
 
+### Also you can define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+* See "Assets/Plugins/Custom/Util/StreamingData.cs"
+* But there is an issue with lighting
+
 # Current state
 * Plugins: Rider, VSCode, YamlDotNet, also custom utilities
 * Assets: Hangar UI, Hangar, tanks, prefabs, yaml configs

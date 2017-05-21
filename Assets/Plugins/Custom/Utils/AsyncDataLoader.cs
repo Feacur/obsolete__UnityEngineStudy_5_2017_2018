@@ -4,38 +4,38 @@ using UnityEngine;
 
 public static class AsyncDataLoader {
 	///
-	/// Loads an asset by <param name="assetName"> from <param name="assetBundle">.
+	/// Loads an asset by <param name="assetPath"> from <param name="assetBundle">.
 	/// Result will be sent async as a <param name="callback"> param.
 	///
 	/// Intended to be used something like
-	/// StartCoroutine(assetBundle.LoadCoroutine<T>(assetName, (resultValue) => { ... }));
-	/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(assetBundle, assetName, (resultValue) => { ... }));
+	/// StartCoroutine(assetBundle.LoadCoroutine<T>(assetPath, (resultValue) => { ... }));
+	/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(assetBundle, assetPath, (resultValue) => { ... }));
 	///
 	/// It is advised to make a wrapper handling StartCoroutine(); part.
 	///
-	public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetName, Action<T> callback = null) where T : class {
+	public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetPath, Action<T> callback) where T : class {
 		T result = null;
 		
 		if (!assetBundle) {
 			Debug.LogErrorFormat("Asset bundle is null");
 		}
-		else if (!assetBundle.Contains(assetName)) {
-			Debug.LogErrorFormat("{0} does not contain {1}", assetBundle.name, assetName);
+		else if (!assetBundle.Contains(assetPath)) {
+			Debug.LogErrorFormat("{0} does not contain {1}", assetBundle.name, assetPath);
 		}
 		else if (typeof(T) == typeof(byte[])) {
-			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
+			var loadAssetAsync = assetBundle.LoadAssetAsync(assetPath);
 			yield return loadAssetAsync;
 			var textAsset = loadAssetAsync.asset as TextAsset;
 			result = textAsset ? textAsset.bytes as T : null;
 		}
 		else if (typeof(T) == typeof(string)) {
-			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
+			var loadAssetAsync = assetBundle.LoadAssetAsync(assetPath);
 			yield return loadAssetAsync;
 			var textAsset = loadAssetAsync.asset as TextAsset;
 			result = textAsset ? textAsset.text as T : null;
 		}
 		else {
-			var loadAssetAsync = assetBundle.LoadAssetAsync(assetName);
+			var loadAssetAsync = assetBundle.LoadAssetAsync(assetPath);
 			yield return loadAssetAsync;
 			result = loadAssetAsync.asset as T;
 		}

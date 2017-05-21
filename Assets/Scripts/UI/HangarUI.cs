@@ -65,15 +65,13 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 			SetUserInfo(persistentUserConfig);
 		}
 		else {
-			string userConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, userConfigSubPath);
-			LoadDataAsync<string>(userConfigUrl, (resultValue) => {
+			StreamingData.LoadDataAsync<string>(userConfigSubPath, (resultValue) => {
 				var userConfig = YamlWrapper.Deserialize<UserConfig>(resultValue);
 				SetUserInfo(userConfig);
 			});
 		}
 
-		string tanksCollectionUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tanksCollectionConfigSubPath);
-		LoadDataAsync<string>(tanksCollectionUrl, (resultValue) => {
+		StreamingData.LoadDataAsync<string>(tanksCollectionConfigSubPath, (resultValue) => {
 			var tanksCollectionConfig = YamlWrapper.Deserialize<TanksCollectionConfig>(resultValue);
 			SetTanksCollectionInfo(tanksCollectionConfig);
 		});
@@ -91,8 +89,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 
 		tanksCollectionParentTransform.DestroyChildren();
 		foreach (string tankConfigSubPath in tanksCollectionConfig.tankConfigs) {
-			string tankConfigUrl = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, tankConfigSubPath);
-			LoadDataAsync<string>(tankConfigUrl, (resultValue) => {
+			StreamingData.LoadDataAsync<string>(tankConfigSubPath, (resultValue) => {
 				var tankConfig = YamlWrapper.Deserialize<TankConfig>(resultValue);
 				CreateTankUI(tankConfig);
 			});
@@ -134,9 +131,5 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		sellPanel.SetUserInfo(userConfig);
 		sellPanel.SetTankInfo(tankConfig);
 		sellPanel.gameObject.SetActive(true);
-	}
-
-	private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class {
-		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 	}
 }
