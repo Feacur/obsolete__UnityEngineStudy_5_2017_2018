@@ -30,6 +30,10 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	public TankConfig tankConfig { get; private set; }
 
 	public void SetTankInfo(TankConfig tankConfig) {
+		if ((this.tankConfig != null) && (this.tankConfig.uid == tankConfig.uid)) {
+			return;
+		}
+
 		this.tankConfig = tankConfig;
 		UpdateUI();
 
@@ -52,18 +56,34 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		if (userConfig == null) { return; }
 		userSilver.text = string.Format("{0:N0}", userConfig.silver);
 		userGold.text = string.Format("{0:N0}", userConfig.gold);
+		
+		foreach(var tankUI in tanksCollectionParentTransform.GetComponentsInChildren<TankUI>()) {
+			tankUI.SetAquiredState(
+				userConfig.ownedTanksUids.Any(ownedTankUid => ownedTankUid == tankUI.tankConfig.uid)
+			);
+		}
 
 		if (tankConfig == null) { return; }
-		bool owned = userConfig.ownedTanksUids.Any(uid => uid == tankConfig.uid);
+		bool owned = userConfig.ownedTanksUids.Any(ownedTankUid => ownedTankUid == tankConfig.uid);
+		
 		battleButton.gameObject.SetActive(owned);
+		battleButton.interactable = owned;
+		
 		purchaseButton.gameObject.SetActive(!owned);
+		purchaseButton.interactable = !owned && (tanksCollectionConfig.tankConfigs.Length > 0);
+
 		sellButton.gameObject.SetActive(owned);
+		sellButton.interactable = owned && (userConfig.ownedTanksUids.Count > 1);
 	}
 
 	private void OnEnable() {
 		battleButton.onClick.AddListener(RequestBattle);
 		purchaseButton.onClick.AddListener(RequestPurchase);
 		sellButton.onClick.AddListener(RequestSell);
+
+		battleButton.interactable = false;
+		purchaseButton.interactable = false;
+		sellButton.interactable = false;
 
 		var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
 		if (persistentUserConfig != null) {
@@ -111,6 +131,12 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		instance.transform.SetParent(tanksCollectionParentTransform, worldPositionStays: false);
 		instance.SetTankInfo(tankConfig);
 		
+		if (userConfig != null) {
+			instance.SetAquiredState(
+				userConfig.ownedTanksUids.Any(ownedTankUid => ownedTankUid == tankConfig.uid)
+			);
+		}
+		
 		if (this.tankConfig == null) { SetTankInfo(tankConfig); }
 	}
 
@@ -125,6 +151,8 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 
 	private void RequestPurchase() {
+		if (userConfig == null) { return; }
+		if (tankConfig == null) { return; }
 		var purchasePanel = PanelsRegistry.Get<PurchasePanel>();
 		purchasePanel.SetUserInfo(userConfig);
 		purchasePanel.SetTankInfo(tankConfig);
@@ -132,6 +160,8 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 
 	private void RequestSell() {
+		if (userConfig == null) { return; }
+		if (tankConfig == null) { return; }
 		var sellPanel = PanelsRegistry.Get<SellPanel>();
 		sellPanel.SetUserInfo(userConfig);
 		sellPanel.SetTankInfo(tankConfig);

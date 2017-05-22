@@ -8,6 +8,7 @@ using System;
 ///
 public class TankUI : MonoBehaviour, IPointerClickHandler {
 	public Image image;
+	public GameObject aquiredMark;
 	public Text caption;
 	[Header("Selection")]
 	public Color normalColor = Color.white;
@@ -23,6 +24,10 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 
 	public void SetSelectedState(bool value) {
 		image.color = value ? selectedColor : normalColor;
+	}
+
+	public void SetAquiredState(bool value) {
+		aquiredMark.SetActive(value);
 	}
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
