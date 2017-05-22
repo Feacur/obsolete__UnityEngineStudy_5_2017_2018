@@ -17,6 +17,20 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 	public static readonly bool realAssetBundles = true;
 	#endif
 
+	///
+	/// From WWW description: https://docs.unity3d.com/ScriptReference/WWW.html
+	/// Note: When using file protocol on Windows and Windows Store Apps for accessing local files, you have to specify file:/// (with three slashes).
+	///
+	public static string StreamingAssetsUrl {
+		get {
+			#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_WSA_8_1 || UNITY_WSA_10_0
+			return string.Format("file:///{0}", Application.streamingAssetsPath);
+			#else
+			return Application.streamingAssetsPath;
+			#endif
+		}
+	}
+
 	public static Coroutine LoadAssetBundleAsync(string assetBundlePath, Action<AssetBundle> callback = null) {
 		return instance.LoadAssetBundleAsyncInternal(assetBundlePath, callback);
 	}
@@ -83,13 +97,13 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 		}
 	}
 
-	public Coroutine LoadAssetBundleAsyncInternal(string assetBundlePath, Action<AssetBundle> callback) {
-		string url = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, assetBundlePath);
+	private Coroutine LoadAssetBundleAsyncInternal(string assetBundlePath, Action<AssetBundle> callback) {
+		string url = string.Format("{0}/{1}", StreamingAssetsUrl, assetBundlePath);
 		return AssetBundlesCache.LoadAsync(url, callback);
 	}
 	
-	public Coroutine LoadDataAsyncInternal<T>(string subPath, Action<T> callback) where T : class {
-		string url = string.Format("{0}/{1}", UnityUtils.StreamingAssetsUrl, subPath);
+	private Coroutine LoadDataAsyncInternal<T>(string subPath, Action<T> callback) where T : class {
+		string url = string.Format("{0}/{1}", StreamingAssetsUrl, subPath);
 		return instance.StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 	}
 }

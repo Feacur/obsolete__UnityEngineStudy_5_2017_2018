@@ -24,10 +24,10 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		{
 			UpdateWithMouse();
 		}
+		#elif UNITY_ANDROID || UNITY_IOS
+		UpdateWithTouches();
 		#elif UNITY_STANDALONE || UNITY_WEBGL
 		UpdateWithMouse();
-		#else
-		UpdateWithTouches();
 		#endif
 	}
 

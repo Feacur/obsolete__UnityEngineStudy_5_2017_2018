@@ -16,7 +16,7 @@ Up to the point it has been like 28 hours of pure busy time. Not bad, I believe.
 ### Probably you want to rebuild asset bundles if you've changed some code assemblies
 
 ### Also you can define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
-* See "Assets/Plugins/Custom/Util/StreamingData.cs"
+* See "Assets/Plugins/Custom/Data/StreamingData.cs"
 * But there is an issue with lighting
 
 # Current state
