@@ -55,7 +55,7 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 	}
 
 	private void AbstractUpdate(int touchesCount, Vector2 currentPosition, Vector2 deltaPosition) {
-		if (deltaPosition.sqrMagnitude >= 0.01f) {
+		if (deltaPosition.sqrMagnitude >= Mathf.Epsilon) {
 			if (!activeState && (touchesCount == 1)) {
 				activeState = true;
 				startPosition = currentPosition - deltaPosition;

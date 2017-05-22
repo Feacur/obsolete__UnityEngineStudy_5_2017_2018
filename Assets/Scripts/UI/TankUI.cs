@@ -7,7 +7,11 @@ using System;
 /// Tank UI representation
 ///
 public class TankUI : MonoBehaviour, IPointerClickHandler {
+	public Image image;
 	public Text caption;
+	[Header("Selection")]
+	public Color normalColor = Color.white;
+	public Color selectedColor = Color.green;
 
 	public TankConfig tankConfig { get; private set; }
 	
@@ -15,6 +19,10 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 		this.tankConfig = tankConfig;
 		name = string.Format("Tank UI: {0}", tankConfig.name);
 		caption.text = tankConfig.name;
+	}
+
+	public void SetSelectedState(bool value) {
+		image.color = value ? selectedColor : normalColor;
 	}
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {

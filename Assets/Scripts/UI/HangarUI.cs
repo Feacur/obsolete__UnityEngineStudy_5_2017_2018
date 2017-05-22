@@ -33,6 +33,10 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		this.tankConfig = tankConfig;
 		UpdateUI();
 
+		foreach(var tankUI in tanksCollectionParentTransform.GetComponentsInChildren<TankUI>()) {
+			tankUI.SetSelectedState(tankConfig.uid == tankUI.tankConfig.uid);
+		}
+
 		if (Hangar.instance) {
 			Hangar.instance.SetTankInfo(tankConfig);
 		}
@@ -103,11 +107,11 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	}
 	
 	private void CreateTankUI(TankConfig tankConfig) {
-		if (this.tankConfig == null) { SetTankInfo(tankConfig); }
-
 		var instance = Instantiate(tankUIPrefab);
 		instance.transform.SetParent(tanksCollectionParentTransform, worldPositionStays: false);
 		instance.SetTankInfo(tankConfig);
+		
+		if (this.tankConfig == null) { SetTankInfo(tankConfig); }
 	}
 
 	private void CreateTankInfoEntryUI(string text1, string text2) {

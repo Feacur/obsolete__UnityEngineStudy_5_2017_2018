@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class SellPanel : MonoBehaviour {
 	public Button confirmButton;
 	public Button cancelButton;
+	public Text message;
 
 	public UserConfig userConfig { get; private set; }
 	public TankConfig tankConfig { get; private set; }
@@ -20,6 +21,7 @@ public class SellPanel : MonoBehaviour {
 
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
+		message.text = string.Format("Selling \"{0}\"", tankConfig.name);
 	}
 
 	private void OnEnable() {
