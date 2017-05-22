@@ -275,9 +275,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1001 &1462833479
 Prefab:
   m_ObjectHideFlags: 0
