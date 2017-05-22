@@ -1,5 +1,8 @@
 using YamlDotNet.Serialization;
 
+///
+/// Conveniency script to work with YamlDotNet library
+///
 public static class YamlWrapper {
 	public static readonly Serializer serializer;
 	public static readonly Deserializer deserializer;

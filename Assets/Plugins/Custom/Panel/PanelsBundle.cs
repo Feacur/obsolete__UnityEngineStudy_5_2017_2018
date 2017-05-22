@@ -1,7 +1,7 @@
 using UnityEngine;
 
 ///
-/// Seeks for nested panels and registers them
+/// Seeks for nested <see cref="Panel"> and registers them into <see cref="PanelsRegistry">
 ///
 public class PanelsBundle : MonoBehaviour {
 	private void Start() {

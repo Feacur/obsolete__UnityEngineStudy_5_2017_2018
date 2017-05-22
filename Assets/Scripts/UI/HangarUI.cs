@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 ///
 /// Hangar UI representation
+/// Responsible for UI updates
 ///
 public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	[Header("Config")]

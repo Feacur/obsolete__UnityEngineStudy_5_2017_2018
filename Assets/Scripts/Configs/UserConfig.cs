@@ -4,7 +4,6 @@ using System.Collections.Generic;
 ///
 /// User configuration file layout.
 ///
-
 [Serializable]
 public class UserConfig {
 	public decimal silver { get; set; }

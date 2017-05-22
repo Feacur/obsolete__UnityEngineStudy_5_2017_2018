@@ -17,17 +17,17 @@ Up to the point it has been like 28 hours of pure busy time. Not bad, I believe.
 
 ### Also you can define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 * See "Assets/Plugins/Custom/Data/StreamingData.cs"
-* But there is an issue with lighting
+* But there is an issue with lighting, sorry
 
 # Current state
 * Plugins: Rider, VSCode, YamlDotNet, also custom utilities
 * Assets: Hangar UI, Hangar, tanks, prefabs, yaml configs
-* Asset bundles: non-automatic, build is required before play mode
+* Asset bundles: non-automatic; there is an option to emulate them in editor
 * Build scripts: for asset bundles and for the project
 * Data IO: load by url, load from asset bundles, persistent data
 * Input: abstract drag
 * One level deep nested prefabs emulation using scene files and actual prefabs
-* Initial API commentaries
+* API comments
 * User data is changable and savable
 * Sketched tanks, hangar
 
@@ -35,3 +35,6 @@ Up to the point it has been like 28 hours of pure busy time. Not bad, I believe.
 * Script fly around camera
 * Loader splash screen to hide async loading from user
 * Rective UI changes, probably? This is more of a clean code feature.
+* PersistentData script should be able to create folders
+* DragInput script should support gamepads
+* Fix lighting issue when using EMULATE_ASSET_BUNDLES_IN_EDIT_MODE

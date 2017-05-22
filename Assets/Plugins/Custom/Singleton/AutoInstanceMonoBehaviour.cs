@@ -3,6 +3,10 @@ using UnityEngine;
 ///
 /// Provides static access to MonoBehaviour of type <typeparam name="T">
 /// Creates persistent game object if none is present
+/// Use <see cref="destroyed"> to protect against unwanted instantiations
+///
+/// Please note that auto created instances will be marked DontDestroyOnLoad
+/// Thus consequently be placed into the very same named scene
 ///
 /// Intended to be used like
 /// public class ClassName : AutoInstanceMonoBehaviour<ClassName> { ... }

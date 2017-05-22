@@ -3,7 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 ///
-/// Abstracts drag input
+/// Abstracts drag input from platform
+///
+/// Subscribe to any of these events to get updates:
+/// <see cref="onStart"> is called when input is valid and drag actualy starts
+/// <see cref="onMove"> is called when there is a movement; immediately follows <see cref="onStart">
+/// <see cref="onEnd"> is called when input doesn't qualify conditions
 ///
 public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 	public StartedEvent onStart = new StartedEvent();

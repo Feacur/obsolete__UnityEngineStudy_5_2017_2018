@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+///
+/// Purchase confirmation representation
+///
 [RequireComponent(typeof(Panel))]
 public class PurchasePanel : MonoBehaviour {
 	public Button confirmButton;

@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+///
+/// Sell confirmation representation
+///
 [RequireComponent(typeof(Panel))]
 public class SellPanel : MonoBehaviour {
 	public Button confirmButton;

@@ -3,7 +3,6 @@ using System;
 ///
 /// Specific tank configuration file layout.
 ///
-
 [Serializable]
 public class TankConfig {
 	public string uid { get; set; }
