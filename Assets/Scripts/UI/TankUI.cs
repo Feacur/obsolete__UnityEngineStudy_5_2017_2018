@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Linq;
 
 ///
 /// Tank UI representation
@@ -14,23 +15,28 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 	public Color normalColor = Color.white;
 	public Color selectedColor = Color.green;
 
-	public TankConfig tankConfig { get; private set; }
-	
+	private TankConfig tankConfig;
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
 		name = string.Format("Tank UI: {0}", tankConfig.name);
 		caption.text = tankConfig.name;
+		
+		if (HangarDataProvider.instance.user != null) {
+			UpdateAquiredState(HangarDataProvider.instance.user);
+		}
 	}
 
-	public void SetSelectedState(bool value) {
-		image.color = value ? selectedColor : normalColor;
+	public void UpdateSelectedState(string selectedTankUid) {
+		bool selected = (tankConfig.uid == selectedTankUid);
+		image.color = selected ? selectedColor : normalColor;
 	}
 
-	public void SetAquiredState(bool value) {
-		aquiredMark.SetActive(value);
+	public void UpdateAquiredState(UserConfig user) {
+		bool aquired = user.HasTank(tankConfig.uid);
+		aquiredMark.SetActive(aquired);
 	}
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
-		HangarUI.instance.SetTankInfo(tankConfig);
+		HangarDataProvider.SetSelectedTank(tankConfig);
 	}
 }

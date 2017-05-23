@@ -9,27 +9,33 @@ using UnityEngine;
 public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	public Transform tankParentTransform;
 	
-	public TankConfig tankConfig { get; private set; }
-	
 	private Coroutine createTankCoroutine;
 
-	private void Start() {
-		if (tankConfig == null && HangarUI.instance && HangarUI.instance.tankConfig != null) {
-			SetTankInfo(HangarUI.instance.tankConfig);
+	private void OnEnable() {
+		HangarDataProvider.instance.onTankSelected.AddListener(OnTankSelected);
+		if (HangarDataProvider.instance.selectedTank != null) {
+			OnTankSelected(HangarDataProvider.instance.selectedTank);
 		}
 	}
 	
-	public Coroutine SetTankInfo(TankConfig tankConfig) {
+	private void OnDisable() {
+		if (!HangarDataProvider.destroyed) {
+			HangarDataProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
+		}
+		
+		if (createTankCoroutine != null) {
+			StopCoroutine(createTankCoroutine);
+		}
+	}
+	
+	private void OnTankSelected(TankConfig tankConfig) {
 		if (createTankCoroutine != null) {
 			StopCoroutine(createTankCoroutine);
 		}
 		createTankCoroutine = StartCoroutine(CreateTankCoroutine(tankConfig));
-		return createTankCoroutine;
 	}
 	
 	private IEnumerator CreateTankCoroutine(TankConfig tankConfig) {
-		this.tankConfig = tankConfig;
-
 		tankParentTransform.DestroyChildren();
 		
 		// Get tank prefab

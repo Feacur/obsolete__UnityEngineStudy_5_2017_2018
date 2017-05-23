@@ -14,7 +14,7 @@ using UnityEngine;
 public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : AutoInstanceMonoBehaviour<T> {
 	public static bool destroyed { get; private set; }
 
-	private static T _instance;
+	protected static T _instance;
 	public static T instance {
 		get {
 			destroyed = false;

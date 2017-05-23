@@ -11,7 +11,7 @@ using UnityEngine;
 public abstract class AutoInstanceScriptableObject<T> : ScriptableObject where T : AutoInstanceScriptableObject<T> {
 	public static bool destroyed { get; private set; }
 
-	private static T _instance;
+	protected static T _instance;
 	public static T instance {
 		get {
 			destroyed = false;

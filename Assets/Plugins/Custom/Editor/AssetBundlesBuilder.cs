@@ -44,13 +44,13 @@ public static class AssetBundlesBuilder {
 		);
 	}
 
-	[MenuItem ("WGTestAssignment/Build asset bundles")]
+	[MenuItem ("Custom/Build asset bundles")]
 	public static AssetBundleManifest BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 	
 
-	[MenuItem ("WGTestAssignment/List asset bundles")]
+	[MenuItem ("Custom/List asset bundles")]
 	public static void ListAssetBundles () {
 		var names = AssetDatabase.GetAllAssetBundleNames();
 		Debug.LogFormat("Found asset bundles: {0}", string.Join(", ", names));

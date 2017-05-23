@@ -43,12 +43,12 @@ public static class ProjectBuilder {
 		return Build(buildTarget);
 	}
 
-	[MenuItem ("WGTestAssignment/Build project only")]
+	[MenuItem ("Custom/Build project only")]
 	public static string BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 
-	[MenuItem ("WGTestAssignment/Build project with asset bundles")]
+	[MenuItem ("Custom/Build project with asset bundles")]
 	public static string BuildWithAssetBundlesActiveTarget () {
 		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}

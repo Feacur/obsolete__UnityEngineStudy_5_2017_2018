@@ -12,13 +12,12 @@ public class SellPanel : MonoBehaviour {
 	public Button cancelButton;
 	public Text message;
 
-	public UserConfig userConfig { get; private set; }
-	public TankConfig tankConfig { get; private set; }
-
+	private UserConfig userConfig;
 	public void SetUserInfo(UserConfig userConfig) {
 		this.userConfig = userConfig;
 	}
 
+	private TankConfig tankConfig;
 	public void SetTankInfo(TankConfig tankConfig) {
 		this.tankConfig = tankConfig;
 		message.text = string.Format("Selling \"{0}\"", tankConfig.name);
@@ -43,10 +42,7 @@ public class SellPanel : MonoBehaviour {
 		}
 
 		userConfig.ownedTanksUids.Remove(tankConfig.uid);
-		HangarUI.instance.UpdateUI();
-		
-		Debug.LogFormat("Saved {0}/{1}", Application.persistentDataPath, HangarUI.instance.userConfigSubPath);
-		PersistentData.WriteYaml(HangarUI.instance.userConfigSubPath, userConfig);
+		HangarDataProvider.SetUser(userConfig);
 
 		gameObject.SetActive(false);
 	}

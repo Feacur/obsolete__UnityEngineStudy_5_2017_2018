@@ -8,7 +8,7 @@ using UnityEngine;
 /// public class ClassName : StaticInstanceMonoBehaviour<ClassName> { ... }
 ///
 public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour where T : StaticInstanceMonoBehaviour<T> {
-	private static T _instance;
+	protected static T _instance;
 	public static T instance {
 		get {
 			if (!_instance) {
