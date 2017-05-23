@@ -17,27 +17,26 @@ public class HangarCamera : MonoBehaviour {
 	public float distanceAtMaxAngleAxisX = -10;
 	public AnimationCurve distanceInterpolationCurve = AnimationCurve.Linear(0, 0, 1, 1);
 	
-	private bool canMove;
-
 	private void OnEnable() {
 		DragInput.instance.onStart.AddListener(OnStart);
-		DragInput.instance.onMove.AddListener(OnMove);
 	}
 
 	private void OnDisable() {
 		if (!DragInput.destroyed) {
-			DragInput.instance.onStart.AddListener(OnStart);
+			DragInput.instance.onStart.RemoveListener(OnStart);
 			DragInput.instance.onMove.RemoveListener(OnMove);
+			DragInput.instance.onEnd.RemoveListener(OnEnd);
 		}
 	}
 
 	private void OnStart(Vector2 currentPosition, Vector2 deltaPosition) {
-		canMove = !EventSystem.current.IsPointerOverGameObject();
+		if (!EventSystem.current.IsPointerOverGameObject()) {
+			DragInput.instance.onMove.AddListener(OnMove);
+			DragInput.instance.onEnd.AddListener(OnEnd);
+		}
 	}
 	
 	private void OnMove(Vector2 currentPosition, Vector2 deltaPosition, Vector2 totalDeltaPosition) {
-		if (!canMove) { return; }
-
 		Vector2 currentEulerAngles = rotationTransform.localEulerAngles;
 	
 		Vector2 deltaEulerAngles = Vector2.Scale(deltaPosition, rotationSpeed);	
@@ -50,5 +49,12 @@ public class HangarCamera : MonoBehaviour {
 		float fraction = distanceInterpolationCurve.Evaluate(linearFraction);
 		currentLocalPosition.z = Mathf.Lerp(distanceAtMinAngleAxisX, distanceAtMaxAngleAxisX, fraction);
 		positionTransform.localPosition = currentLocalPosition;
+	}
+
+	private void OnEnd(Vector2 currentPosition, Vector2 totalDeltaPosition) {
+		if (!DragInput.destroyed) {
+			DragInput.instance.onMove.RemoveListener(OnMove);
+			DragInput.instance.onEnd.RemoveListener(OnEnd);
+		}
 	}
 }
