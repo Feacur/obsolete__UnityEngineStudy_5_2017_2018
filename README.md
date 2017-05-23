@@ -1,8 +1,6 @@
 # Summary
 Test assignment on Unity, UI and programming stuff
 
-Reference: WoT hangar scene
-
 Up to the point it has been like 32 hours of pure busy time. Not bad, I believe. Besides this project turned out to be extremely instrumental for my current job. For reals, you need to sit back sometimes, put down your busy work down for a while and do some R&D.
 
 # How to work with this stuff
