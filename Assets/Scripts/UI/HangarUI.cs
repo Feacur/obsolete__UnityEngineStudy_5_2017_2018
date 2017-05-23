@@ -8,6 +8,19 @@ using UnityEngine.UI;
 /// Hangar UI representation
 /// Responsible for UI updates
 ///
+/// Data is fetched out of <see cref="userConfigSubPath">, and <see cref="tanksCollectionConfigSubPath">
+///
+/// Responsibilities of <see cref="OnUserChanged">
+/// * Display user UI (silver and gold)
+/// * Update tanks aquired state
+/// * Update buttons
+/// * Save user state
+///
+/// Responsibilities of <see cref="OnTankSelected">
+/// * Display tank info
+/// * Update tanks selected state
+/// * Update buttons
+///
 public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	[Header("Config")]
 	public string userConfigSubPath = "user.yml";
@@ -61,6 +74,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		
 		if (loadDataCoroutine != null) {
 			StopCoroutine(loadDataCoroutine);
+			loadDataCoroutine = null;
 		}
 
 		tanksCollectionParentTransform.DestroyChildren();
@@ -79,6 +93,7 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		}
 		
 		PersistentData.WriteYaml(userConfigSubPath, userConfig);
+		Debug.LogFormat("Saved to {0}/{1}", Application.persistentDataPath, userConfigSubPath);
 	}
 	
 	private void OnTankSelected(TankConfig tankConfig) {

@@ -1,7 +1,7 @@
 # Summary
 Test assignment on Unity, UI and programming stuff
 
-Up to the point it has been like 32 hours of pure busy time. Not bad, I believe. Besides this project turned out to be extremely instrumental for my current job. For reals, you need to sit back sometimes, put down your busy work down for a while and do some R&D.
+Up to the point it has been like 32 hours of pure busy time. Not bad, I believe. Besides this project turned out to be extremely instrumental for my current job. For reals, you need to sit back sometimes, put your busy work down for a while and do some R&D.
 
 # How to work with this stuff
 ### Build the project and asset bundles using these

@@ -25,6 +25,7 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 		
 		if (createTankCoroutine != null) {
 			StopCoroutine(createTankCoroutine);
+			createTankCoroutine = null;
 		}
 	}
 	
