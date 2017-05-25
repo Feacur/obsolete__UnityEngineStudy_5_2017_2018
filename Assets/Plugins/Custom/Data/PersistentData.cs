@@ -9,14 +9,15 @@ public static class PersistentData {
 	public static readonly BinaryFormatter binaryFormatter = new BinaryFormatter();
 
 	public static void WriteYaml<T>(string subPath, T data) where T : class {
-		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);	
+		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);
+		Directory.CreateDirectory(Path.GetDirectoryName(path));
 		using (var streamWriter = File.CreateText(path)) {
 			YamlWrapper.serializer.Serialize(streamWriter, data);
 		}
 	}
 	
 	public static T ReadYaml<T>(string subPath) where T : class {
-		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);	
+		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);
 		if (!File.Exists(path)) {
 			return null;
 		}
@@ -26,7 +27,8 @@ public static class PersistentData {
 	}
 	
 	public static void WriteBinary<T>(string subPath, T data) where T : class {
-		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);	
+		string path = string.Format("{0}/{1}", Application.persistentDataPath, subPath);
+		Directory.CreateDirectory(Path.GetDirectoryName(path));
 		using (var streamWriter = File.Create(path)) {
 			binaryFormatter.Serialize(streamWriter, data);
 		}

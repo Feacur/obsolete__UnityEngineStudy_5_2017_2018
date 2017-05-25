@@ -1,8 +1,6 @@
 # Summary
 Test assignment on Unity, UI and programming stuff
 
-Up to the point it has been like 32 hours of pure busy time. Not bad, I believe. Besides this project turned out to be extremely instrumental for my current job. For reals, you need to sit back sometimes, put your busy work down for a while and do some R&D.
-
 # How to work with this stuff
 ### Build the project and asset bundles using these
 * See "Assets/Plugins/Custom/Editor/AssetBundlesBuilder.cs"
@@ -28,11 +26,14 @@ Up to the point it has been like 32 hours of pure busy time. Not bad, I believe.
 * API comments
 * User data is changable and savable
 * Sketched tanks, hangar
-* Simple fly around camera
+* Simple hangar camera
 
 # To do
 * Loader splash screen to hide async loading from user
-* Rective UI changes, probably? This is more of a clean code feature.
-* PersistentData script should be able to create folders
 * DragInput script should support gamepads
 * Fix lighting issue when using EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+* Add inertia to the hangar camera
+
+# Additional Unity notes
+* Explicitly include your data to the build
+* Standard shaders can be linked through GraphicSettings

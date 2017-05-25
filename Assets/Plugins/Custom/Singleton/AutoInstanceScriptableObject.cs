@@ -20,9 +20,8 @@ public abstract class AutoInstanceScriptableObject<T> : ScriptableObject where T
 				if (!_instance) {
 					_instance = CreateInstance<T>();
 				}
-				if (_instance) {
-					_instance.AutoInstanceInit();
-				}
+				// _instance should be non-null by now
+				_instance.AutoInstanceInit();
 			}
 			return _instance;
 		}

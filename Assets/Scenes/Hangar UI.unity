@@ -1591,7 +1591,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2260,8 +2260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79c5a7878052be747b7859d61d54cef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userConfigSubPath: user.yml
-  tanksCollectionConfigSubPath: tanks.yml
   battleButton: {fileID: 1778615952}
   purchaseButton: {fileID: 397925298}
   sellButton: {fileID: 900405748}

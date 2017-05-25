@@ -8,13 +8,15 @@ using UnityEngine.UI;
 /// Hangar UI representation
 /// Responsible for UI updates
 ///
-/// Data is fetched out of <see cref="userConfigSubPath">, and <see cref="tanksCollectionConfigSubPath">
-///
 /// Responsibilities of <see cref="OnUserChanged">
 /// * Display user UI (silver and gold)
 /// * Update tanks aquired state
 /// * Update buttons
 /// * Save user state
+///
+/// Responsibilities of <see cref="OnTanksCollectionChanged">
+/// * Display tanks collection
+/// * Select default tank
 ///
 /// Responsibilities of <see cref="OnTankSelected">
 /// * Display tank info
@@ -22,9 +24,6 @@ using UnityEngine.UI;
 /// * Update buttons
 ///
 public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
-	[Header("Config")]
-	public string userConfigSubPath = "user.yml";
-	public string tanksCollectionConfigSubPath = "tanks.yml";
 	[Header("Navigation")]
 	public Button battleButton;
 	public Button purchaseButton;
@@ -39,9 +38,6 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 	public TankInfoEntryUI tankInfoEntryUIPrefab;
 	public RectTransform tankInfoParentTransform;
 	
-	private TanksCollectionConfig tanksCollectionConfig;
-	private Coroutine loadDataCoroutine;
-
 	private void Start() {
 		battleButton.interactable = false;
 		purchaseButton.interactable = false;
@@ -53,13 +49,9 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		purchaseButton.onClick.AddListener(RequestPurchase);
 		sellButton.onClick.AddListener(RequestSell);
 
-		HangarDataProvider.instance.onUserChanged.AddListener(OnUserChanged);
-		HangarDataProvider.instance.onTankSelected.AddListener(OnTankSelected);
-
-		if (loadDataCoroutine != null) {
-			StopCoroutine(loadDataCoroutine);
-		}
-		loadDataCoroutine = StartCoroutine(LoadDataCoroutine());
+		HangarConfigProvider.instance.onUserChanged.AddListener(OnUserChanged);
+		HangarConfigProvider.instance.onTanksCollectionChanged.AddListener(OnTanksCollectionChanged);
+		HangarConfigProvider.instance.onTankSelected.AddListener(OnTankSelected);
 	}
 	
 	private void OnDisable() {
@@ -67,14 +59,10 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		purchaseButton.onClick.RemoveListener(RequestPurchase);
 		sellButton.onClick.RemoveListener(RequestSell);
 
-		if (!HangarDataProvider.destroyed) {
-			HangarDataProvider.instance.onUserChanged.RemoveListener(OnUserChanged);
-			HangarDataProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
-		}
-		
-		if (loadDataCoroutine != null) {
-			StopCoroutine(loadDataCoroutine);
-			loadDataCoroutine = null;
+		if (!HangarConfigProvider.destroyed) {
+			HangarConfigProvider.instance.onUserChanged.RemoveListener(OnUserChanged);
+			HangarConfigProvider.instance.onTanksCollectionChanged.RemoveListener(OnTanksCollectionChanged);
+			HangarConfigProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
 		}
 
 		tanksCollectionParentTransform.DestroyChildren();
@@ -88,12 +76,18 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 			tankUI.UpdateAquiredState(userConfig);
 		}
 
-		if (HangarDataProvider.instance.selectedTank != null) {
-			UpdateButtons(userConfig, HangarDataProvider.instance.selectedTank);
+		if (HangarConfigProvider.instance.selectedTank != null) {
+			// HangarConfigProvider.instance.tanksCollection should be non-null by now
+			UpdateButtons(userConfig, HangarConfigProvider.instance.tanksCollection, HangarConfigProvider.instance.selectedTank);
 		}
-		
-		PersistentData.WriteYaml(userConfigSubPath, userConfig);
-		Debug.LogFormat("Saved to {0}/{1}", Application.persistentDataPath, userConfigSubPath);
+	}
+
+	private void OnTanksCollectionChanged(TankConfig[] tankConfigs) {
+		tanksCollectionParentTransform.DestroyChildren();
+		foreach (var tankConfig in tankConfigs) {
+			CreateTankUI(tankConfig);
+		}
+		HangarConfigProvider.SetSelectedTank(tankConfigs[0]);
 	}
 	
 	private void OnTankSelected(TankConfig tankConfig) {
@@ -107,42 +101,9 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 			tankUI.UpdateSelectedState(tankConfig.uid);
 		}
 		
-		if (HangarDataProvider.instance.user != null) {
-			UpdateButtons(HangarDataProvider.instance.user, tankConfig);
-		}
-	}
-	
-	private IEnumerator LoadDataCoroutine() {
-		yield return StreamingData.LoadDataAsync<string>(tanksCollectionConfigSubPath, (resultValue) => {
-			var tanksCollectionConfig = YamlWrapper.Deserialize<TanksCollectionConfig>(resultValue);
-			SetTanksCollectionInfo(tanksCollectionConfig);
-		});
-
-		var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
-		if (persistentUserConfig != null) {
-			HangarDataProvider.SetUser(persistentUserConfig);
-			yield break;
-		}
-		
-		yield return StreamingData.LoadDataAsync<string>(userConfigSubPath, (resultValue) => {
-			var userConfig = YamlWrapper.Deserialize<UserConfig>(resultValue);
-			HangarDataProvider.SetUser(userConfig);
-		});
-	}
-
-	private void SetTanksCollectionInfo(TanksCollectionConfig tanksCollectionConfig) {
-		this.tanksCollectionConfig = tanksCollectionConfig;
-
-		tanksCollectionParentTransform.DestroyChildren();
-		foreach (string tankConfigSubPath in tanksCollectionConfig.tankConfigs) {
-			StreamingData.LoadDataAsync<string>(tankConfigSubPath, (resultValue) => {
-				var tankConfig = YamlWrapper.Deserialize<TankConfig>(resultValue);
-				CreateTankUI(tankConfig);
-
-				if (HangarDataProvider.instance.selectedTank == null) {
-					HangarDataProvider.SetSelectedTank(tankConfig);
-				}
-			});
+		if (HangarConfigProvider.instance.user != null) {
+			// HangarConfigProvider.instance.tanksCollection should be non-null by now
+			UpdateButtons(HangarConfigProvider.instance.user, HangarConfigProvider.instance.tanksCollection, tankConfig);
 		}
 	}
 	
@@ -158,9 +119,9 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 		instance.SetText(text1, text2);
 	}
 
-	private void UpdateButtons(UserConfig user, TankConfig selectedTank) {
+	private void UpdateButtons(UserConfig user, TankConfig[] tanksCollection, TankConfig selectedTank) {
 		bool owned = user.HasTank(selectedTank.uid);
-		bool hasTanksToBuy = (tanksCollectionConfig.tankConfigs.Length > 1);
+		bool hasTanksToBuy = (tanksCollection.Length > 1);
 		bool hasTanksToSell = (user.ownedTanksUids.Count > 1);
 
 		battleButton.gameObject.SetActive(owned);
@@ -179,15 +140,11 @@ public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
 
 	private void RequestPurchase() {
 		var purchasePanel = PanelsRegistry.Get<PurchasePanel>();
-		purchasePanel.SetUserInfo(HangarDataProvider.instance.user);
-		purchasePanel.SetTankInfo(HangarDataProvider.instance.selectedTank);
-		purchasePanel.gameObject.SetActive(true);
+		purchasePanel.Open(HangarConfigProvider.instance.user, HangarConfigProvider.instance.selectedTank);
 	}
 
 	private void RequestSell() {
 		var sellPanel = PanelsRegistry.Get<SellPanel>();
-		sellPanel.SetUserInfo(HangarDataProvider.instance.user);
-		sellPanel.SetTankInfo(HangarDataProvider.instance.selectedTank);
-		sellPanel.gameObject.SetActive(true);
+		sellPanel.Open(HangarConfigProvider.instance.user, HangarConfigProvider.instance.selectedTank);
 	}
 }

@@ -12,15 +12,15 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 	private Coroutine createTankCoroutine;
 
 	private void OnEnable() {
-		HangarDataProvider.instance.onTankSelected.AddListener(OnTankSelected);
-		if (HangarDataProvider.instance.selectedTank != null) {
-			OnTankSelected(HangarDataProvider.instance.selectedTank);
+		HangarConfigProvider.instance.onTankSelected.AddListener(OnTankSelected);
+		if (HangarConfigProvider.instance.selectedTank != null) {
+			OnTankSelected(HangarConfigProvider.instance.selectedTank);
 		}
 	}
 	
 	private void OnDisable() {
-		if (!HangarDataProvider.destroyed) {
-			HangarDataProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
+		if (!HangarConfigProvider.destroyed) {
+			HangarConfigProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
 		}
 		
 		if (createTankCoroutine != null) {

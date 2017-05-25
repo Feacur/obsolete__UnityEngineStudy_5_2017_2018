@@ -26,9 +26,8 @@ public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : Aut
 					DontDestroyOnLoad(instanceGO);
 					_instance = instanceGO.AddComponent<T>();
 				}
-				if (_instance) {
-					_instance.AutoInstanceInit();
-				}
+				// _instance should be non-null by now
+				_instance.AutoInstanceInit();
 			}
 			return _instance;
 		}

@@ -21,8 +21,8 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 		name = string.Format("Tank UI: {0}", tankConfig.name);
 		caption.text = tankConfig.name;
 		
-		if (HangarDataProvider.instance.user != null) {
-			UpdateAquiredState(HangarDataProvider.instance.user);
+		if (HangarConfigProvider.instance.user != null) {
+			UpdateAquiredState(HangarConfigProvider.instance.user);
 		}
 	}
 
@@ -37,6 +37,6 @@ public class TankUI : MonoBehaviour, IPointerClickHandler {
 	}
 
 	void IPointerClickHandler.OnPointerClick(PointerEventData eventData) {
-		HangarDataProvider.SetSelectedTank(tankConfig);
+		HangarConfigProvider.SetSelectedTank(tankConfig);
 	}
 }

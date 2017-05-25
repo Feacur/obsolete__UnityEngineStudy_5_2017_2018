@@ -13,14 +13,17 @@ public class PurchasePanel : MonoBehaviour {
 	public Text message;
 
 	private UserConfig userConfig;
-	public void SetUserInfo(UserConfig userConfig) {
-		this.userConfig = userConfig;
-	}
-
 	private TankConfig tankConfig;
-	public void SetTankInfo(TankConfig tankConfig) {
+	
+	public void Open(UserConfig userConfig, TankConfig tankConfig) {
+		this.userConfig = userConfig;
 		this.tankConfig = tankConfig;
+
 		message.text = string.Format("Purchasing \"{0}\"", tankConfig.name);
+
+		UpdateButtons();
+		
+		gameObject.SetActive(true);
 	}
 
 	private void OnEnable() {
@@ -34,30 +37,37 @@ public class PurchasePanel : MonoBehaviour {
 	}
 
 	private void Confirm() {
-		if (tankConfig.currency == CurrencyType.SILVER) {
-			if (userConfig.silver < tankConfig.price) {
-				Debug.LogFormat("User lacks {0:N0} {1}", tankConfig.price - userConfig.silver, CurrencyType.SILVER);
-				gameObject.SetActive(false);
-				return;
-			}
-			userConfig.silver -= tankConfig.price;
-		}
-		else if (tankConfig.currency == CurrencyType.GOLD) {
-			if (userConfig.gold < tankConfig.price) {
-				Debug.LogFormat("User lacks {0:N0} {1}", tankConfig.price - userConfig.gold, CurrencyType.GOLD);
-				gameObject.SetActive(false);
-				return;
-			}
-			userConfig.gold -= tankConfig.price;
-		}
-
-		userConfig.ownedTanksUids.Add(tankConfig.uid);
-		HangarDataProvider.SetUser(userConfig);
-
+		Purchase(userConfig, tankConfig);
+		UpdateButtons();
 		gameObject.SetActive(false);
 	}
 
 	private void Cancel() {
 		gameObject.SetActive(false);
+	}
+
+	private void UpdateButtons() {
+		bool owned = userConfig.HasTank(tankConfig.uid);
+		bool hasEnoughMoney = false;
+		if (tankConfig.currency == CurrencyType.SILVER) {
+			hasEnoughMoney = (userConfig.silver >= tankConfig.price);
+		}
+		else if (tankConfig.currency == CurrencyType.GOLD) {
+			hasEnoughMoney = (userConfig.gold >= tankConfig.price);
+		}
+
+		confirmButton.interactable = !owned && hasEnoughMoney;
+	}
+
+	private static void Purchase(UserConfig userConfig, TankConfig tankConfig) {
+		if (tankConfig.currency == CurrencyType.SILVER) {
+			userConfig.silver -= tankConfig.price;
+		}
+		else if (tankConfig.currency == CurrencyType.GOLD) {
+			userConfig.gold -= tankConfig.price;
+		}
+
+		userConfig.ownedTanksUids.Add(tankConfig.uid);
+		HangarConfigProvider.SetUser(userConfig);
 	}
 }
