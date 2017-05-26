@@ -29,17 +29,17 @@ public class HangarCamera : MonoBehaviour {
 		}
 	}
 
-	private void OnStart(Vector2 currentPosition, Vector2 deltaPosition) {
+	private void OnStart(DragInput.EventData eventData) {
 		if (!EventSystem.current.IsPointerOverGameObject()) {
 			DragInput.instance.onMove.AddListener(OnMove);
 			DragInput.instance.onEnd.AddListener(OnEnd);
 		}
 	}
 	
-	private void OnMove(Vector2 currentPosition, Vector2 deltaPosition, Vector2 totalDeltaPosition) {
+	private void OnMove(DragInput.EventData eventData) {
 		Vector2 currentEulerAngles = rotationTransform.localEulerAngles;
 	
-		Vector2 deltaEulerAngles = Vector2.Scale(deltaPosition, rotationSpeed);	
+		Vector2 deltaEulerAngles = Vector2.Scale(eventData.DeltaPosition, rotationSpeed);	
 		currentEulerAngles.x = Mathf.Clamp(currentEulerAngles.x - deltaEulerAngles.y, minAngleAxisX, maxAngleAxisX);
 		currentEulerAngles.y = currentEulerAngles.y + deltaEulerAngles.x;
 		rotationTransform.localRotation = Quaternion.Euler(currentEulerAngles);
@@ -51,7 +51,7 @@ public class HangarCamera : MonoBehaviour {
 		positionTransform.localPosition = currentLocalPosition;
 	}
 
-	private void OnEnd(Vector2 currentPosition, Vector2 totalDeltaPosition) {
+	private void OnEnd(DragInput.EventData eventData) {
 		if (!DragInput.destroyed) {
 			DragInput.instance.onMove.RemoveListener(OnMove);
 			DragInput.instance.onEnd.RemoveListener(OnEnd);

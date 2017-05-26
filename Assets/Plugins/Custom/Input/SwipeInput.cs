@@ -3,14 +3,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 ///
-/// Abstracts drag input from platform
+/// Abstracts swipe input from platform
 ///
-/// Subscribe to any of these events to get updates:
-/// <see cref="onStart"> is called when input is valid and drag actually starts
-/// <see cref="onMove"> is called when there is a movement; immediately follows <see cref="onStart">
-/// <see cref="onEnd"> is called when input doesn't qualify conditions
+/// Subscribe to this event to get updates:
+/// <see cref="onSwipe"> is called when moved and released
 ///
-public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
+public class SwipeInput : AutoInstanceMonoBehaviour<SwipeInput> {
 	private const int REQUIRED_TOUCHES = 1;
 	
 	[Serializable]
@@ -18,6 +16,8 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		public Vector2 startPosition;
 		public Vector2 previousPosition;
 		public Vector2 currentPosition;
+		public float startTime;
+		public float currentTime;
 
 		public Vector2 DeltaPosition {
 			get { return currentPosition - previousPosition; }
@@ -26,13 +26,15 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		public Vector2 TotalDeltaPosition {
 			get { return currentPosition - startPosition; }
 		}
+
+		public float Duration {
+			get { return currentTime - startTime; }
+		}
 	}
 	
 	public EventData eventData = new EventData();
 
-	public StartedEvent onStart = new StartedEvent();
-	public MovedEvent onMove = new MovedEvent();
-	public EndedEvent onEnd = new EndedEvent();
+	public SwipedEvent onSwipe = new SwipedEvent();
 
 	private bool canBeActivated;
 	private bool activeState;
@@ -74,24 +76,19 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
 
 		eventData.currentPosition = currentPosition;
-
-		bool positionChanged = (eventData.DeltaPosition.sqrMagnitude > Mathf.Epsilon);
-		if (positionChanged) {
-			if (!activeState && canBeActivated) {
-				activeState = true;
-				eventData.startPosition = eventData.previousPosition;
-				onStart.Invoke(eventData);
-			}
-
-			if (activeState) {
-				onMove.Invoke(eventData);
-			}
+		eventData.currentTime = Time.realtimeSinceStartup;
+			
+		if (!activeState && canBeActivated) {
+			activeState = true;
+			eventData.startPosition = currentPosition;
+			eventData.startTime = Time.realtimeSinceStartup;
 		}
 
-		bool shouldBeDeactivated = (touchesCount != REQUIRED_TOUCHES);
+		bool positionChanged = (eventData.TotalDeltaPosition.sqrMagnitude > Mathf.Epsilon);
+		bool shouldBeDeactivated = (touchesCount == 0) && positionChanged;
 		if (activeState && shouldBeDeactivated) {
 			activeState = false;
-			onEnd.Invoke(eventData);
+			onSwipe.Invoke(eventData);
 		}
 
 		eventData.previousPosition = currentPosition;
@@ -99,11 +96,5 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 	}
 
 	[Serializable]
-	public class StartedEvent : UnityEvent<EventData> { }
-
-	[Serializable]
-	public class MovedEvent : UnityEvent<EventData> { }
-
-	[Serializable]
-	public class EndedEvent : UnityEvent<EventData> { }
+	public class SwipedEvent : UnityEvent<EventData> { }
 }
