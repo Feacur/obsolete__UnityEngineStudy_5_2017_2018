@@ -3,14 +3,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 ///
-/// Abstracts drag input from platform
+/// Abstracts tap input from platform
 ///
 /// Subscribe to any of these events to get updates:
-/// <see cref="onStart"> is called when input is valid and drag actually starts
-/// <see cref="onMove"> is called when there is a movement; immediately follows <see cref="onStart">
-/// <see cref="onEnd"> is called when input doesn't qualify conditions
+/// <see cref="onStart"> is called when touched
+/// <see cref="onEnd"> is called when released
 ///
-public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
+public class TapInput : AutoInstanceMonoBehaviour<TapInput> {
 	private const int REQUIRED_TOUCHES = 1;
 	
 	[Serializable]
@@ -31,7 +30,6 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 	public EventData eventData = new EventData();
 
 	public StartedEvent onStart = new StartedEvent();
-	public MovedEvent onMove = new MovedEvent();
 	public EndedEvent onEnd = new EndedEvent();
 
 	private bool canBeActivated;
@@ -74,21 +72,14 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
 
 		eventData.currentPosition = currentPosition;
-
-		bool positionChanged = (eventData.DeltaPosition.sqrMagnitude > Mathf.Epsilon);
-		if (positionChanged) {
-			if (!activeState && canBeActivated) {
-				activeState = true;
-				eventData.startPosition = eventData.previousPosition;
-				onStart.Invoke(eventData);
-			}
-
-			if (activeState) {
-				onMove.Invoke(eventData);
-			}
+		
+		if (!activeState && canBeActivated) {
+			activeState = true;
+			eventData.startPosition = currentPosition;
+			onStart.Invoke(eventData);
 		}
 
-		bool shouldBeDeactivated = (touchesCount != REQUIRED_TOUCHES);
+		bool shouldBeDeactivated = (touchesCount == 0);
 		if (activeState && shouldBeDeactivated) {
 			activeState = false;
 			onEnd.Invoke(eventData);
@@ -100,9 +91,6 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 
 	[Serializable]
 	public class StartedEvent : UnityEvent<EventData> { }
-
-	[Serializable]
-	public class MovedEvent : UnityEvent<EventData> { }
 
 	[Serializable]
 	public class EndedEvent : UnityEvent<EventData> { }
