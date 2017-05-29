@@ -7,6 +7,8 @@ using UnityEngine;
 /// Provides convenient way to fetch <see cref="Panel"> objects without juggling references all around
 /// Use <see cref="PanelsBundle"> in order to register your <see cref="Panel"> automatically
 ///
+/// Then you can easily access registered panel with PanelsRegistry.Get<PanelClassName>();
+///
 public class PanelsRegistry : AutoInstanceMonoBehaviour<PanelsRegistry> {
 	public List<GameObject> registry = new List<GameObject>();
 

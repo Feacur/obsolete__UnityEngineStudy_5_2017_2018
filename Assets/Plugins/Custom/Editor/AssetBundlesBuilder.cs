@@ -11,7 +11,6 @@ using UnityEngine;
 /// <see cref="BuildActiveTarget"> builds asset bundles using current chosen platform.
 ///
 public static class AssetBundlesBuilder {
-	
 	private static readonly string[] assetBundlesPathRaw = {
 		"Assets", "StreamingAssets", "AssetBundles"
 	};

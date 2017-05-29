@@ -3,6 +3,10 @@ using YamlDotNet.Serialization;
 ///
 /// Conveniency script to work with YamlDotNet library
 ///
+/// Note (Feacur, 2017, May 28):
+/// Currently this is a sufficient setup for my needs and can be safely used project-wide
+/// There is no reason to have any other specific settings
+///
 public static class YamlWrapper {
 	public static readonly Serializer serializer;
 	public static readonly Deserializer deserializer;

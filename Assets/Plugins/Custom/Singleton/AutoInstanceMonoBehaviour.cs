@@ -3,7 +3,9 @@ using UnityEngine;
 ///
 /// Provides static access to MonoBehaviour of type <typeparam name="T">
 /// Creates persistent game object if none is present
+///
 /// Use <see cref="destroyed"> to protect against unwanted instantiations
+/// Like when accessing <see cref="instance"> inside OnDisable method
 ///
 /// Please note that auto created instances will be marked DontDestroyOnLoad
 /// Thus consequently be placed into the very same named scene

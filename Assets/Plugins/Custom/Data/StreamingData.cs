@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 ///
 /// Conveniency script to work with Application.streamingAssetsPath
 ///
-/// Define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE to bypass asset bundles whatsoever
+/// Define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE to bypass asset bundles for editor whatsoever
 /// Use <see cref="realAssetBundles"> to determine whether EMULATE_ASSET_BUNDLES_IN_EDIT_MODE is in use in your runtime code
 ///
 public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {

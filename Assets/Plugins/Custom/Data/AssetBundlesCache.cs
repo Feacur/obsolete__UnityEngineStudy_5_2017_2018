@@ -7,7 +7,7 @@ using UnityEngine;
 /// Class to manage asset bundles
 /// Unity forbids multiple instances of the same asset bundle
 ///
-/// I could have used regular C# Dictionary, however Unity won't serialize it.
+/// I could have used regular C# Dictionary for <see cref="cache">, however Unity won't serialize it.
 /// As a result hot reloading wouldn't work, and I don't want to sacrifice this feature.
 ///
 public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {

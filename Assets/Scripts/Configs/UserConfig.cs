@@ -5,6 +5,9 @@ using System.Linq;
 ///
 /// User configuration file layout.
 ///
+/// <see cref="HangarConfigProvider">
+/// See "Assets/StreamingAssets/user.yml"
+///
 [Serializable]
 public class UserConfig {
 	public decimal silver { get; set; }

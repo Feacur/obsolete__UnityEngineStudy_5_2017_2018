@@ -5,22 +5,35 @@ using UnityEngine.Events;
 ///
 /// Abstracts pinch input from platform
 ///
+/// Pinch emulation for mouse is not ideal, of course
+///
 /// Subscribe to any of these events to get updates:
-/// <see cref="onStart"> is called when input is valid and drag actually starts
-/// <see cref="onMove"> is called when there is a movement; immediately follows <see cref="onStart">
-/// <see cref="onEnd"> is called when input doesn't qualify conditions
+/// <see cref="onStart"> is called when touched
+/// You can subscribe to <see cref="onMove"> and <see cref="onEnd"> at this point if did not so before
+///
+/// <see cref="onMove"> is called when there is a movement
+///
+/// <see cref="onEnd"> is called when released
+/// You can unsubscribe from <see cref="onMove"> and <see cref="onEnd"> at this point
 ///
 public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 	private const int REQUIRED_TOUCHES = 2;
-	
+	private const int MOUSE_BUTTON = 1;
+
 	[Serializable]
 	public class EventData {
+		// Position data
 		public Vector2 startPosition;
 		public Vector2 previousPosition;
 		public Vector2 currentPosition;
+		// Pinch data
 		public float startPinchMagnitude;
 		public float previousPinchMagnitude;
 		public float currentPinchMagnitude;
+		// Time data
+		public float startTime;
+		public float previousTime;		
+		public float currentTime;
 
 		public Vector2 DeltaPosition {
 			get { return currentPosition - previousPosition; }
@@ -36,6 +49,14 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 
 		public float TotalDeltaPinchMagnitude {
 			get { return currentPinchMagnitude - startPinchMagnitude; }
+		}
+
+		public float DeltaTime {
+			get { return currentTime - previousTime; }
+		}
+
+		public float TotalDeltaTime {
+			get { return currentTime - startTime; }
 		}
 	}
 	
@@ -74,7 +95,7 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 	}
 
 	private void UpdateWithMouse() {
-		int touchCount = Input.GetMouseButton(1) ? REQUIRED_TOUCHES : 0;
+		int touchCount = Input.GetMouseButton(MOUSE_BUTTON) ? REQUIRED_TOUCHES : 0;
 		if (touchCount == 0) {
 			if ((Input.mouseScrollDelta.y < -Mathf.Epsilon) || (Mathf.Epsilon < Input.mouseScrollDelta.y)) {
 				mouseScrollIdleTime = 0;
@@ -87,7 +108,7 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 
 		if (touchCount != REQUIRED_TOUCHES) {
 			mousePinchMagnitude = 0;
-			AbstractUpdate(0, eventData.previousPosition, eventData.previousPinchMagnitude);
+			AbstractUpdate(touchCount, Input.mousePosition, eventData.previousPinchMagnitude);
 		}
 		else {
 			mousePinchMagnitude = Mathf.Clamp(
@@ -105,7 +126,7 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 
 	private void UpdateWithTouches() {
 		if (Input.touchCount != REQUIRED_TOUCHES) {
-			AbstractUpdate(0, eventData.previousPosition, eventData.previousPinchMagnitude);
+			AbstractUpdate(Input.touchCount, eventData.previousPosition, eventData.previousPinchMagnitude);
 		}
 		else {
 			var touch1 = Input.touches[0];
@@ -119,35 +140,35 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 	}
 
 	private void AbstractUpdate(int touchesCount, Vector2 currentPosition, float currentPinchMagnitude) {
-		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
-		
 		eventData.currentPosition = currentPosition;
 		eventData.currentPinchMagnitude = currentPinchMagnitude;
+		eventData.currentTime = Time.realtimeSinceStartup;
+		
+		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
+		if (!activeState && canBeActivated) {
+			activeState = true;
+			eventData.previousPinchMagnitude = eventData.currentPinchMagnitude;
+			eventData.startPosition = eventData.currentPosition;
+			eventData.startPinchMagnitude = eventData.currentPinchMagnitude;
+			eventData.startTime = eventData.currentTime;
+			onStart.Invoke(eventData);
+		}
 
 		bool positionChanged = (eventData.DeltaPosition.sqrMagnitude > Mathf.Epsilon);
 		bool pinchChanged = (eventData.DeltaPinchMagnitude < -Mathf.Epsilon) || (Mathf.Epsilon < eventData.DeltaPinchMagnitude);
-		if (positionChanged || pinchChanged) {
-			if (!activeState && canBeActivated) {
-				activeState = true;
-				eventData.startPosition = eventData.previousPosition;
-				eventData.previousPinchMagnitude = currentPinchMagnitude;
-				eventData.startPinchMagnitude = eventData.previousPinchMagnitude;
-				onStart.Invoke(eventData);
-			}
-
-			if (activeState) {
-				onMove.Invoke(eventData);
-			}
+		if (activeState && (positionChanged || pinchChanged)) {
+			onMove.Invoke(eventData);
 		}
 
-		bool shouldBeDeactivated = (touchesCount != REQUIRED_TOUCHES);
+		bool shouldBeDeactivated = (touchesCount == 0);
 		if (activeState && shouldBeDeactivated) {
 			activeState = false;
 			onEnd.Invoke(eventData);
 		}
 
-		eventData.previousPosition = currentPosition;
-		eventData.previousPinchMagnitude = currentPinchMagnitude;
+		eventData.previousPosition = eventData.currentPosition;
+		eventData.previousPinchMagnitude = eventData.currentPinchMagnitude;
+		eventData.previousTime = eventData.currentTime;
 		previousTouchesCount = touchesCount;
 	}
 

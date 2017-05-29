@@ -3,7 +3,9 @@ using UnityEngine;
 ///
 /// Provides static access to ScriptableObject of type <typeparam name="T">
 /// Creates an instance if none is present
+///
 /// Use <see cref="destroyed"> to protect against unwanted instantiations
+/// Like when accessing <see cref="instance"> inside OnDisable method
 ///
 /// Intended to be used like
 /// public class ClassName : AutoInstanceScriptableObject<ClassName> { ... }

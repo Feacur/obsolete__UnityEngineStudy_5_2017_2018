@@ -3,6 +3,9 @@ using System;
 ///
 /// Specific tank configuration file layout.
 ///
+/// <see cref="HangarConfigProvider">
+/// See "Assets/StreamingAssets/Tanks collection/*.yml"
+///
 [Serializable]
 public class TankConfig {
 	public string uid { get; set; }
