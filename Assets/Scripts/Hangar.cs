@@ -45,6 +45,11 @@ public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
 			tankPrefab = resultValue;
 		});
 
+		if (!tankPrefab) {
+			Debug.LogErrorFormat("Tank prefab hasn't been loaded: {0}, {1}", tankConfig.assetBundle, tankConfig.prefab);
+			yield break;
+		}
+
 		// Instantiate prefab
 		var instance = Instantiate(tankPrefab);
 		instance.transform.SetParent(tankParentTransform, worldPositionStays: false);

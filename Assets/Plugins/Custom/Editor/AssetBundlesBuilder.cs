@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,9 +10,7 @@ using UnityEngine;
 /// <see cref="BuildActiveTarget"> builds asset bundles using current chosen platform.
 ///
 public static class AssetBundlesBuilder {
-	private static readonly string[] assetBundlesPathRaw = {
-		"Assets", "StreamingAssets", "AssetBundles"
-	};
+	private static readonly string assetBundlesSubPath =  "AssetBundles";
 
 	private static readonly Dictionary<BuildTarget, BuildAssetBundleOptions> buildOptions = new Dictionary<BuildTarget, BuildAssetBundleOptions> {
 		{BuildTarget.StandaloneWindows,        BuildAssetBundleOptions.None},
@@ -26,7 +23,7 @@ public static class AssetBundlesBuilder {
 
 	public static string AssetBundlesPath {
 		get {
-			return string.Join("/", assetBundlesPathRaw);
+			return string.Format("{0}/{1}", Application.streamingAssetsPath, assetBundlesSubPath);
 		}
 	}
 
@@ -37,7 +34,7 @@ public static class AssetBundlesBuilder {
 	}
 	
 	public static AssetBundleManifest Build (BuildTarget buildTarget) {
-		EnsureAssetBundlesFolderExists();
+		Directory.CreateDirectory(AssetBundlesPath);
 		return BuildPipeline.BuildAssetBundles(
 			AssetBundlesPath, buildOptions[buildTarget], buildTarget
 		);
@@ -53,22 +50,5 @@ public static class AssetBundlesBuilder {
 	public static void ListAssetBundles () {
 		var names = AssetDatabase.GetAllAssetBundleNames();
 		Debug.LogFormat("Found asset bundles: {0}", string.Join(", ", names));
-	}
-	
-	private static void EnsureAssetBundlesFolderExists () {
-		StringBuilder assetBundlesPathBuilder = new StringBuilder();
-		assetBundlesPathBuilder.Append(assetBundlesPathRaw[0]);
-		for	(int i = 1; i < assetBundlesPathRaw.Length; i++) {
-			var folderName = assetBundlesPathRaw[i];
-
-			var parentFolder = assetBundlesPathBuilder.ToString();
-
-			assetBundlesPathBuilder.Append('/').Append(folderName);
-			var childFolder = assetBundlesPathBuilder.ToString();
-
-			if (!AssetDatabase.IsValidFolder(childFolder)) {
-				AssetDatabase.CreateFolder(parentFolder, folderName);
-			}
-		}
 	}
 }

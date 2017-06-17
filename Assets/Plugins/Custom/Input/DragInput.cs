@@ -53,7 +53,6 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 	public MovedEvent onMove = new MovedEvent();
 	public EndedEvent onEnd = new EndedEvent();
 
-	private bool canBeActivated;
 	private bool activeState;
 	private int previousTouchesCount;
 
@@ -91,7 +90,7 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
 		eventData.currentPosition = currentPosition;
 		eventData.currentTime = Time.realtimeSinceStartup;
 
-		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
+		bool canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (previousTouchesCount < REQUIRED_TOUCHES);
 		if (!activeState && canBeActivated) {
 			activeState = true;
 			eventData.startPosition = eventData.currentPosition;

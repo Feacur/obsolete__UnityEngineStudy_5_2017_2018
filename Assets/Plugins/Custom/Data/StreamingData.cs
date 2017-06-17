@@ -81,6 +81,11 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 			assetBundle = resultValue;
 		});
 
+		if (!assetBundle) {
+			Debug.LogErrorFormat("Asset bundle hasn't been loaded: {0}", assetBundlePath);
+			yield break;
+		}
+
 		foreach (var scenePath in assetBundle.GetAllScenePaths()) {
 			yield return SceneManager.LoadSceneAsync(scenePath, mode);
 		}

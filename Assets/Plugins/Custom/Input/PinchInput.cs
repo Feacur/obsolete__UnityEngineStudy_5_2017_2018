@@ -72,7 +72,6 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 	public float mousePinchMagnitudeMax = 200;
 	public float mouseScrollToPinch = 10;
 
-	private bool canBeActivated;
 	private bool activeState;
 	private int previousTouchesCount;
 
@@ -144,7 +143,7 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
 		eventData.currentPinchMagnitude = currentPinchMagnitude;
 		eventData.currentTime = Time.realtimeSinceStartup;
 		
-		canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (canBeActivated || (previousTouchesCount < REQUIRED_TOUCHES));
+		bool canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (previousTouchesCount < REQUIRED_TOUCHES);
 		if (!activeState && canBeActivated) {
 			activeState = true;
 			eventData.previousPinchMagnitude = eventData.currentPinchMagnitude;

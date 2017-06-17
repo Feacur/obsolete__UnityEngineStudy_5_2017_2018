@@ -1,5 +1,5 @@
 # Summary
-Test assignment on Unity, UI and programming stuff
+Study on Unity engine.
 
 # How to work with this stuff
 ### Build the project and asset bundles using these
@@ -30,9 +30,10 @@ Test assignment on Unity, UI and programming stuff
 
 # To do
 * Loader splash screen to hide async loading from user
-* DragInput script should support gamepads
+* DragInput script should support gamepads (use virtual position)
 * Fix lighting issue when using EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 * Add inertia to the hangar camera
+* Create a build system for multiple sub-projects
 
 # Additional Unity notes
 * Explicitly include your data to the build
