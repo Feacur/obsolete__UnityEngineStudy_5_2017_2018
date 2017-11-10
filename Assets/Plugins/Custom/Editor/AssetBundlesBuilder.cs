@@ -40,15 +40,14 @@ public static class AssetBundlesBuilder {
 		);
 	}
 
-	[MenuItem ("Custom/Build asset bundles")]
-	public static AssetBundleManifest BuildActiveTarget () {
-		return Build(EditorUserBuildSettings.activeBuildTarget);
-	}
-	
-
 	[MenuItem ("Custom/List asset bundles")]
 	public static void ListAssetBundles () {
 		var names = AssetDatabase.GetAllAssetBundleNames();
 		Debug.LogFormat("Found asset bundles: {0}", string.Join(", ", names));
+	}
+
+	[MenuItem ("Custom/* Build asset bundles")]
+	public static AssetBundleManifest BuildActiveTarget () {
+		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

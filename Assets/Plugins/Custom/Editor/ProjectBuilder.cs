@@ -43,13 +43,13 @@ public static class ProjectBuilder {
 		return Build(buildTarget);
 	}
 
-	[MenuItem ("Custom/Build project only")]
+	[MenuItem ("Custom/** Build project only")]
 	public static string BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 
-	[MenuItem ("Custom/Build project with asset bundles")]
-	public static string BuildWithAssetBundlesActiveTarget () {
+	[MenuItem ("Custom/*** Build project with asset bundles")]
+	public static string BuildActiveTarget_WithAssetBundles () {
 		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}
 }
