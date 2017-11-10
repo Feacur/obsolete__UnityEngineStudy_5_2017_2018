@@ -15,6 +15,11 @@ namespace Demo.Hangar {
 
 		private UserConfig userConfig;
 		private TankConfig tankConfig;
+
+		private HangarConfigProvider HangarConfigProvider;
+		private void Awake() {
+			this.HangarConfigProvider = HangarConfigProvider.instance;
+		}
 		
 		public void Open(UserConfig userConfig, TankConfig tankConfig) {
 			this.userConfig = userConfig;
@@ -60,7 +65,7 @@ namespace Demo.Hangar {
 			confirmButton.interactable = !owned && hasEnoughMoney;
 		}
 
-		private static void Purchase(UserConfig userConfig, TankConfig tankConfig) {
+		private void Purchase(UserConfig userConfig, TankConfig tankConfig) {
 			if (tankConfig.currency == CurrencyType.SILVER) {
 				userConfig.silver -= tankConfig.price;
 			}

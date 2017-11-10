@@ -38,6 +38,13 @@ namespace Demo.Hangar {
 		[Header("Tank info")]
 		public TankInfoEntryUI tankInfoEntryUIPrefab;
 		public RectTransform tankInfoParentTransform;
+
+		private PanelsRegistry PanelsRegistry;
+		private HangarConfigProvider HangarConfigProvider;
+		private void Awake() {
+			this.PanelsRegistry = PanelsRegistry.instance;
+			this.HangarConfigProvider = HangarConfigProvider.instance;
+		}
 		
 		private void Start() {
 			battleButton.interactable = false;
@@ -50,9 +57,9 @@ namespace Demo.Hangar {
 			purchaseButton.onClick.AddListener(RequestPurchase);
 			sellButton.onClick.AddListener(RequestSell);
 
-			HangarConfigProvider.instance.onUserChanged.AddListener(OnUserChanged);
-			HangarConfigProvider.instance.onTanksCollectionChanged.AddListener(OnTanksCollectionChanged);
-			HangarConfigProvider.instance.onTankSelected.AddListener(OnTankSelected);
+			HangarConfigProvider.onUserChanged.AddListener(OnUserChanged);
+			HangarConfigProvider.onTanksCollectionChanged.AddListener(OnTanksCollectionChanged);
+			HangarConfigProvider.onTankSelected.AddListener(OnTankSelected);
 		}
 		
 		private void OnDisable() {
@@ -61,9 +68,9 @@ namespace Demo.Hangar {
 			sellButton.onClick.RemoveListener(RequestSell);
 
 			if (!HangarConfigProvider.destroyed) {
-				HangarConfigProvider.instance.onUserChanged.RemoveListener(OnUserChanged);
-				HangarConfigProvider.instance.onTanksCollectionChanged.RemoveListener(OnTanksCollectionChanged);
-				HangarConfigProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
+				HangarConfigProvider.onUserChanged.RemoveListener(OnUserChanged);
+				HangarConfigProvider.onTanksCollectionChanged.RemoveListener(OnTanksCollectionChanged);
+				HangarConfigProvider.onTankSelected.RemoveListener(OnTankSelected);
 			}
 
 			tanksCollectionParentTransform.DestroyChildren();
@@ -77,9 +84,9 @@ namespace Demo.Hangar {
 				tankUI.UpdateAquiredState(userConfig);
 			}
 
-			if (HangarConfigProvider.instance.selectedTank != null) {
-				// HangarConfigProvider.instance.tanksCollection should be non-null by now
-				UpdateButtons(userConfig, HangarConfigProvider.instance.tanksCollection, HangarConfigProvider.instance.selectedTank);
+			if (HangarConfigProvider.selectedTank != null) {
+				// HangarConfigProvider.tanksCollection should be non-null by now
+				UpdateButtons(userConfig, HangarConfigProvider.tanksCollection, HangarConfigProvider.selectedTank);
 			}
 		}
 
@@ -102,9 +109,9 @@ namespace Demo.Hangar {
 				tankUI.UpdateSelectedState(tankConfig.uid);
 			}
 			
-			if (HangarConfigProvider.instance.user != null) {
-				// HangarConfigProvider.instance.tanksCollection should be non-null by now
-				UpdateButtons(HangarConfigProvider.instance.user, HangarConfigProvider.instance.tanksCollection, tankConfig);
+			if (HangarConfigProvider.user != null) {
+				// HangarConfigProvider.tanksCollection should be non-null by now
+				UpdateButtons(HangarConfigProvider.user, HangarConfigProvider.tanksCollection, tankConfig);
 			}
 		}
 		
@@ -141,12 +148,12 @@ namespace Demo.Hangar {
 
 		private void RequestPurchase() {
 			var purchasePanel = PanelsRegistry.Get<PurchasePanel>();
-			purchasePanel.Open(HangarConfigProvider.instance.user, HangarConfigProvider.instance.selectedTank);
+			purchasePanel.Open(HangarConfigProvider.user, HangarConfigProvider.selectedTank);
 		}
 
 		private void RequestSell() {
 			var sellPanel = PanelsRegistry.Get<SellPanel>();
-			sellPanel.Open(HangarConfigProvider.instance.user, HangarConfigProvider.instance.selectedTank);
+			sellPanel.Open(HangarConfigProvider.user, HangarConfigProvider.selectedTank);
 		}
 	}
 }

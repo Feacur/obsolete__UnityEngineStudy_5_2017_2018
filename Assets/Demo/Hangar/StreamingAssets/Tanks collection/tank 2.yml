@@ -3,7 +3,7 @@ name: "Leopard 2A5"
 type: "Main battle tank"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Leopard 2A5.prefab"
+prefab: "Assets/Demo/Hangar/AssetBundles/Tanks/Leopard 2A5/Prefab.prefab"
 # physics
 mass: 62000 # kg
 speed: 20 # meters/sec

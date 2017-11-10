@@ -18,13 +18,18 @@ namespace Demo.Hangar {
 		public float distanceAtMaxAngleAxisX = -10;
 		public AnimationCurve distanceInterpolationCurve = AnimationCurve.Linear(0, 0, 1, 1);
 		
+		private DragInput DragInput;
+		private void Awake() {
+			this.DragInput = DragInput.instance;
+		}
+
 		private void OnEnable() {
-			DragInput.instance.onStart.AddListener(OnDragStart);
+			DragInput.onStart.AddListener(OnDragStart);
 		}
 
 		private void OnDisable() {
 			if (!DragInput.destroyed) {
-				DragInput.instance.onStart.RemoveListener(OnDragStart);
+				DragInput.onStart.RemoveListener(OnDragStart);
 			}
 			UnsubscribeFromDragUpdates();
 		}
@@ -55,14 +60,14 @@ namespace Demo.Hangar {
 		}
 
 		private void SubscribeToDragUpdates() {
-			DragInput.instance.onMove.AddListener(OnDragMove);
-			DragInput.instance.onEnd.AddListener(OnDragEnd);
+			DragInput.onMove.AddListener(OnDragMove);
+			DragInput.onEnd.AddListener(OnDragEnd);
 		}
 
 		private void UnsubscribeFromDragUpdates() {
 			if (!DragInput.destroyed) {
-				DragInput.instance.onMove.RemoveListener(OnDragMove);
-				DragInput.instance.onEnd.RemoveListener(OnDragEnd);
+				DragInput.onMove.RemoveListener(OnDragMove);
+				DragInput.onEnd.RemoveListener(OnDragEnd);
 			}
 		}
 	}

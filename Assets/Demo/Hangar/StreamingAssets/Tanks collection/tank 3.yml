@@ -3,7 +3,7 @@ name: "Warrior FV 510"
 type: "Infantry fighting vehicle"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Warrior FV 510.prefab"
+prefab: "Assets/Demo/Hangar/AssetBundles/Tanks/Warrior FV 510/Prefab.prefab"
 # physics
 mass: 25400 # kg
 speed: 20.8 # meters/sec

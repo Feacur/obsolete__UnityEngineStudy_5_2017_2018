@@ -13,8 +13,8 @@ using UnityEngine;
 public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 	public List<Entry> cache = new List<Entry>();
 	
-	public static Coroutine LoadAsync(string url, Action<AssetBundle> callback = null) {
-		var result = instance.cache.SingleOrDefault(it => it.key == url);
+	public Coroutine LoadAsync(string url, Action<AssetBundle> callback = null) {
+		var result = cache.SingleOrDefault(it => it.key == url);
 		if (result != null) {
 			if (callback != null) {
 				callback(result.value);
@@ -22,8 +22,8 @@ public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 			return null;
 		}
 
-		return instance.LoadDataAsync<AssetBundle>(url, (resultValue) => {
-			instance.cache.Add(new Entry() {
+		return LoadDataAsync<AssetBundle>(url, (resultValue) => {
+			cache.Add(new Entry() {
 				key = url,
 				value = resultValue
 			});
@@ -33,8 +33,8 @@ public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
 		});
 	}
 	
-	public static void Unload(string url, bool unloadAllLoadedObjects = true) {
-		var result = instance.cache.SingleOrDefault(it => it.key == url);
+	public void Unload(string url, bool unloadAllLoadedObjects = true) {
+		var result = cache.SingleOrDefault(it => it.key == url);
 		if (result != null) {
 			result.value.Unload(unloadAllLoadedObjects);
 		}

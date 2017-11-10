@@ -1,7 +1,8 @@
-// #define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+#define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,16 +33,21 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 		}
 	}
 
-	public static Coroutine LoadAssetBundleAsync(string assetBundlePath, Action<AssetBundle> callback = null) {
-		return instance.LoadAssetBundleAsyncInternal(assetBundlePath, callback);
+	private AssetBundlesCache AssetBundlesCache;
+	protected override void AutoInstanceInit() {
+		this.AssetBundlesCache = AssetBundlesCache.instance;
 	}
 
-	public static Coroutine LoadDataAsync<T>(string subPath, Action<T> callback) where T : class {
-		return instance.LoadDataAsyncInternal(subPath, callback);
+	public Coroutine LoadAssetBundleAsync(string assetBundlePath, Action<AssetBundle> callback = null) {
+		return LoadAssetBundleAsyncInternal(assetBundlePath, callback);
+	}
+
+	public Coroutine LoadDataAsync<T>(string subPath, Action<T> callback) where T : class {
+		return LoadDataAsyncInternal(subPath, callback);
 	}
 
 	#if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
-	public static Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
+	public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
 		var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<T>(assetPath);
 		if (callback != null) {
 			callback(asset);
@@ -49,19 +55,23 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 		return null;
 	}
 	#else
-	public static Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
-		return instance.StartCoroutine(
-			instance.LoadAssetAsyncCoroutine(assetBundlePath, assetPath, callback)
+	public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
+		return StartCoroutine(
+			LoadAssetAsyncCoroutine(assetBundlePath, assetPath, callback)
 		);
 	}
 	#endif
 
 	#if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
-	public static IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
+	public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
+		// 'subpath1/subpath2/subpath3' -> 'subpath3'
 		string assetBundleName = System.IO.Path.GetFileName(assetBundlePath);
-		var scenePaths = UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(
+		
+		var assetPaths = UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundle(
 			assetBundleName
 		);
+
+		var scenePaths = assetPaths.Where(it => it.EndsWith(".unity")).ToArray();
 
 		if (mode == LoadSceneMode.Additive) {
 			foreach (var scenePath in scenePaths) {
@@ -75,9 +85,9 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 		}
 	}
 	#else
-	public static IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
+	public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
 		AssetBundle assetBundle = null;
-		yield return instance.LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => {
+		yield return LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => {
 			assetBundle = resultValue;
 		});
 
@@ -110,6 +120,6 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData> {
 	
 	private Coroutine LoadDataAsyncInternal<T>(string subPath, Action<T> callback) where T : class {
 		string url = string.Format("{0}/{1}", StreamingAssetsUrl, subPath);
-		return instance.StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
+		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 	}
 }

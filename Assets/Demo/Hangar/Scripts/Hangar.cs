@@ -11,17 +11,28 @@ namespace Demo.Hangar {
 		public Transform tankParentTransform;
 		
 		private Coroutine createTankCoroutine;
+		
+		private StreamingData StreamingData;
+		private HangarConfigProvider HangarConfigProvider;
+		protected override void StaticInstanceInit() {
+			this.StreamingData = StreamingData.instance;
+			this.HangarConfigProvider = HangarConfigProvider.instance;
+		}
+
+		private void Awake() {
+			StaticInstanceInit();
+		}
 
 		private void OnEnable() {
-			HangarConfigProvider.instance.onTankSelected.AddListener(OnTankSelected);
-			if (HangarConfigProvider.instance.selectedTank != null) {
-				OnTankSelected(HangarConfigProvider.instance.selectedTank);
+			HangarConfigProvider.onTankSelected.AddListener(OnTankSelected);
+			if (HangarConfigProvider.selectedTank != null) {
+				OnTankSelected(HangarConfigProvider.selectedTank);
 			}
 		}
 		
 		private void OnDisable() {
 			if (!HangarConfigProvider.destroyed) {
-				HangarConfigProvider.instance.onTankSelected.RemoveListener(OnTankSelected);
+				HangarConfigProvider.onTankSelected.RemoveListener(OnTankSelected);
 			}
 			
 			if (createTankCoroutine != null) {

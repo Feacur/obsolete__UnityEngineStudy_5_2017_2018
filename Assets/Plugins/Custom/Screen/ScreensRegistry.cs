@@ -4,15 +4,15 @@ using System.Linq;
 using UnityEngine;
 
 ///
-/// Provides convenient way to fetch <see cref="Panel"> objects without juggling references all around
-/// Use <see cref="PanelsBundle"> in order to register your <see cref="Panel"> automatically
+/// Provides convenient way to fetch <see cref="Screen"> objects without juggling references all around
+/// Use <see cref="ScreensBundle"> in order to register your <see cref="Screen"> automatically
 ///
-/// Then you can easily access registered panel with PanelsRegistry.Get<PanelClassName>();
+/// Then you can easily access registered panel with ScreensRegistry.Get<ScreenClassName>();
 ///
-public class PanelsRegistry : AutoInstanceMonoBehaviour<PanelsRegistry> {
+public class ScreensRegistry : AutoInstanceMonoBehaviour<ScreensRegistry> {
 	public List<GameObject> registry = new List<GameObject>();
 
-	public void Add(Panel panel) {
+	public void Add(Screen panel) {
 		registry.Add(panel.gameObject);
 	}
 	

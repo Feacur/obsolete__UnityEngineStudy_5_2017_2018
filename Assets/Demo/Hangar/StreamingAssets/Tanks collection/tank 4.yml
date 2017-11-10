@@ -3,7 +3,7 @@ name: "Abbot SPG FV433"
 type: "Self-propelled artillery"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Abbot SPG FV433.prefab"
+prefab: "Assets/Demo/Hangar/AssetBundles/Tanks/Abbot SPG FV433/Prefab.prefab"
 # physics
 mass: 16560 # kg
 speed: 13.05 # meters/sec

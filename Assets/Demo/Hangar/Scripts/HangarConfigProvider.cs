@@ -14,7 +14,10 @@ namespace Demo.Hangar {
 		private static readonly string userConfigSubPath = "user.yml";
 		private static readonly string tanksCollectionConfigSubPath = "tanks.yml";
 
+		private StreamingData StreamingData;
 		protected override void AutoInstanceInit() {
+			this.StreamingData = StreamingData.instance;
+			
 			if (loadCoroutine != null) {
 				StopCoroutine(loadCoroutine);
 			}
@@ -31,21 +34,21 @@ namespace Demo.Hangar {
 
 		private Coroutine loadCoroutine;
 
-		public static void SetUser(UserConfig userConfig) {
-			instance.user = userConfig;
+		public void SetUser(UserConfig userConfig) {
+			user = userConfig;
 			PersistentData.WriteYaml(userConfigSubPath, userConfig);
-			instance.onUserChanged.Invoke(userConfig);
+			onUserChanged.Invoke(userConfig);
 		}
 
-		public static void SetTanksCollection(TankConfig[] tankConfigs) {
-			instance.tanksCollection = tankConfigs;
-			instance.onTanksCollectionChanged.Invoke(tankConfigs);
+		public void SetTanksCollection(TankConfig[] tankConfigs) {
+			tanksCollection = tankConfigs;
+			onTanksCollectionChanged.Invoke(tankConfigs);
 		}
 
-		public static void SetSelectedTank(TankConfig tankConfig) {
-			if (instance.selectedTank != tankConfig) {
-				instance.selectedTank = tankConfig;
-				instance.onTankSelected.Invoke(tankConfig);
+		public void SetSelectedTank(TankConfig tankConfig) {
+			if (selectedTank != tankConfig) {
+				selectedTank = tankConfig;
+				onTankSelected.Invoke(tankConfig);
 			}
 		}
 

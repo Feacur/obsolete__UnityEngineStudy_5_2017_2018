@@ -3,7 +3,7 @@ name: "Chieftain FV4201"
 type: "Main battle tank"
 # visuals
 assetBundle: "AssetBundles/tanks"
-prefab: "Assets/Prefabs/Tanks/Chieftain FV4201.prefab"
+prefab: "Assets/Demo/Hangar/AssetBundles/Tanks/Chieftain FV4201/Prefab.prefab"
 # physics
 mass: 55000 # kg
 speed: 13.3 # meters/sec

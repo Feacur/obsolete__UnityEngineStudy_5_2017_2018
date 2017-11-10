@@ -16,6 +16,11 @@ namespace Demo.Hangar {
 		public Color normalColor = Color.white;
 		public Color selectedColor = Color.green;
 
+		private HangarConfigProvider HangarConfigProvider;
+		private void Awake() {
+			this.HangarConfigProvider = HangarConfigProvider.instance;
+		}
+
 		private TankConfig tankConfig;
 		public void SetTankInfo(TankConfig tankConfig) {
 			this.tankConfig = tankConfig;

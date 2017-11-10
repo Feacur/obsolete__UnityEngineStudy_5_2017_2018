@@ -21,6 +21,11 @@ namespace Demo.Hangar {
 		public string environmentAssetBundleSubPath;
 		public string scenesAssetBundleSubPath;
 
+		private StreamingData StreamingData;
+		private void Awake() {
+			this.StreamingData = StreamingData.instance;
+		}
+
 		private IEnumerator Start () {
 			if (StreamingData.realAssetBundles) {
 				// Load environment assets
