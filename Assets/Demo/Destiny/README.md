@@ -1,11 +1,10 @@
 # Summary
-Study on Unity engine. Replicating platforming controls.
+Study on Unity engine. Replicating platforming controls.  
 
 # How to work with this stuff
-### Just run
+Use scene "Scenes/Main scene.unity"  
 
 # Current state
-* Naive code
+Naive destiny controls of Hunter, Warlock, and Titan classes  
 
 # To do
-* Destiny controls of Hunter, Warlock, and Titan classes

@@ -2,7 +2,7 @@
 Study on Unity engine.
 
 # How to work with this stuff
-### See sub-projects inside "Assets/Demo" folder
+See sub-projects inside "Assets/Demo" folder   
 
 # Current state
 * Plugins: Rider, VSCode, YamlDotNet, also custom utilities
