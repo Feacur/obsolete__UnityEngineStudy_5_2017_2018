@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 namespace Demo.Destiny {
-	public class Guardian : MonoBehaviour {
+	public class Guardian : MonoBehaviour
+	{
 		public Rigidbody physicsObject;
 		[Header("New params")]
 		public Jump[] jumps;

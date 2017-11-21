@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class ScreensNavigation : AutoInstanceMonoBehaviour<ScreensNavigation> {
+public class ScreensNavigation : AutoInstanceMonoBehaviour<ScreensNavigation>
+{
 	public GameObject current;
 
 	public T GoTo<T>() where T : MonoBehaviour {

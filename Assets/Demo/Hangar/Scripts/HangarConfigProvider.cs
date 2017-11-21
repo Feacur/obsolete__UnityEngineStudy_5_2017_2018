@@ -10,7 +10,8 @@ namespace Demo.Hangar {
 	///
 	/// Great advantage of using this script is code decoupling
 	///
-	public class HangarConfigProvider : AutoInstanceMonoBehaviour<HangarConfigProvider> {
+	public class HangarConfigProvider : AutoInstanceMonoBehaviour<HangarConfigProvider>
+	{
 		private static readonly string userConfigSubPath = "user.yml";
 		private static readonly string tanksCollectionConfigSubPath = "tanks.yml";
 

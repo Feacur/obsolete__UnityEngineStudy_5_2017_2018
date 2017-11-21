@@ -17,7 +17,8 @@ namespace Demo.Hangar {
 	///
 	/// Surely, there is no much use for this script afterwards
 	///
-	public class SceneLoader : MonoBehaviour {
+	public class SceneLoader : MonoBehaviour
+	{
 		public string environmentAssetBundleSubPath;
 		public string scenesAssetBundleSubPath;
 

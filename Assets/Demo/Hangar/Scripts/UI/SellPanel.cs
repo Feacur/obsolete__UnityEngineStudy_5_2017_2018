@@ -8,7 +8,8 @@ namespace Demo.Hangar {
 	/// Sell confirmation representation
 	///
 	[RequireComponent(typeof(Panel))]
-	public class SellPanel : MonoBehaviour {
+	public class SellPanel : MonoBehaviour
+	{
 		public Button confirmButton;
 		public Button cancelButton;
 		public Text message;

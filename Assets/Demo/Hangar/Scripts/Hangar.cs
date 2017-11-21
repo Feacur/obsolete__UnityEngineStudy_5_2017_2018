@@ -7,7 +7,8 @@ namespace Demo.Hangar {
 	/// Hangar scene representation
 	/// Responsible for tank model updates
 	///
-	public class Hangar : StaticInstanceMonoBehaviour<Hangar> {
+	public class Hangar : StaticInstanceMonoBehaviour<Hangar>
+	{
 		public Transform tankParentTransform;
 		
 		private Coroutine createTankCoroutine;

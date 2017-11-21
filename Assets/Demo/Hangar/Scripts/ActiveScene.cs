@@ -8,7 +8,8 @@ namespace Demo.Hangar {
 	/// Active scene is the default parent for new game objects
 	/// Active scene determines current lighting settings
 	///
-	public class ActiveScene : MonoBehaviour {
+	public class ActiveScene : MonoBehaviour
+	{
 		void Start () {
 			SceneManager.SetActiveScene(gameObject.scene);
 		}

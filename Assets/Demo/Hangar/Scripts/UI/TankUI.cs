@@ -8,7 +8,9 @@ namespace Demo.Hangar {
 	///
 	/// Tank UI representation
 	///
-	public class TankUI : MonoBehaviour, IPointerClickHandler {
+	public class TankUI : MonoBehaviour
+		, IPointerClickHandler
+	{
 		public Image image;
 		public GameObject aquiredMark;
 		public Text caption;

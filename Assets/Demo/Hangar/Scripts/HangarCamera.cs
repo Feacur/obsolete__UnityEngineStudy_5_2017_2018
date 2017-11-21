@@ -2,7 +2,8 @@
 using UnityEngine.EventSystems;
 
 namespace Demo.Hangar {
-	public class HangarCamera : MonoBehaviour {
+	public class HangarCamera : MonoBehaviour
+	{
 		[Header("Controlled objects")]
 		public new Camera camera;
 		public Transform rotationTransform;

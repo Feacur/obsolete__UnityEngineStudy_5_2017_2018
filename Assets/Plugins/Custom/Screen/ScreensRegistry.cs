@@ -9,7 +9,8 @@ using UnityEngine;
 ///
 /// Then you can easily access registered panel with ScreensRegistry.Get<ScreenClassName>();
 ///
-public class ScreensRegistry : AutoInstanceMonoBehaviour<ScreensRegistry> {
+public class ScreensRegistry : AutoInstanceMonoBehaviour<ScreensRegistry>
+{
 	public List<GameObject> registry = new List<GameObject>();
 
 	public void Add(Screen panel) {

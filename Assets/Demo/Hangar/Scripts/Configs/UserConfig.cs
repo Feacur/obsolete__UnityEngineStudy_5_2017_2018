@@ -7,7 +7,7 @@ namespace Demo.Hangar {
 	/// User configuration file layout.
 	///
 	/// <see cref="HangarConfigProvider">
-	/// See "Assets/StreamingAssets/user.yml"
+	/// See "StreamingAssets/user.yml"
 	///
 	[Serializable]
 	public class UserConfig {

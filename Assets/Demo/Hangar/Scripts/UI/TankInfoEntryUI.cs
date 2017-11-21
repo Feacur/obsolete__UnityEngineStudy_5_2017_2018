@@ -5,7 +5,8 @@ namespace Demo.Hangar {
 	///
 	/// Tank info entry UI representation
 	///
-	public class TankInfoEntryUI : MonoBehaviour {
+	public class TankInfoEntryUI : MonoBehaviour
+	{
 		public Image image;
 		public Text text1;
 		public Text text2;

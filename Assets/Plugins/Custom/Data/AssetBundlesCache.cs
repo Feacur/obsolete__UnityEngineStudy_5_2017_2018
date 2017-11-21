@@ -10,7 +10,8 @@ using UnityEngine;
 /// I could have used regular C# Dictionary for <see cref="cache">, however Unity won't serialize it.
 /// As a result hot reloading wouldn't work, and I don't want to sacrifice this feature.
 ///
-public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache> {
+public class AssetBundlesCache : AutoInstanceMonoBehaviour<AssetBundlesCache>
+{
 	public List<Entry> cache = new List<Entry>();
 	
 	public Coroutine LoadAsync(string url, Action<AssetBundle> callback = null) {

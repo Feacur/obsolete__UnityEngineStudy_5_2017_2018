@@ -15,7 +15,8 @@ using UnityEngine.Events;
 /// You can unsubscribe from <see cref="onMove"> and <see cref="onEnd"> at this point
 /// If you need a swipe gesture use this event and check any relevent position and time changes
 ///
-public class DragInput : AutoInstanceMonoBehaviour<DragInput> {
+public class DragInput : AutoInstanceMonoBehaviour<DragInput>
+{
 	private const int REQUIRED_TOUCHES = 1;
 	private const int MOUSE_BUTTON = 0;
 	

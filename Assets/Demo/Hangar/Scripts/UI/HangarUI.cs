@@ -24,7 +24,8 @@ namespace Demo.Hangar {
 	/// * Update tanks selected state
 	/// * Update buttons
 	///
-	public class HangarUI : StaticInstanceMonoBehaviour<HangarUI> {
+	public class HangarUI : StaticInstanceMonoBehaviour<HangarUI>
+	{
 		[Header("Navigation")]
 		public Button battleButton;
 		public Button purchaseButton;

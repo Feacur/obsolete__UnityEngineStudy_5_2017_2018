@@ -10,7 +10,9 @@ using UnityEngine;
 /// Intended to be used like
 /// public class ClassName : AutoInstanceScriptableObject<ClassName> { ... }
 ///
-public abstract class AutoInstanceScriptableObject<T> : ScriptableObject where T : AutoInstanceScriptableObject<T> {
+public abstract class AutoInstanceScriptableObject<T> : ScriptableObject
+	where T : AutoInstanceScriptableObject<T>
+{
 	public static bool destroyed { get; private set; }
 
 	protected static T _instance;

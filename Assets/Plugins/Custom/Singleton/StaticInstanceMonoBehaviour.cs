@@ -7,7 +7,9 @@ using UnityEngine;
 /// Intended to be used like
 /// public class ClassName : StaticInstanceMonoBehaviour<ClassName> { ... }
 ///
-public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour where T : StaticInstanceMonoBehaviour<T> {
+public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour
+	where T : StaticInstanceMonoBehaviour<T>
+{
 	protected static T _instance;
 	public static T instance {
 		get {

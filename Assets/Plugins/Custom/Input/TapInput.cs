@@ -12,7 +12,8 @@ using UnityEngine.Events;
 /// <see cref="onEnd"> is called when released
 /// You can unsubscribe from <see cref="onEnd"> at this point
 ///
-public class TapInput : AutoInstanceMonoBehaviour<TapInput> {
+public class TapInput : AutoInstanceMonoBehaviour<TapInput>
+{
 	private const int REQUIRED_TOUCHES = 1;
 	private const int MOUSE_BUTTON = 0;
 	

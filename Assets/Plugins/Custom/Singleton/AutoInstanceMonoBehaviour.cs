@@ -13,7 +13,9 @@ using UnityEngine;
 /// Intended to be used like
 /// public class ClassName : AutoInstanceMonoBehaviour<ClassName> { ... }
 ///
-public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour where T : AutoInstanceMonoBehaviour<T> {
+public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour
+	where T : AutoInstanceMonoBehaviour<T>
+{
 	public static bool destroyed { get; private set; }
 
 	protected static T _instance;

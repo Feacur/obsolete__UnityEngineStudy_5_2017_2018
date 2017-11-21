@@ -16,7 +16,8 @@ using UnityEngine.Events;
 /// <see cref="onEnd"> is called when released
 /// You can unsubscribe from <see cref="onMove"> and <see cref="onEnd"> at this point
 ///
-public class PinchInput : AutoInstanceMonoBehaviour<PinchInput> {
+public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
+{
 	private const int REQUIRED_TOUCHES = 2;
 	private const int MOUSE_BUTTON = 1;
 

@@ -5,7 +5,7 @@ namespace Demo.Hangar {
 	/// Specific tank configuration file layout.
 	///
 	/// <see cref="HangarConfigProvider">
-	/// See "Assets/StreamingAssets/Tanks collection/*.yml"
+	/// See "StreamingAssets/Tanks collection/*.yml"
 	///
 	[Serializable]
 	public class TankConfig {
