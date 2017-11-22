@@ -2,7 +2,7 @@
 Study on Unity engine. Very simple hangar of a tank game.  
 
 # How to work with this stuff
-Use scene "Scenes/Loader.unity"  
+Use scene "Scenes/Main.unity"  
 See "Editor/HangarBuilder.cs"  
 
 ### Your changes won't automatically get into asset bundles in editor
