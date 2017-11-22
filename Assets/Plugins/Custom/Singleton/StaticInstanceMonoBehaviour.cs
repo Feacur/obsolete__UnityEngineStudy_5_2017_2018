@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 ///
@@ -10,18 +11,31 @@ using UnityEngine;
 public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour
 	where T : StaticInstanceMonoBehaviour<T>
 {
-	protected static T _instance;
+	//
+	// API
+	//
+
+	private static T _instance;
 	public static T instance {
 		get {
 			if (!_instance) {
 				_instance = FindObjectOfType<T>();
-				if (_instance) {
-					_instance.StaticInstanceInit();
-				}
+				
+				if (_instance) { _instance.OnInit(); }
 			}
 			return _instance;
 		}
 	}
 
-	protected virtual void StaticInstanceInit() { }
+	protected virtual void OnInit() { }
+
+	//
+	// Callbacks from Unity
+	//
+
+	protected void Awake() {
+		if (!_instance) {
+			instance.OnInit();
+		}
+	}
 }

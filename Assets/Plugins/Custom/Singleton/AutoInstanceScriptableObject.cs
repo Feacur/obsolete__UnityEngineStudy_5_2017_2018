@@ -13,25 +13,36 @@ using UnityEngine;
 public abstract class AutoInstanceScriptableObject<T> : ScriptableObject
 	where T : AutoInstanceScriptableObject<T>
 {
+	//
+	// API
+	//
+
 	public static bool destroyed { get; private set; }
 
-	protected static T _instance;
+	private static T _instance;
 	public static T instance {
 		get {
-			destroyed = false;
 			if (!_instance) {
-				_instance = FindObjectOfType<T>();
-				if (!_instance) {
-					_instance = CreateInstance<T>();
-				}
-				// _instance should be non-null by now
-				_instance.AutoInstanceInit();
+				_instance = UnityExtensions.GetAutoScriptableObject<T>();
+				
+				destroyed = false;
+				_instance.OnInit();
 			}
 			return _instance;
 		}
 	}
 
-	protected virtual void AutoInstanceInit() { }
+	protected virtual void OnInit() { }
+
+	//
+	// Callbacks from Unity
+	//
+
+	protected void Awake() {
+		if (!_instance) {
+			instance.OnInit();
+		}
+	}
 
 	protected void OnDestroy() {
 		destroyed = true;

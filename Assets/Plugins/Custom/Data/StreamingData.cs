@@ -35,7 +35,7 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData>
 	}
 
 	private AssetBundlesCache AssetBundlesCache;
-	protected override void AutoInstanceInit() {
+	protected override void OnInit() {
 		this.AssetBundlesCache = AssetBundlesCache.instance;
 	}
 

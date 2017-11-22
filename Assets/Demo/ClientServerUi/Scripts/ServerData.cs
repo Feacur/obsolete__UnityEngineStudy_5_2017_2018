@@ -18,7 +18,7 @@ public partial class ServerData : StaticInstanceMonoBehaviour<ServerData>
 	// Callbacks from StaticInstanceMonoBehaviour
 	//
 
-	protected override void StaticInstanceInit() {
+	protected override void OnInit() {
 		this.ClientData = ClientData.instance;
 	}
 }

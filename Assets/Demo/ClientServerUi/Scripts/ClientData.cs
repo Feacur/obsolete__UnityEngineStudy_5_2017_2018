@@ -9,7 +9,7 @@ using UnityEngine.Events;
 ///
 public partial class ClientData : AutoInstanceMonoBehaviour<ClientData>
 {
-	protected override void AutoInstanceInit() {
+	protected override void OnInit() {
 		this.timestamp = new TimeLocalComponent();
 	} 
 

@@ -16,28 +16,36 @@ using UnityEngine;
 public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour
 	where T : AutoInstanceMonoBehaviour<T>
 {
+	//
+	// API
+	//
+
 	public static bool destroyed { get; private set; }
 
-	protected static T _instance;
+	private static T _instance;
 	public static T instance {
 		get {
-			destroyed = false;
 			if (!_instance) {
-				_instance = FindObjectOfType<T>();
-				if (!_instance) {
-					string instanceName = string.Format("Auto instance: {0}", typeof(T).Name);
-					var instanceGO = new GameObject(instanceName);
-					DontDestroyOnLoad(instanceGO);
-					_instance = instanceGO.AddComponent<T>();
-				}
-				// _instance should be non-null by now
-				_instance.AutoInstanceInit();
+				_instance = UnityExtensions.GetAutoMonoBehaviour<T>(dontDestroyOnLoad: true);
+				
+				destroyed = false;
+				_instance.OnInit();
 			}
 			return _instance;
 		}
 	}
 
-	protected virtual void AutoInstanceInit() { }
+	protected virtual void OnInit() { }
+
+	//
+	// Callbacks from Unity
+	//
+
+	protected void Awake() {
+		if (!_instance) {
+			instance.OnInit();
+		}
+	}
 
 	protected void OnDestroy() {
 		destroyed = true;

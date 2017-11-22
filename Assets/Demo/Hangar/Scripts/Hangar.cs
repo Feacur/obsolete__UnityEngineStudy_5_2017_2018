@@ -15,13 +15,9 @@ namespace Demo.Hangar {
 		
 		private StreamingData StreamingData;
 		private HangarConfigProvider HangarConfigProvider;
-		protected override void StaticInstanceInit() {
+		protected override void OnInit() {
 			this.StreamingData = StreamingData.instance;
 			this.HangarConfigProvider = HangarConfigProvider.instance;
-		}
-
-		private void Awake() {
-			StaticInstanceInit();
 		}
 
 		private void OnEnable() {

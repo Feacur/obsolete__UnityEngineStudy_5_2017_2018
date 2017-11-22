@@ -31,7 +31,7 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 	// Callbacks from StaticInstanceMonoBehaviour
 	//
 
-	protected override void StaticInstanceInit() {
+	protected override void OnInit() {
 		this.ServerData = ServerData.instance;
 		this.ClientData = ClientData.instance;
 	}

@@ -16,7 +16,7 @@ namespace Demo.Hangar {
 		private static readonly string tanksCollectionConfigSubPath = "tanks.yml";
 
 		private StreamingData StreamingData;
-		protected override void AutoInstanceInit() {
+		protected override void OnInit() {
 			this.StreamingData = StreamingData.instance;
 			
 			if (loadCoroutine != null) {
