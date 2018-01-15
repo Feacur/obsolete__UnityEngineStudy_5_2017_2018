@@ -23,7 +23,7 @@ public abstract class AutoInstanceScriptableObject<T> : ScriptableObject
 	public static T instance {
 		get {
 			if (!_instance) {
-				_instance = UnityExtensions.GetAutoScriptableObject<T>();
+				_instance = Extensions.GetAutoScriptableObject<T>();
 				
 				destroyed = false;
 				_instance.OnInit();

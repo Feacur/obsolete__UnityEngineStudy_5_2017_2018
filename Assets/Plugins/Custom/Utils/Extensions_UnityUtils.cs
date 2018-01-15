@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class UnityExtensions {
+public static partial class Extensions {
 	public static T GetAutoMonoBehaviour<T>(bool dontDestroyOnLoad = false) where T : MonoBehaviour {
 		var instance = Object.FindObjectOfType<T>();
 		if (!instance) {

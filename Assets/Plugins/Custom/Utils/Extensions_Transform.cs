@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class UnityUtils {
+public static partial class Extensions {
 	///
 	/// Transform extension to gather its children
 	///

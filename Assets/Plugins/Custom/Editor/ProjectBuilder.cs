@@ -12,7 +12,7 @@ using UnityEngine;
 public static class ProjectBuilder {
 	private static readonly Dictionary<BuildTarget, string> locationPathTemplates = new Dictionary<BuildTarget, string> {
 		{BuildTarget.StandaloneWindows,        "Builds/Windows/{0}.exe"},
-		{BuildTarget.StandaloneOSXUniversal,   "Builds/OSX/{0}.app"},
+		{BuildTarget.StandaloneOSX,            "Builds/OSX/{0}.app"},
 		{BuildTarget.StandaloneLinuxUniversal, "Builds/Linux/{0}.app"},
 		{BuildTarget.WebGL,                    "Builds/WebGL/{0}"},
 		{BuildTarget.iOS,                      "Builds/iOS/{0}"},
@@ -21,7 +21,7 @@ public static class ProjectBuilder {
 
 	private static readonly Dictionary<BuildTarget, BuildOptions> buildOptions = new Dictionary<BuildTarget, BuildOptions> {
 		{BuildTarget.StandaloneWindows,        BuildOptions.None},
-		{BuildTarget.StandaloneOSXUniversal,   BuildOptions.None},
+		{BuildTarget.StandaloneOSX,            BuildOptions.None},
 		{BuildTarget.StandaloneLinuxUniversal, BuildOptions.None},
 		{BuildTarget.WebGL,                    BuildOptions.None},
 		{BuildTarget.iOS,                      BuildOptions.None},

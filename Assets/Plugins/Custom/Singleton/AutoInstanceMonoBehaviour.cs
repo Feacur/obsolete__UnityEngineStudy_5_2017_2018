@@ -26,7 +26,7 @@ public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour
 	public static T instance {
 		get {
 			if (!_instance) {
-				_instance = UnityExtensions.GetAutoMonoBehaviour<T>(dontDestroyOnLoad: true);
+				_instance = Extensions.GetAutoMonoBehaviour<T>(dontDestroyOnLoad: true);
 				
 				destroyed = false;
 				_instance.OnInit();

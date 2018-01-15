@@ -83,11 +83,11 @@ public static class AsyncDataLoader {
 				result = www.texture as T;
 			}
 			else if (typeof(T) == typeof(AudioClip)){
-				result = WWWAudioExtensions.GetAudioClipCompressed(www) as T;
+				result = www.GetAudioClipCompressed() as T;
 			}
 			#if !(UNITY_ANDROID || UNITY_IOS || UNITY_WEBGL)
 			else if (typeof(T) == typeof(MovieTexture)){
-				result = WWWAudioExtensions.GetMovieTexture(www) as T;
+				result = www.GetMovieTexture() as T;
 			}
 			#endif
 			else if (typeof(T) == typeof(AssetBundle)){

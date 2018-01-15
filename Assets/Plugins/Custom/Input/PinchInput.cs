@@ -20,52 +20,12 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 {
 	private const int REQUIRED_TOUCHES = 2;
 	private const int MOUSE_BUTTON = 1;
-
-	[Serializable]
-	public class EventData {
-		// Position data
-		public Vector2 startPosition;
-		public Vector2 previousPosition;
-		public Vector2 currentPosition;
-		// Pinch data
-		public float startPinchMagnitude;
-		public float previousPinchMagnitude;
-		public float currentPinchMagnitude;
-		// Time data
-		public float startTime;
-		public float previousTime;		
-		public float currentTime;
-
-		public Vector2 DeltaPosition {
-			get { return currentPosition - previousPosition; }
-		}
-
-		public Vector2 TotalDeltaPosition {
-			get { return currentPosition - startPosition; }
-		}
-
-		public float DeltaPinchMagnitude {
-			get { return currentPinchMagnitude - previousPinchMagnitude; }
-		}
-
-		public float TotalDeltaPinchMagnitude {
-			get { return currentPinchMagnitude - startPinchMagnitude; }
-		}
-
-		public float DeltaTime {
-			get { return currentTime - previousTime; }
-		}
-
-		public float TotalDeltaTime {
-			get { return currentTime - startTime; }
-		}
-	}
 	
 	public EventData eventData = new EventData();
 
-	public StartedEvent onStart = new StartedEvent();
-	public MovedEvent onMove = new MovedEvent();
-	public EndedEvent onEnd = new EndedEvent();
+	public EventDataEvent onStart = new EventDataEvent();
+	public EventDataEvent onMove = new EventDataEvent();
+	public EventDataEvent onEnd = new EventDataEvent();
 
 	public float mouseScrollIdleTimeThreshold = 0.1f;
 	public float mousePinchMagnitudeMin = 10;
@@ -172,12 +132,50 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 		previousTouchesCount = touchesCount;
 	}
 
+	//
+	//
+	//
+	
 	[Serializable]
-	public class StartedEvent : UnityEvent<EventData> { }
+	public class EventData {
+		// Position data
+		public Vector2 startPosition;
+		public Vector2 previousPosition;
+		public Vector2 currentPosition;
+		// Pinch data
+		public float startPinchMagnitude;
+		public float previousPinchMagnitude;
+		public float currentPinchMagnitude;
+		// Time data
+		public float startTime;
+		public float previousTime;		
+		public float currentTime;
+
+		public Vector2 DeltaPosition {
+			get { return currentPosition - previousPosition; }
+		}
+
+		public Vector2 TotalDeltaPosition {
+			get { return currentPosition - startPosition; }
+		}
+
+		public float DeltaPinchMagnitude {
+			get { return currentPinchMagnitude - previousPinchMagnitude; }
+		}
+
+		public float TotalDeltaPinchMagnitude {
+			get { return currentPinchMagnitude - startPinchMagnitude; }
+		}
+
+		public float DeltaTime {
+			get { return currentTime - previousTime; }
+		}
+
+		public float TotalDeltaTime {
+			get { return currentTime - startTime; }
+		}
+	}
 
 	[Serializable]
-	public class MovedEvent : UnityEvent<EventData> { }
-
-	[Serializable]
-	public class EndedEvent : UnityEvent<EventData> { }
+	public class EventDataEvent : UnityEvent<EventData> { }
 }
