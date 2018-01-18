@@ -33,7 +33,7 @@ public partial class ClientData
 
 	public float UserEnergy_NextPointFraction {
 		get {
-			return userEnergy.GetNextPointFraction(timestamp.Current);
+			return userEnergy.GetFractionToNextPoint(timestamp.Current);
 		}
 	}
 

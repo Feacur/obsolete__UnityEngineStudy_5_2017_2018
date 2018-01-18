@@ -19,31 +19,35 @@ public static class EnergyComponent_Extension {
 	public static int GetCurrent(this EnergySharedComponent component, long timestamp) {
 		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
 		long offset = elapsedMillis / component.millisPerPoint;
-		return Mathf.Clamp(component.lastChangeValue + (int)offset, 0, component.maximum);
+		return Mathf.Max(
+			component.lastChangeValue,
+			Mathf.Clamp(component.lastChangeValue + (int)offset, 0, component.maximum)
+		);
 	}
 
 	public static float GetCurrentWithFraction(this EnergySharedComponent component, long timestamp) {
 		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
 		float offset = elapsedMillis / (float)component.millisPerPoint;
-		return Mathf.Clamp(component.lastChangeValue + offset, 0, component.maximum);
+		return Mathf.Max(
+			component.lastChangeValue,
+			Mathf.Clamp(component.lastChangeValue + offset, 0, component.maximum)
+		);
 	}
 
 	public static void SetCurrent(this EnergySharedComponent component, int value, long timestamp) {
 		// set the value directly
 		component.lastChangeValue = Mathf.Clamp(value, 0, component.maximum);
-		// set timestamp, but save fractional point
-		component.lastChangeTimestamp = timestamp - component.GetNextPointMillis(timestamp);
+		// set timestamp, but save elapsed fraction
+		component.lastChangeTimestamp = timestamp - component.GetFractionalMillis(timestamp);
 	}
 
-	public static long GetNextPointMillis(this EnergySharedComponent component, long timestamp) {
+	public static long GetFractionalMillis(this EnergySharedComponent component, long timestamp) {
 		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
 		return elapsedMillis % component.millisPerPoint;
 	}
 
-	public static float GetNextPointFraction(this EnergySharedComponent component, long timestamp) {
-		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
-		long fractionalMillis = elapsedMillis % component.millisPerPoint;
-		return fractionalMillis / (float)component.millisPerPoint;
+	public static float GetFractionToNextPoint(this EnergySharedComponent component, long timestamp) {
+		return component.GetFractionalMillis(timestamp) / (float)component.millisPerPoint;
 	}
 
 	public static EnergySharedComponent Clone(this EnergySharedComponent component) {

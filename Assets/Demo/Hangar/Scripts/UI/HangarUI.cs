@@ -42,7 +42,9 @@ namespace Demo.Hangar {
 
 		private PanelsRegistry PanelsRegistry;
 		private HangarConfigProvider HangarConfigProvider;
-		private void Awake() {
+		
+		private new void Awake() {
+			base.Awake();
 			this.PanelsRegistry = PanelsRegistry.instance;
 			this.HangarConfigProvider = HangarConfigProvider.instance;
 		}
