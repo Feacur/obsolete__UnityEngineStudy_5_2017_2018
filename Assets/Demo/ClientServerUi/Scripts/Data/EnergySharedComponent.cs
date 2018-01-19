@@ -16,29 +16,33 @@ public class EnergySharedComponent {
 /// Методы для работы с <see cref="EnergySharedComponent">
 ///
 public static class EnergyComponent_Extension {
+	public static int GetCurrentCapped(this EnergySharedComponent component, long timestamp) {
+		int elapsedMillis = (int)(timestamp - component.lastChangeTimestamp);
+		int offset = elapsedMillis / component.millisPerPoint;
+		return Mathf.Clamp(component.lastChangeValue + offset, 0, component.maximum);
+	}
+
+	public static float GetCurrentCappedWithFraction(this EnergySharedComponent component, long timestamp) {
+		float elapsedMillis = (float)(timestamp - component.lastChangeTimestamp);
+		float offset = elapsedMillis / component.millisPerPoint;
+		return Mathf.Clamp(component.lastChangeValue + offset, 0, component.maximum);
+	}
+
 	public static int GetCurrent(this EnergySharedComponent component, long timestamp) {
-		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
-		long offset = elapsedMillis / component.millisPerPoint;
-		return Mathf.Max(
-			component.lastChangeValue,
-			Mathf.Clamp(component.lastChangeValue + (int)offset, 0, component.maximum)
-		);
+		return Mathf.Max(component.lastChangeValue, component.GetCurrentCapped(timestamp));
 	}
 
 	public static float GetCurrentWithFraction(this EnergySharedComponent component, long timestamp) {
-		long elapsedMillis = (timestamp - component.lastChangeTimestamp);
-		float offset = elapsedMillis / (float)component.millisPerPoint;
-		return Mathf.Max(
-			component.lastChangeValue,
-			Mathf.Clamp(component.lastChangeValue + offset, 0, component.maximum)
-		);
+		return Mathf.Max(component.lastChangeValue, component.GetCurrentCappedWithFraction(timestamp));
 	}
 
 	public static void SetCurrent(this EnergySharedComponent component, int value, long timestamp) {
-		// set the value directly
-		component.lastChangeValue = Mathf.Clamp(value, 0, component.maximum);
 		// set timestamp, but save elapsed fraction
-		component.lastChangeTimestamp = timestamp - component.GetFractionalMillis(timestamp);
+		component.lastChangeTimestamp = (value >= component.maximum)
+			? timestamp 
+			: timestamp - component.GetFractionalMillis(timestamp);
+		// set the value directly
+		component.lastChangeValue = Mathf.Max(0, value);
 	}
 
 	public static long GetFractionalMillis(this EnergySharedComponent component, long timestamp) {

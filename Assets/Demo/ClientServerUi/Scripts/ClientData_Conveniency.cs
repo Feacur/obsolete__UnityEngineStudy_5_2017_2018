@@ -21,7 +21,7 @@ public partial class ClientData
 
 	public bool UserEnergy_IsMaximum {
 		get {
-			return UserEnergy_Current == userEnergy.maximum;
+			return UserEnergy_Current >= userEnergy.maximum;
 		}
 	}
 	

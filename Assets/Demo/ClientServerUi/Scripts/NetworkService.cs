@@ -51,49 +51,61 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 		// later server will get us know actual changes
 		ClientData.UserEnergy_Current -= ClientData.missionRequirements.energy;
 		
-		SendRequest(() => { // server code
-			if (ServerData.UserEnergy_Current >= ServerData.missionRequirements.energy) {
-				ServerData.UserEnergy_Current -= ServerData.missionRequirements.energy;
-				return new ResponseData_GoToBattle(true, ServerData.userEnergy.Clone());
+		SendRequest(
+			serverCode: () => {
+				if (ServerData.UserEnergy_Current >= ServerData.missionRequirements.energy) {
+					ServerData.UserEnergy_Current -= ServerData.missionRequirements.energy;
+					return new ResponseData_GoToBattle(true, ServerData.userEnergy.Clone());
+				}
+				return new ResponseData_GoToBattle(false);
+			},
+			clientCallback: (resultValue) => {
+				callback(resultValue.allowed);
+				if (resultValue.userEnergy != null) {
+					ClientData.SetUserEnergy(resultValue.userEnergy);
+				}
 			}
-			return new ResponseData_GoToBattle(false);
-		}, (resultValue) => { // client callback
-			callback(resultValue.allowed);
-			if (resultValue.userEnergy != null) {
-				ClientData.SetUserEnergy(resultValue.userEnergy);
-			}
-		});
+		);
 	}
 	
 	public void SendRequest_ExitBattle() {
 	}
 
 	public void SendRequest_GetMissionRequirements() {
-		SendRequest(() => { // server code
-			return ServerData.missionRequirements.Clone();
-		}, (resultValue) => { // client callback
-			ClientData.SetMissionRequirements(resultValue);
-		});
+		SendRequest(
+            serverCode: () => {
+				return ServerData.missionRequirements.Clone();
+			},
+            clientCallback: (resultValue) => {
+				ClientData.SetMissionRequirements(resultValue);
+			}
+		);
 	}
 
 	public void SendRequest_GetUserEnergy() {
-		SendRequest(() => { // server code
-			return ServerData.userEnergy.Clone();
-		}, (resultValue) => { // client callback
-			ClientData.SetUserEnergy(resultValue);
-		});
+		SendRequest(
+            serverCode: () => {
+				return ServerData.userEnergy.Clone();
+			},
+            clientCallback: (resultValue) => {
+				ClientData.SetUserEnergy(resultValue);
+			}
+		);
 	}
 
 	public void SendRequest_GetServerTime() {
 		float requestTime = Time.realtimeSinceStartup;
-		SendRequest(() => { // server code
-			return ServerData.timestamp.Current;
-		}, (resultValue) => { // client callback
-			float responseTime = Time.realtimeSinceStartup;
-			float pingCorrectionSeconds = (responseTime - requestTime) / 2;
-			long pingCorrection = (long)(pingCorrectionSeconds * 1000);
-			ClientData.SetTimestamp(resultValue + pingCorrection);
-		});
+		SendRequest(
+            serverCode: () => {
+				return ServerData.timestamp.Current;
+			},
+            clientCallback: (resultValue) => {
+				float responseTime = Time.realtimeSinceStartup;
+				float pingCorrectionSeconds = (responseTime - requestTime) / 2;
+				long pingCorrection = (long)(pingCorrectionSeconds * 1000);
+				ClientData.SetTimestamp(resultValue + pingCorrection);
+			}
+		);
 	}
 
 	//
@@ -108,9 +120,7 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 		var resultValue = serverCode();
 
 		yield return PingCoroutine();
-		if (clientCallback != null) {
-			clientCallback(resultValue);
-		}
+		clientCallback.SafeInvoke(resultValue);
 	}
 
 	private IEnumerator PingCoroutine() {
