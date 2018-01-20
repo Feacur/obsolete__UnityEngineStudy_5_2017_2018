@@ -1,9 +1,17 @@
 # Summary
-Study on Unity engine. Very simple hangar of a tank game.  
+Very simple hangar of a tank game.  
 
 # How to work with this stuff
 Use scene "Scenes/Main.unity"  
 See "Editor/HangarBuilder.cs"  
+
+### Prepare assets before playing
+Use menu "Custom/Hangar/Prepare streaming assets"  
+Use menu "Custom/Hangar/Mark asset bundles"  
+
+### Clean up assets before leaving
+Probably delete "Assets/Streaming Assets"  
+Use menu "Custom/Hangar/Unmark asset bundles"  
 
 ### Your changes won't automatically get into asset bundles in editor
 Be sure you've built asset bundles before play mode  

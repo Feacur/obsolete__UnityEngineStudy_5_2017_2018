@@ -7,7 +7,7 @@ public class DoTask_Coroutine: MonoBehaviour {
 	private void OnEnable() {
 		Debug.LogWarning(
 @"DoTask_Coroutine: no freezing, but long
-This will take about 16 seconds for 60 FPS settings
+This will take about 16 seconds at 60 FPS settings
 This will take 1000 frames to finish"
 		);
 		Debug.Log("Before starting DoTask coroutine");

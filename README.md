@@ -1,15 +1,21 @@
 # Summary
-Study on Unity engine.
+Study on Unity engine.  
 
 # How to work with this stuff
-See sub-projects inside "Assets/Demo" folder   
+See sub-projects inside "Assets/Demo" folder  
+Choose one, follow instructions of the embedded README.md
+
+### Notably
+* ClientServerUi - emulating client-server communication
+* Hangar - yaml configs, asset bundles, async loading
+* Portals - simple portals with look-through and teleportation
 
 # Current state
-* Plugins: Rider, VSCode, YamlDotNet, also custom utilities
+* Plugins: YamlDotNet, also custom utilities
 * Asset bundles: non-automatic; there is an option to emulate them in editor
 * Build scripts: for asset bundles and for the project
 * Data IO: load by url, load from asset bundles, persistent data
-* Input: abstract drag
+* Input: drag, pinch, tap
 * One level deep nested prefabs emulation using scene files and actual prefabs
 * API comments
 

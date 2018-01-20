@@ -1,5 +1,5 @@
 # Summary
-Study on Unity engine. Replicating platforming controls.  
+Replicating platforming controls.  
 
 # How to work with this stuff
 Use scene "Scenes/Main.unity"  
