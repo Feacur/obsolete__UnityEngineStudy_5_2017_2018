@@ -61,22 +61,11 @@ public class Portal : MonoBehaviour
 	private void UpdateCameraTransform() {
 		transformPlayer.SetParent(transformPortalAnother.parent, worldPositionStays: true);
 		
-		var transformPortalAnotherParentRotation = transformPortalAnother.parent.rotation;
-		transformPortalAnother.parent.rotation = y180;
-		
-		transformCameraThis.localPosition = GetPosition(
-			target: transformPortalThis.localPosition,
-			relative: transformPortalAnother.position,
-			p: transformPlayer.position
-		);
+		var offsetPosition = transformPlayer.localPosition - transformPortalAnother.localPosition;
+		transformCameraThis.localPosition = transformPortalThis.localPosition + y180 * offsetPosition;
 
-		transformCameraThis.localRotation = GetRotation(
-			target: transformPortalThis.localRotation * y180,
-			relative: transformPortalAnother.rotation,
-			p: transformPlayer.rotation
-		);
-		
-		transformPortalAnother.parent.rotation = transformPortalAnotherParentRotation;
+		var offsetRotation = transformPlayer.localRotation * Quaternion.Inverse(transformPortalAnother.localRotation);
+		transformCameraThis.localRotation = transformPortalThis.localRotation * offsetRotation * y180;
 		
 		transformPlayer.SetParent(null, worldPositionStays: true);
 	}
@@ -87,17 +76,5 @@ public class Portal : MonoBehaviour
 			transformPlayer.position = transformCameraAnother.position;
 			transformPlayer.rotation = transformCameraAnother.rotation;
 		}
-	}
-
-	private static Vector3 GetPosition(Vector3 target, Vector3 relative, Vector3 p) {
-		return new Vector3(
-			target.x + (p.x - relative.x),
-			target.y + (p.y - relative.y),
-			target.z + (p.z - relative.z)
-		);
-	}
-
-	private static Quaternion GetRotation(Quaternion target, Quaternion relative, Quaternion p) {
-		return target * (p * Quaternion.Inverse(relative));
 	}
 }
