@@ -11,9 +11,12 @@ public class Portal : MonoBehaviour
 
 	[Header("Transforms")]
 	public Transform transformCameraThis;
+	public Transform transformCameraAnother;
 	public Transform transformPortalThis;
 	public Transform transformPortalAnother;
 	public Transform transformPlayer;
+
+	private static readonly Quaternion y180 = Quaternion.AngleAxis(180, Vector3.up);
 
 	//
 	// Callbacks from Unity
@@ -24,24 +27,21 @@ public class Portal : MonoBehaviour
 	}
 
 	private void LateUpdate() {
-		UpdateTransforms();
+		UpdateCameraTransform();
+		if (touching) {
+			Teleport();
+		}
 	}
 
+	private bool touching;
 	private void OnTriggerEnter(Collider other) {
 		if (other.name != "Player") { return; }
-		float directionProjection = Vector3.Dot(transform.forward, other.transform.position - transform.position);
-		if (directionProjection > 0) { return; }
-
-		other.transform.rotation = GetRotation(
-			transformPortalAnother.rotation, transformPortalThis.rotation, other.transform.rotation
-		);
-
-		other.transform.position = GetPosition(
-			transformPortalAnother.position, transformPortalThis.position, other.transform.position
-		);
+		touching = true;
 	}
 
 	private void OnTriggerExit(Collider other) {
+		if (other.name != "Player") { return; }
+		touching = false;
 	}
 
 	//
@@ -58,26 +58,46 @@ public class Portal : MonoBehaviour
 		renderTarget.sharedMaterial.mainTexture = renderTexture;
 	}
 
-	private void UpdateTransforms() {
-		transformCameraThis.localRotation = GetRotation(
-			transformPortalThis.localRotation, transformPortalAnother.rotation, transformPlayer.rotation
+	private void UpdateCameraTransform() {
+		transformPlayer.SetParent(transformPortalAnother.parent, worldPositionStays: true);
+		
+		var transformPortalAnotherParentRotation = transformPortalAnother.parent.rotation;
+		transformPortalAnother.parent.rotation = y180;
+		
+		transformCameraThis.localPosition = GetPosition(
+			target: transformPortalThis.localPosition,
+			relative: transformPortalAnother.position,
+			p: transformPlayer.position
 		);
 
-		transformCameraThis.localPosition = GetPosition(
-			transformPortalThis.localPosition, transformPortalAnother.position, transformPlayer.position
+		transformCameraThis.localRotation = GetRotation(
+			target: transformPortalThis.localRotation * y180,
+			relative: transformPortalAnother.rotation,
+			p: transformPlayer.rotation
 		);
+		
+		transformPortalAnother.parent.rotation = transformPortalAnotherParentRotation;
+		
+		transformPlayer.SetParent(null, worldPositionStays: true);
+	}
+
+	private void Teleport() {
+		float directionProjection = Vector3.Dot(transformPortalThis.forward, transformPlayer.forward);
+		if (directionProjection > 0) {
+			transformPlayer.position = transformCameraAnother.position;
+			transformPlayer.rotation = transformCameraAnother.rotation;
+		}
 	}
 
 	private static Vector3 GetPosition(Vector3 target, Vector3 relative, Vector3 p) {
 		return new Vector3(
-			target.x + (relative.x - p.x),
-			target.y - (relative.y - p.y),
-			target.z + (relative.z - p.z)
+			target.x + (p.x - relative.x),
+			target.y + (p.y - relative.y),
+			target.z + (p.z - relative.z)
 		);
 	}
 
-	private static readonly Quaternion invertY = Quaternion.AngleAxis(180, Vector3.up);
 	private static Quaternion GetRotation(Quaternion target, Quaternion relative, Quaternion p) {
-		return target * invertY * Quaternion.Inverse(relative) * p;
+		return target * (p * Quaternion.Inverse(relative));
 	}
 }
