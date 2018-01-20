@@ -3,6 +3,15 @@
 ///
 /// A blob class for now
 ///
+/// * Create portal texture, which is rendered by this camera for another portal
+/// * Align render camera according the way player looks at another portal
+/// * Display portal texture with Portal.shader, which uses screen-space coordinates
+///
+/// Portal textures matche the aspect ratio of the screen, kind of overshoot here
+///
+/// Player camera sees this portal at the same screen-space coordinates
+/// as another portal's camera does, that's why using this special shader
+///
 public class Portal : MonoBehaviour
 {
 	[Header("Rendering")]
@@ -16,7 +25,6 @@ public class Portal : MonoBehaviour
 	public Transform transformPortalAnother;
 	public Transform transformPlayer;
 
-	private static readonly Quaternion y180 = Quaternion.AngleAxis(180, Vector3.up);
 
 	//
 	// Callbacks from Unity
@@ -58,6 +66,7 @@ public class Portal : MonoBehaviour
 		renderTarget.sharedMaterial.mainTexture = renderTexture;
 	}
 
+	private static readonly Quaternion y180 = Quaternion.AngleAxis(180, Vector3.up);
 	private void UpdateCameraTransform() {
 		var playerLocalPosition = transformPortalAnother.parent.InverseTransformPoint(transformPlayer.position);
 		var offsetPosition = playerLocalPosition - transformPortalAnother.localPosition;
