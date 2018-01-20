@@ -59,15 +59,13 @@ public class Portal : MonoBehaviour
 	}
 
 	private void UpdateCameraTransform() {
-		transformPlayer.SetParent(transformPortalAnother.parent, worldPositionStays: true);
-		
-		var offsetPosition = transformPlayer.localPosition - transformPortalAnother.localPosition;
+		var playerLocalPosition = transformPortalAnother.parent.InverseTransformPoint(transformPlayer.position);
+		var offsetPosition = playerLocalPosition - transformPortalAnother.localPosition;
 		transformCameraThis.localPosition = transformPortalThis.localPosition + y180 * offsetPosition;
 
-		var offsetRotation = transformPlayer.localRotation * Quaternion.Inverse(transformPortalAnother.localRotation);
+		var playerLocalRotation = Quaternion.Inverse(transformPortalAnother.parent.rotation) * transformPlayer.rotation;
+		var offsetRotation = playerLocalRotation * Quaternion.Inverse(transformPortalAnother.localRotation);
 		transformCameraThis.localRotation = transformPortalThis.localRotation * offsetRotation * y180;
-		
-		transformPlayer.SetParent(null, worldPositionStays: true);
 	}
 
 	private void Teleport() {
