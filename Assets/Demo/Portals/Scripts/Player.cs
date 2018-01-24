@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
 	public float positionScale = 1;
 	public float rotationScale = 1;
 
-
 	private void Awake() {
 		mousePositionPrevious = Input.mousePosition;
 	}
@@ -22,12 +21,12 @@ public class Player : MonoBehaviour
 	}
 
 	private void Update () {
-		var inputPosition = GetKeysVector() * positionScale * Time.deltaTime;
-		var inputRotation = GetMouseDelta() * rotationScale * Time.deltaTime;
+		var inputPosition = GetKeysVector() * (positionScale * Time.deltaTime);
+		var inputRotation = GetMouseDelta() * (rotationScale * Time.deltaTime);
 
 		transform.rotation = transform.rotation
-			* Quaternion.AngleAxis(-inputRotation.y, Vector3.right)
-			* Quaternion.AngleAxis(inputRotation.x, Vector3.up);
+			* Quaternion.AngleAxis(inputRotation.x, Vector3.up)
+			* Quaternion.AngleAxis(-inputRotation.y, Vector3.right);
 
 		transform.position = transform.position
 			+ transform.rotation * inputPosition;
