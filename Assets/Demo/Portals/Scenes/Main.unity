@@ -184,6 +184,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &461097512 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1218493013}
+  m_Script: {fileID: 11500000, guid: fdd3c77c23fd9e24fb6f147d03aa94e2, type: 3}
 --- !u!1 &464940714
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,11 +337,6 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 23203641370432416, guid: 9879803c408bb6a4db325b535b997ec0,
     type: 2}
   m_PrefabInternal: {fileID: 1989744502}
---- !u!4 &639621965 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4939846737071720, guid: 9879803c408bb6a4db325b535b997ec0,
-    type: 2}
-  m_PrefabInternal: {fileID: 1218493013}
 --- !u!1 &904696505
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,11 +543,6 @@ Prefab:
       objectReference: {fileID: 540380839}
     - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
         type: 2}
-      propertyPath: renderTarget
-      value: 
-      objectReference: {fileID: 540380839}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
       propertyPath: transformPortalAnother
       value: 
       objectReference: {fileID: 1989744503}
@@ -568,14 +564,19 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.x
       value: -30
       objectReference: {fileID: 0}
+    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+        type: 2}
+      propertyPath: transformPlayerCamera
+      value: 
+      objectReference: {fileID: 2002703294}
+    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+        type: 2}
+      propertyPath: linkedPortal
+      value: 
+      objectReference: {fileID: 1411338718}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9879803c408bb6a4db325b535b997ec0, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1218493014 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4607429302554782, guid: 9879803c408bb6a4db325b535b997ec0,
-    type: 2}
-  m_PrefabInternal: {fileID: 1218493013}
 --- !u!4 &1227547151 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4939846737071720, guid: 9879803c408bb6a4db325b535b997ec0,
@@ -652,6 +653,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1411338718 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1989744502}
+  m_Script: {fileID: 11500000, guid: fdd3c77c23fd9e24fb6f147d03aa94e2, type: 3}
 --- !u!1 &1677132541
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,11 +872,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1846007763 stripped
-MeshRenderer:
-  m_PrefabParentObject: {fileID: 23203641370432416, guid: 9879803c408bb6a4db325b535b997ec0,
-    type: 2}
-  m_PrefabInternal: {fileID: 1218493013}
 --- !u!1001 &1989744502
 Prefab:
   m_ObjectHideFlags: 0
@@ -909,59 +911,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+        type: 2}
+      propertyPath: linkedPortal
+      value: 
+      objectReference: {fileID: 461097512}
+    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
+        type: 2}
+      propertyPath: transformPlayerCamera
+      value: 
+      objectReference: {fileID: 2002703294}
     - target: {fileID: 1921082876071588, guid: 9879803c408bb6a4db325b535b997ec0, type: 2}
       propertyPath: m_Name
       value: Gate red world
       objectReference: {fileID: 0}
-    - target: {fileID: 23988565439661990, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 174534b5157af104b95f8127d05c6a7f, type: 2}
-    - target: {fileID: 23365689548662706, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 174534b5157af104b95f8127d05c6a7f, type: 2}
-    - target: {fileID: 23092518786703726, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 174534b5157af104b95f8127d05c6a7f, type: 2}
-    - target: {fileID: 23203641370432416, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 084c78ec14b033941b2643440c16c638, type: 2}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: renderer
-      value: 
-      objectReference: {fileID: 1846007763}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: transformPortalAnother
-      value: 
-      objectReference: {fileID: 1218493014}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: renderTarget
-      value: 
-      objectReference: {fileID: 1846007763}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: transformPlayer
-      value: 
-      objectReference: {fileID: 2002703294}
-    - target: {fileID: 4214102525409428, guid: 9879803c408bb6a4db325b535b997ec0, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 114724847166040804, guid: 9879803c408bb6a4db325b535b997ec0,
-        type: 2}
-      propertyPath: transformCameraAnother
-      value: 
-      objectReference: {fileID: 639621965}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9879803c408bb6a4db325b535b997ec0, type: 2}
   m_IsPrefabParent: 0

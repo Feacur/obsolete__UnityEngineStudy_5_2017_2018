@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 ///
 /// A blob class for now
@@ -14,17 +15,13 @@
 ///
 public class Portal : MonoBehaviour
 {
-	[Header("Rendering")]
+	[Header("This portal")]
 	public Camera renderCamera;
 	public Renderer renderTarget;
 
-	[Header("Transforms")]
-	public Transform transformCameraThis;
-	public Transform transformCameraAnother;
-	public Transform transformPortalThis;
-	public Transform transformPortalAnother;
-	public Transform transformPlayer;
-
+	[Header("Other objects")]
+	public Portal linkedPortal;
+	public Transform transformPlayerCamera;
 
 	//
 	// Callbacks from Unity
@@ -36,20 +33,22 @@ public class Portal : MonoBehaviour
 
 	private void LateUpdate() {
 		UpdateCameraTransform();
-		if (touching) {
-			Teleport();
+		for (int i = 0; i < touching.Count; i++) {
+			Teleport(touching[i]);
+			touching.RemoveAt(i);
+			i--;
 		}
 	}
 
-	private bool touching;
+	private List<Transform> touching = new List<Transform>();
 	private void OnTriggerEnter(Collider other) {
 		if (other.name != "Player") { return; }
-		touching = true;
+		touching.Add(other.transform);
 	}
 
 	private void OnTriggerExit(Collider other) {
 		if (other.name != "Player") { return; }
-		touching = false;
+		touching.Remove(other.transform);
 	}
 
 	//
@@ -62,22 +61,29 @@ public class Portal : MonoBehaviour
 		);
 		renderTexture.Create();
 
-		renderCamera.targetTexture = renderTexture;
+		linkedPortal.renderCamera.targetTexture = renderTexture;
 		renderTarget.sharedMaterial.mainTexture = renderTexture;
 	}
 
 	private static readonly Quaternion y180 = Quaternion.AngleAxis(180, Vector3.up);
 	private void UpdateCameraTransform() {
-		var playerLocalPosition = transformPortalAnother.parent.InverseTransformPoint(transformPlayer.position);
+		var transformCameraThis = renderCamera.transform;
+		var transformPortalThis = renderTarget.transform;
+		var transformPortalAnother = linkedPortal.renderTarget.transform;
+
+		var playerLocalPosition = transformPortalAnother.parent.InverseTransformPoint(transformPlayerCamera.position);
 		var offsetPosition = playerLocalPosition - transformPortalAnother.localPosition;
 		transformCameraThis.localPosition = transformPortalThis.localPosition + y180 * offsetPosition;
 
-		var playerLocalRotation = Quaternion.Inverse(transformPortalAnother.parent.rotation) * transformPlayer.rotation;
+		var playerLocalRotation = Quaternion.Inverse(transformPortalAnother.parent.rotation) * transformPlayerCamera.rotation;
 		var offsetRotation = playerLocalRotation * Quaternion.Inverse(transformPortalAnother.localRotation);
 		transformCameraThis.localRotation = transformPortalThis.localRotation * offsetRotation * y180;
 	}
 
-	private void Teleport() {
+	private void Teleport(Transform transformPlayer) {
+		var transformCameraAnother = linkedPortal.renderCamera.transform;
+		var transformPortalThis = renderTarget.transform;
+
 		float directionProjection = Vector3.Dot(transformPortalThis.forward, transformPlayer.forward);
 		if (directionProjection > 0) {
 			transformPlayer.position = transformCameraAnother.position;
