@@ -38,13 +38,15 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 			return;
 		}
 		
+		ClientData.UserEnergy_Current -= ClientData.missionRequirements.energy;
+
 		SendRequest(
 			serverCode: () => {
 				if (ServerData.UserEnergy_Current >= ServerData.missionRequirements.energy) {
 					ServerData.UserEnergy_Current -= ServerData.missionRequirements.energy;
 					return new ResponseData_GoToBattle(true, ServerData.userEnergy.Clone());
 				}
-				return new ResponseData_GoToBattle(false);
+				return new ResponseData_GoToBattle(false, ServerData.userEnergy.Clone());
 			},
 			clientCallback: (resultValue) => {
 				callback(resultValue.allowed);
