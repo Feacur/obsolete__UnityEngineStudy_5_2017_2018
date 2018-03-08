@@ -22,4 +22,24 @@ public static partial class Extensions {
 		}
 		return instance;
 	}
+	public static T GetResourceMonoBehaviour<T>(bool dontDestroyOnLoad = false) where T : MonoBehaviour {
+		var instance = Object.FindObjectOfType<T>();
+		if (!instance) {
+			var prefab = Resources.Load<T>(typeof(T).Name);
+			instance = Object.Instantiate(prefab);
+		}
+		if (dontDestroyOnLoad) {
+			Object.DontDestroyOnLoad(instance.gameObject);
+		}
+		return instance;
+	}
+
+	public static T GetResourceScriptableObject<T>() where T : ScriptableObject {
+		var instance = Object.FindObjectOfType<T>();
+		if (!instance) {
+			var prefab = Resources.Load<T>(typeof(T).Name);
+			instance = Object.Instantiate(prefab);
+		}
+		return instance;
+	}
 }

@@ -47,7 +47,7 @@ namespace ECS.Unity {
 		}
 
 		private void OnDisable() {
-			((IRemovable)this).callback.SafeInvoke();
+			((IRemovable)this).callback?.Invoke();
 		}
 	}
 }

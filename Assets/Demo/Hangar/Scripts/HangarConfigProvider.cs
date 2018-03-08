@@ -15,16 +15,6 @@ namespace Demo.Hangar {
 		private static readonly string userConfigSubPath = "user.yml";
 		private static readonly string tanksCollectionConfigSubPath = "tanks.yml";
 
-		private StreamingData StreamingData;
-		protected override void OnInit() {
-			this.StreamingData = StreamingData.instance;
-			
-			if (loadCoroutine != null) {
-				StopCoroutine(loadCoroutine);
-			}
-			loadCoroutine = StartCoroutine(LoadCoroutine());
-		}
-
 		public UserConfig user { get; private set; }
 		public TankConfig[] tanksCollection { get; private set; }
 		public TankConfig selectedTank { get; private set; }
@@ -33,7 +23,15 @@ namespace Demo.Hangar {
 		public TanksCollectionEvent onTanksCollectionChanged = new TanksCollectionEvent();
 		public TankConfigEvent onTankSelected = new TankConfigEvent();
 
-		private Coroutine loadCoroutine;
+		//
+		// "Injects"
+		//
+
+		private StreamingData StreamingData;
+
+		//
+		// API
+		//
 
 		public void SetUser(UserConfig userConfig) {
 			user = userConfig;
@@ -52,6 +50,26 @@ namespace Demo.Hangar {
 				onTankSelected.Invoke(tankConfig);
 			}
 		}
+
+		//
+		// Callbacks from Unity
+		//
+		
+		private Coroutine loadCoroutine;
+		new protected void Awake() {
+			base.Awake();
+			this.StreamingData = StreamingData.instance;
+			
+			
+			if (loadCoroutine != null) {
+				StopCoroutine(loadCoroutine);
+			}
+			loadCoroutine = StartCoroutine(LoadCoroutine());
+		}
+
+		//
+		//
+		//
 
 		private IEnumerator LoadCoroutine() {
 			TanksCollectionConfig tanksCollectionConfig = null;

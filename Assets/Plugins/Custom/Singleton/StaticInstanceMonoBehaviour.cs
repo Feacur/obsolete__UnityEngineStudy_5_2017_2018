@@ -18,16 +18,10 @@ public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour
 	private static T _instance;
 	public static T instance {
 		get {
-			if (!_instance) {
-				_instance = FindObjectOfType<T>();
-				
-				if (_instance) { _instance.OnInit(); }
-			}
-			return _instance;
+			if (_instance) { return _instance; }
+			return FindObjectOfType<T>();
 		}
 	}
-
-	protected virtual void OnInit() { }
 
 	//
 	// Callbacks from Unity
@@ -35,7 +29,7 @@ public abstract class StaticInstanceMonoBehaviour<T> : MonoBehaviour
 
 	protected void Awake() {
 		if (!_instance) {
-			instance.OnInit();
+			_instance = (T)this;
 		}
 	}
 }

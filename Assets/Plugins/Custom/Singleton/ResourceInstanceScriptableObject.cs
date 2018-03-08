@@ -1,20 +1,17 @@
 using UnityEngine;
 
 ///
-/// Provides static access to MonoBehaviour of type <typeparam name="T">
-/// Creates persistent game object if none is present
+/// Provides static access to ScriptableObject of type <typeparam name="T">
+/// Loads an instance if none is present
 ///
 /// Use <see cref="destroyed"> to protect against unwanted instantiations
 /// Like when accessing <see cref="instance"> inside OnDisable method
 ///
-/// Please note that auto created instances will be marked DontDestroyOnLoad
-/// Thus consequently be placed into the very same named scene
-///
 /// Intended to be used like
-/// public class ClassName : AutoInstanceMonoBehaviour<ClassName> { ... }
+/// public class ClassName : ResourceInstanceScriptableObject<ClassName> { ... }
 ///
-public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour
-	where T : AutoInstanceMonoBehaviour<T>
+public abstract class ResourceInstanceScriptableObject<T> : ScriptableObject
+	where T : ResourceInstanceScriptableObject<T>
 {
 	//
 	// API
@@ -26,7 +23,7 @@ public abstract class AutoInstanceMonoBehaviour<T> : MonoBehaviour
 	public static T instance {
 		get {
 			if (_instance) { return _instance; }
-			_instance = Extensions.GetAutoMonoBehaviour<T>(dontDestroyOnLoad: true);
+			_instance = Extensions.GetResourceScriptableObject<T>();
 			destroyed = false;
 			return _instance;
 		}

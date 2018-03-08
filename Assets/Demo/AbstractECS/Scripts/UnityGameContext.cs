@@ -72,10 +72,11 @@ public class UnityGameContext : StaticInstanceMonoBehaviour<UnityGameContext>
 	}
 
 	//
-	// Callback from StaticInstance
+	// Callbacks from Unity
 	//
 
-	protected override void OnInit() {
+	new protected void Awake() {
+		base.Awake();
 		var engine     = new ECS.EntityEngine();
 		systemsRoot    = engine;
 		componentsRoot = engine;
@@ -90,19 +91,15 @@ public class UnityGameContext : StaticInstanceMonoBehaviour<UnityGameContext>
 		systemsRoot.AddSystem(new PersonalBoundsSystem(updateService));
 	}
 
-	//
-	// Callbacks from Unity
-	//
-
 	private void Update() {
-		OnUpdate.SafeInvoke(Time.deltaTime);
+		OnUpdate?.Invoke(Time.deltaTime);
 	}
 
 	private void LateUpdate() {
-		OnLateUpdate.SafeInvoke(Time.deltaTime);
+		OnLateUpdate?.Invoke(Time.deltaTime);
 	}
 
 	private void FixedUpdate() {
-		OnFixedUpdate.SafeInvoke(Time.fixedDeltaTime);
+		OnFixedUpdate?.Invoke(Time.fixedDeltaTime);
 	}
 }

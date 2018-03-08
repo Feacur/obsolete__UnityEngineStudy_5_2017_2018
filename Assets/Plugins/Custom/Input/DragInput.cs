@@ -99,7 +99,7 @@ public class DragInput : AutoInstanceMonoBehaviour<DragInput>
 		public Vector2 currentPosition;
 		// Time data
 		public float startTime;
-		public float previousTime;		
+		public float previousTime;
 		public float currentTime;
 
 		public Vector2 DeltaPosition {

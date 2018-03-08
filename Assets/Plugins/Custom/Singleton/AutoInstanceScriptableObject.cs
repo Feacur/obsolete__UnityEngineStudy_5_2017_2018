@@ -22,29 +22,27 @@ public abstract class AutoInstanceScriptableObject<T> : ScriptableObject
 	private static T _instance;
 	public static T instance {
 		get {
-			if (!_instance) {
-				_instance = Extensions.GetAutoScriptableObject<T>();
-				
-				destroyed = false;
-				_instance.OnInit();
-			}
+			if (_instance) { return _instance; }
+			_instance = Extensions.GetAutoScriptableObject<T>();
+			destroyed = false;
 			return _instance;
 		}
 	}
-
-	protected virtual void OnInit() { }
 
 	//
 	// Callbacks from Unity
 	//
 
 	protected void Awake() {
-		if (!_instance) {
-			instance.OnInit();
+		if (!_instance || destroyed) {
+			_instance = (T)this;
+			destroyed = false;
 		}
 	}
 
 	protected void OnDestroy() {
-		destroyed = true;
+		if (ReferenceEquals(this, _instance)) {
+			destroyed = true;
+		}
 	}
 }

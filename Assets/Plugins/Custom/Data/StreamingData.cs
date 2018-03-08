@@ -34,11 +34,6 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData>
 		}
 	}
 
-	private AssetBundlesCache AssetBundlesCache;
-	protected override void OnInit() {
-		this.AssetBundlesCache = AssetBundlesCache.instance;
-	}
-
 	public Coroutine LoadAssetBundleAsync(string assetBundlePath, Action<AssetBundle> callback = null) {
 		return LoadAssetBundleAsyncInternal(assetBundlePath, callback);
 	}
@@ -122,5 +117,15 @@ public class StreamingData : AutoInstanceMonoBehaviour<StreamingData>
 	private Coroutine LoadDataAsyncInternal<T>(string subPath, Action<T> callback) where T : class {
 		string url = string.Format("{0}/{1}", StreamingAssetsUrl, subPath);
 		return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
+	}
+
+	//
+	// Callbacks from Unity
+	//
+	
+	private AssetBundlesCache AssetBundlesCache;
+	new protected void Awake() {
+		base.Awake();
+		this.AssetBundlesCache = AssetBundlesCache.instance;
 	}
 }

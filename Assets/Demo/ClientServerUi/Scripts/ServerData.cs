@@ -15,10 +15,11 @@ public partial class ServerData : StaticInstanceMonoBehaviour<ServerData>
 	private ClientData ClientData;
 
 	//
-	// Callbacks from StaticInstanceMonoBehaviour
+	// Callbacks from Unity
 	//
 
-	protected override void OnInit() {
+	new protected void Awake() {
+		base.Awake();
 		this.ClientData = ClientData.instance;
 	}
 }

@@ -41,7 +41,7 @@ namespace GameComponents.Unity {
 		}
 
 		private void OnDestroy() {
-			((IRemovable)this).callback.SafeInvoke();
+			((IRemovable)this).callback?.Invoke();
 		}
 	}
 }

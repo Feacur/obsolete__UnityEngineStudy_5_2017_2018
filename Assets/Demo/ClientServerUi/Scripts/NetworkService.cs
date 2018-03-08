@@ -28,16 +28,7 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 	private ClientData ClientData;
 
 	//
-	// Callbacks from StaticInstanceMonoBehaviour
-	//
-
-	protected override void OnInit() {
-		this.ServerData = ServerData.instance;
-		this.ClientData = ClientData.instance;
-	}
-
-	//
-	// Requests
+	// API for requests
 	//
 
 	public void SendRequest_GoToBattle(Action<bool> callback) {
@@ -46,10 +37,6 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 			callback(false);
 			return;
 		}
-		
-		// change user energy client side
-		// later server will get us know actual changes
-		ClientData.UserEnergy_Current -= ClientData.missionRequirements.energy;
 		
 		SendRequest(
 			serverCode: () => {
@@ -73,10 +60,10 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 
 	public void SendRequest_GetMissionRequirements() {
 		SendRequest(
-            serverCode: () => {
+			serverCode: () => {
 				return ServerData.missionRequirements.Clone();
 			},
-            clientCallback: (resultValue) => {
+			clientCallback: (resultValue) => {
 				ClientData.SetMissionRequirements(resultValue);
 			}
 		);
@@ -84,10 +71,10 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 
 	public void SendRequest_GetUserEnergy() {
 		SendRequest(
-            serverCode: () => {
+			serverCode: () => {
 				return ServerData.userEnergy.Clone();
 			},
-            clientCallback: (resultValue) => {
+			clientCallback: (resultValue) => {
 				ClientData.SetUserEnergy(resultValue);
 			}
 		);
@@ -109,8 +96,19 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 	}
 
 	//
+	// Callbacks from Unity
+	//
+
+	new protected void Awake() {
+		base.Awake();
+		this.ServerData = ServerData.instance;
+		this.ClientData = ClientData.instance;
+	}
+
+	//
 	// SendRequest
 	//
+	
 	private Coroutine SendRequest<T>(Func<T> serverCode, Action<T> clientCallback) {
 		return StartCoroutine(SendRequestCoroutine(serverCode, clientCallback));
 	}
@@ -120,7 +118,7 @@ public class NetworkService : StaticInstanceMonoBehaviour<NetworkService>
 		var resultValue = serverCode();
 
 		yield return PingCoroutine();
-		clientCallback.SafeInvoke(resultValue);
+		clientCallback?.Invoke(resultValue);
 	}
 
 	private IEnumerator PingCoroutine() {

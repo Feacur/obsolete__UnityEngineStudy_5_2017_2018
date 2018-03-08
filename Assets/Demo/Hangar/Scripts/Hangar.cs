@@ -11,11 +11,19 @@ namespace Demo.Hangar {
 	{
 		public Transform tankParentTransform;
 		
-		private Coroutine createTankCoroutine;
-		
+		//
+		// "Injects"
+		//
+
 		private StreamingData StreamingData;
 		private HangarConfigProvider HangarConfigProvider;
-		protected override void OnInit() {
+		
+		//
+		// Callbacks from Unity
+		//
+
+		new protected void Awake() {
+			base.Awake();
 			this.StreamingData = StreamingData.instance;
 			this.HangarConfigProvider = HangarConfigProvider.instance;
 		}
@@ -38,6 +46,11 @@ namespace Demo.Hangar {
 			}
 		}
 		
+		//
+		//
+		//
+
+		private Coroutine createTankCoroutine;
 		private void OnTankSelected(TankConfig tankConfig) {
 			if (createTankCoroutine != null) {
 				StopCoroutine(createTankCoroutine);
