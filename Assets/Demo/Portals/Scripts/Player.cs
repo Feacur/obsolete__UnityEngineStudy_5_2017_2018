@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
 	public float positionScale = 1;
 	public float rotationScale = 1;
+	public float uprightScale = 1;
 
 	private void Awake() {
 		mousePositionPrevious = Input.mousePosition;
@@ -27,6 +28,8 @@ public class Player : MonoBehaviour
 		transform.rotation = transform.rotation
 			* Quaternion.AngleAxis(inputRotation.x, Vector3.up)
 			* Quaternion.AngleAxis(-inputRotation.y, Vector3.right);
+
+		transform.rotation = MakeUpright(transform.rotation);
 
 		transform.position = transform.position
 			+ transform.rotation * inputPosition;
@@ -51,5 +54,14 @@ public class Player : MonoBehaviour
 
 	private static float GetKey(KeyCode key) {
 		return Input.GetKey(key) ? 1 : 0;
+	}
+
+	private Quaternion MakeUpright(Quaternion rotation) {
+		var euler = rotation.eulerAngles;
+		return Quaternion.Lerp(
+			rotation,
+			Quaternion.Euler(euler.x, euler.y, 0),
+			uprightScale * Time.deltaTime
+		);
 	}
 }
