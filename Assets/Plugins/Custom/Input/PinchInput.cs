@@ -1,4 +1,5 @@
 ﻿using System;
+using Custom.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -151,29 +152,12 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 		public float previousTime;
 		public float currentTime;
 
-		public Vector2 DeltaPosition {
-			get { return currentPosition - previousPosition; }
-		}
-
-		public Vector2 TotalDeltaPosition {
-			get { return currentPosition - startPosition; }
-		}
-
-		public float DeltaPinchMagnitude {
-			get { return currentPinchMagnitude - previousPinchMagnitude; }
-		}
-
-		public float TotalDeltaPinchMagnitude {
-			get { return currentPinchMagnitude - startPinchMagnitude; }
-		}
-
-		public float DeltaTime {
-			get { return currentTime - previousTime; }
-		}
-
-		public float TotalDeltaTime {
-			get { return currentTime - startTime; }
-		}
+		public Vector2 DeltaPosition => currentPosition - previousPosition;
+		public Vector2 TotalDeltaPosition => currentPosition - startPosition;
+		public float DeltaPinchMagnitude => currentPinchMagnitude - previousPinchMagnitude;
+		public float TotalDeltaPinchMagnitude => currentPinchMagnitude - startPinchMagnitude;
+		public float DeltaTime => currentTime - previousTime;
+		public float TotalDeltaTime => currentTime - startTime;
 	}
 
 	[Serializable]

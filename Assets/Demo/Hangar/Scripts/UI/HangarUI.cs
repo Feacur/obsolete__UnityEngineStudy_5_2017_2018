@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Linq;
+using Custom.Singleton;
 using UnityEngine;
 using UnityEngine.UI;
+using Custom.Utils;
 
 namespace Demo.Hangar {
 	///
@@ -80,8 +79,8 @@ namespace Demo.Hangar {
 		}
 
 		private void OnUserChanged(UserConfig userConfig) {
-			userSilver.text = string.Format("{0:N0}", userConfig.silver);
-			userGold.text = string.Format("{0:N0}", userConfig.gold);
+			userSilver.text = $"{userConfig.silver:N0}";
+			userGold.text = $"{userConfig.gold:N0}";
 
 			foreach(var tankUI in tanksCollectionParentTransform.GetComponentsInChildren<TankUI>()) {
 				tankUI.UpdateAquiredState(userConfig);
@@ -104,9 +103,9 @@ namespace Demo.Hangar {
 		private void OnTankSelected(TankConfig tankConfig) {
 			tankInfoParentTransform.DestroyChildren();
 			CreateTankInfoEntryUI("Type", tankConfig.type);
-			CreateTankInfoEntryUI("Weight", string.Format("{0:N1} ton", tankConfig.mass / 1000));
-			CreateTankInfoEntryUI("Speed", string.Format("{0:N1} km/h", tankConfig.speed * 3600 / 1000));
-			CreateTankInfoEntryUI("Price", string.Format("{0:N0} {1}", tankConfig.price, tankConfig.currency));
+			CreateTankInfoEntryUI("Weight", $"{tankConfig.mass / 1000:N1} ton");
+			CreateTankInfoEntryUI("Speed", $"{tankConfig.speed * 3600 / 1000:N1} km/h");
+			CreateTankInfoEntryUI("Price", $"{tankConfig.price:N0} {tankConfig.currency}");
 			
 			foreach(var tankUI in tanksCollectionParentTransform.GetComponentsInChildren<TankUI>()) {
 				tankUI.UpdateSelectedState(tankConfig.uid);

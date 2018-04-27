@@ -1,4 +1,5 @@
 using System;
+using Custom.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -93,21 +94,10 @@ public class TapInput : AutoInstanceMonoBehaviour<TapInput>
 		public float previousTime;
 		public float currentTime;
 
-		public Vector2 DeltaPosition {
-			get { return currentPosition - previousPosition; }
-		}
-
-		public Vector2 TotalDeltaPosition {
-			get { return currentPosition - startPosition; }
-		}
-
-		public float DeltaTime {
-			get { return currentTime - previousTime; }
-		}
-
-		public float TotalDeltaTime {
-			get { return currentTime - startTime; }
-		}
+		public Vector2 DeltaPosition => currentPosition - previousPosition;
+		public Vector2 TotalDeltaPosition => currentPosition - startPosition;
+		public float DeltaTime => currentTime - previousTime;
+		public float TotalDeltaTime => currentTime - startTime;
 	}
 
 

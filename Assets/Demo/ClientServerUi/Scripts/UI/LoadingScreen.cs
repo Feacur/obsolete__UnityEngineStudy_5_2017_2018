@@ -34,7 +34,7 @@ public class LoadingScreen : MonoBehaviour
 	private void SetProgress(float fraction) {
 		fraction = Mathf.Clamp01(fraction);
 		this.loadingSlider.value = fraction;
-		this.loadingText.text = string.Format("{0}%", Mathf.RoundToInt(fraction * 100));
+		this.loadingText.text = $"{Mathf.RoundToInt(fraction * 100)}%";
 	}
 
 	//

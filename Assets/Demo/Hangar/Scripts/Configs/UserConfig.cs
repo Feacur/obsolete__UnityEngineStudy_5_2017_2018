@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Demo.Hangar {
 	///
@@ -18,7 +17,7 @@ namespace Demo.Hangar {
 
 	public static class UserConfigExtensions {
 		public static bool HasTank(this UserConfig userConfig, string uid) {
-			return userConfig.ownedTanksUids.Any(ownedTankUid => ownedTankUid == uid);
+			return userConfig.ownedTanksUids.Exists(ownedTankUid => ownedTankUid == uid);
 		}
 	}
 }

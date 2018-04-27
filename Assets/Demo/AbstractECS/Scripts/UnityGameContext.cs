@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEventServices;
 using ECS.Services;
+using Custom.Singleton;
 
 [DisallowMultipleComponent]
 public class UnityGameContext : StaticInstanceMonoBehaviour<UnityGameContext>

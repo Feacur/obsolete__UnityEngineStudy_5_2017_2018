@@ -6,8 +6,8 @@ public static class SubprojectBuilder {
 	private static readonly string streamingAssetsSubPath = "StreamingAssets";
 
 	public static void PrepareStreamingAssets (string subprojectSubPath) {
-		string subprojectPath = string.Format("{0}/{1}", projectPath, subprojectSubPath);
-		string streamingAssetsPath = string.Format("{0}/{1}", subprojectPath, streamingAssetsSubPath);
+		string subprojectPath = $"{projectPath}/{subprojectSubPath}";
+		string streamingAssetsPath = $"{subprojectPath}/{streamingAssetsSubPath}";
 
 		// delete previous
 		if (Directory.Exists(Application.streamingAssetsPath)) {

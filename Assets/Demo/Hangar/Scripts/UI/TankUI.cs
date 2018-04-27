@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System;
-using System.Linq;
 
 namespace Demo.Hangar {
 	///
@@ -26,7 +24,7 @@ namespace Demo.Hangar {
 		private TankConfig tankConfig;
 		public void SetTankInfo(TankConfig tankConfig) {
 			this.tankConfig = tankConfig;
-			name = string.Format("Tank UI: {0}", tankConfig.name);
+			name = $"Tank UI: {tankConfig.name}";
 			caption.text = tankConfig.name;
 			
 			if (HangarConfigProvider.instance.user != null) {

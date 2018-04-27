@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using Custom.Data;
+using Custom.Singleton;
 using UnityEngine;
+using Custom.Utils;
 
 namespace Demo.Hangar {
 	///
@@ -75,7 +78,7 @@ namespace Demo.Hangar {
 			// Instantiate prefab
 			var instance = Instantiate(tankPrefab);
 			instance.transform.SetParent(tankParentTransform, worldPositionStays: false);
-			instance.name = string.Format("Tank: {0}", tankConfig.name);
+			instance.name = $"Tank: {tankConfig.name}";
 		}
 	}
 }

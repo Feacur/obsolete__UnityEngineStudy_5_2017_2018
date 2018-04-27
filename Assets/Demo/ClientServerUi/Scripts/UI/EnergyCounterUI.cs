@@ -62,15 +62,12 @@ public class EnergyCounterUI : MonoBehaviour
 	// UpdateEnergyCounter
 	//
 
-	private static readonly string ENERGY_FORMAT = "{0} / {1}";
 	private bool UpdateEnergyCounter_Instant() {
 		if (ClientData.timestamp == null) { return false; }
 		if (ClientData.userEnergy == null) { return false; }
 
 		bool shouldStop = ClientData.UserEnergy_IsMaximum;
-		this.energyCounterText.text = string.Format(
-			ENERGY_FORMAT, ClientData.UserEnergy_Current, ClientData.userEnergy.maximum
-		);
+		this.energyCounterText.text = $"{ClientData.UserEnergy_Current} / {ClientData.userEnergy.maximum}";
 
 		return !shouldStop;
 	}

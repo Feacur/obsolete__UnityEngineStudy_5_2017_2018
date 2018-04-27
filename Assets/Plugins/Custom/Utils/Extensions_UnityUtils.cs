@@ -1,45 +1,29 @@
 using UnityEngine;
 
-public static partial class Extensions {
-	public static T GetAutoMonoBehaviour<T>(bool dontDestroyOnLoad = false) where T : MonoBehaviour {
-		var instance = Object.FindObjectOfType<T>();
-		if (!instance) {
-			instance = new GameObject(
-				string.Format("Auto instance: {0}", typeof(T).Name)
-			).AddComponent<T>();
-		}
-		if (dontDestroyOnLoad) {
-			Object.DontDestroyOnLoad(instance.gameObject);
-		}
-		return instance;
-	}
+namespace Custom.Utils
+{
+	public static partial class Extensions
+	{
+		public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
+		{
+			var component = gameObject.GetComponent<T>();
+			if (!component)
+			{
+				component = gameObject.AddComponent<T>();
+			}
 
-	public static T GetAutoScriptableObject<T>() where T : ScriptableObject {
-		var instance = Object.FindObjectOfType<T>();
-		if (!instance) {
-			instance = ScriptableObject.CreateInstance<T>();
-			instance.name = string.Format("Auto instance: {0}", typeof(T).Name);
+			return component;
 		}
-		return instance;
-	}
-	public static T GetResourceMonoBehaviour<T>(bool dontDestroyOnLoad = false) where T : MonoBehaviour {
-		var instance = Object.FindObjectOfType<T>();
-		if (!instance) {
-			var prefab = Resources.Load<T>(typeof(T).Name);
-			instance = Object.Instantiate(prefab);
-		}
-		if (dontDestroyOnLoad) {
-			Object.DontDestroyOnLoad(instance.gameObject);
-		}
-		return instance;
-	}
 
-	public static T GetResourceScriptableObject<T>() where T : ScriptableObject {
-		var instance = Object.FindObjectOfType<T>();
-		if (!instance) {
-			var prefab = Resources.Load<T>(typeof(T).Name);
-			instance = Object.Instantiate(prefab);
+		public static void DeleteObject<T>(ref T reference, float delay = 0) where T : Object
+		{
+			if (!reference)
+			{
+				return;
+			}
+
+			Object.Destroy(reference, delay);
+			reference = null;
 		}
-		return instance;
 	}
 }

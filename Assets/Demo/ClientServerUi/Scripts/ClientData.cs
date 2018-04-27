@@ -1,3 +1,4 @@
+using Custom.Singleton;
 using UnityEngine.Events;
 
 ///

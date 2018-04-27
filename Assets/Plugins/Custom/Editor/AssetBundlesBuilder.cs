@@ -21,18 +21,10 @@ public static class AssetBundlesBuilder {
 		{BuildTarget.Android,                  BuildAssetBundleOptions.None}
 	};
 
-	public static string AssetBundlesPath {
-		get {
-			return string.Format("{0}/{1}", Application.streamingAssetsPath, assetBundlesSubPath);
-		}
-	}
+	public static string AssetBundlesPath => $"{Application.streamingAssetsPath}/{assetBundlesSubPath}";
 
-	public static string AssetBundlesManifestPath {
-		get {
-			return string.Format("{0}/AssetBundles.manifest", AssetBundlesPath);
-		}
-	}
-	
+	public static string AssetBundlesManifestPath => $"{AssetBundlesPath}/AssetBundles.manifest";
+
 	public static AssetBundleManifest Build (BuildTarget buildTarget) {
 		Directory.CreateDirectory(AssetBundlesPath);
 		return BuildPipeline.BuildAssetBundles(

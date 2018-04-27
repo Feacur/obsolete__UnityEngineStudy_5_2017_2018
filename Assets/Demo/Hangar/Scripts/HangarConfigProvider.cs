@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using Custom.Data;
+using Custom.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
 

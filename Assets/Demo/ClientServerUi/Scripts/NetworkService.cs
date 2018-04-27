@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Custom.Singleton;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

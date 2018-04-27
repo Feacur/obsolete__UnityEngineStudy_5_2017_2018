@@ -26,7 +26,7 @@ namespace Demo.Hangar {
 			this.userConfig = userConfig;
 			this.tankConfig = tankConfig;
 
-			message.text = string.Format("Selling \"{0}\"", tankConfig.name);
+			message.text = $"Selling \"{tankConfig.name}\"";
 
 			UpdateButtons();
 

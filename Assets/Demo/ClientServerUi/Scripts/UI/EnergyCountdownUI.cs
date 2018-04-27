@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Custom.Utils;
 
 ///
 /// Код для таймера недостатка энергии

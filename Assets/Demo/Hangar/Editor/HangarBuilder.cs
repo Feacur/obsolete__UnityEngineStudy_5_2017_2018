@@ -39,7 +39,7 @@ public static class HangarBuilder {
 	[MenuItem ("Custom/Hangar/Mark asset bundles")]
 	public static void MarkAssetBundles () {
 		foreach (var assetBundle in assetBundles) {
-			string path = string.Format("Assets/{0}/{1}", subprojectSubPath, assetBundle.Key);
+			string path = $"Assets/{subprojectSubPath}/{assetBundle.Key}";
 			var assetImporter = AssetImporter.GetAtPath(path);
 			assetImporter.assetBundleName = assetBundle.Value;
 		}
@@ -48,7 +48,7 @@ public static class HangarBuilder {
 	[MenuItem ("Custom/Hangar/Unmark asset bundles")]
 	public static void UnmarkAssetBundles () {
 		foreach (var assetBundle in assetBundles) {
-			string path = string.Format("Assets/{0}/{1}", subprojectSubPath, assetBundle.Key);
+			string path = $"Assets/{subprojectSubPath}/{assetBundle.Key}";
 			var assetImporter = AssetImporter.GetAtPath(path);
 			assetImporter.assetBundleName = string.Empty;
 		}
