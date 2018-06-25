@@ -14,6 +14,7 @@ public static class AssetBundlesBuilder {
 
 	private static readonly Dictionary<BuildTarget, BuildAssetBundleOptions> buildOptions = new Dictionary<BuildTarget, BuildAssetBundleOptions> {
 		{BuildTarget.StandaloneWindows,        BuildAssetBundleOptions.None},
+		{BuildTarget.StandaloneWindows64,      BuildAssetBundleOptions.None},
 		{BuildTarget.StandaloneOSX,            BuildAssetBundleOptions.None},
 		{BuildTarget.StandaloneLinuxUniversal, BuildAssetBundleOptions.None},
 		{BuildTarget.WebGL,                    BuildAssetBundleOptions.None},

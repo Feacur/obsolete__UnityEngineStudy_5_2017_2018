@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 ///
@@ -12,6 +13,7 @@ using UnityEngine;
 public static class ProjectBuilder {
 	private static readonly Dictionary<BuildTarget, string> locationPathTemplates = new Dictionary<BuildTarget, string> {
 		{BuildTarget.StandaloneWindows,        "Builds/Windows/{0}.exe"},
+		{BuildTarget.StandaloneWindows64,      "Builds/Windows64/{0}.exe"},
 		{BuildTarget.StandaloneOSX,            "Builds/OSX/{0}.app"},
 		{BuildTarget.StandaloneLinuxUniversal, "Builds/Linux/{0}.app"},
 		{BuildTarget.WebGL,                    "Builds/WebGL/{0}"},
@@ -28,7 +30,7 @@ public static class ProjectBuilder {
 		{BuildTarget.Android,                  BuildOptions.None}
 	};
 
-	public static string Build (BuildTarget buildTarget) {
+	public static BuildReport Build (BuildTarget buildTarget) {
 		var options = new BuildPlayerOptions();
 		options.locationPathName = string.Format(locationPathTemplates[buildTarget], PlayerSettings.productName);
 		options.options = buildOptions[buildTarget];
@@ -38,18 +40,18 @@ public static class ProjectBuilder {
 		return BuildPipeline.BuildPlayer(options);
 	}
 	
-	public static string BuildWithAssetBundles (BuildTarget buildTarget) {
+	public static BuildReport BuildWithAssetBundles (BuildTarget buildTarget) {
 		AssetBundlesBuilder.Build(buildTarget);
 		return Build(buildTarget);
 	}
 
 	[MenuItem ("Custom/** Build project only")]
-	public static string BuildActiveTarget () {
+	public static BuildReport BuildActiveTarget () {
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 
 	[MenuItem ("Custom/*** Build project with asset bundles")]
-	public static string BuildActiveTarget_WithAssetBundles () {
+	public static BuildReport BuildActiveTarget_WithAssetBundles () {
 		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

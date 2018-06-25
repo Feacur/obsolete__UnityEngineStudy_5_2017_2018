@@ -1,4 +1,5 @@
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public static class SubprojectBuilder {
@@ -15,7 +16,6 @@ public static class SubprojectBuilder {
 		}
 
 		// prepare directories
-		Directory.CreateDirectory(Application.streamingAssetsPath.Replace(subprojectPath, projectPath));
 		foreach (var path in Directory.GetDirectories(streamingAssetsPath, "*", SearchOption.AllDirectories)) {
 			Directory.CreateDirectory(path.Replace(subprojectPath, projectPath));
 		}
@@ -24,5 +24,7 @@ public static class SubprojectBuilder {
 		foreach (var path in Directory.GetFiles(streamingAssetsPath, "*.*", SearchOption.AllDirectories)) {
 			File.Copy(path, path.Replace(subprojectPath, projectPath), true);
 		}
+
+		AssetDatabase.Refresh();
 	}
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace Custom.Utils
@@ -25,5 +26,14 @@ namespace Custom.Utils
 			Object.Destroy(reference, delay);
 			reference = null;
 		}
+        
+        public static void StopCoroutine(this MonoBehaviour parent, ref Coroutine coroutine)
+        {
+            if (coroutine != null)
+            {
+                parent.StopCoroutine(coroutine);
+                coroutine = null;
+            }
+        }
 	}
 }

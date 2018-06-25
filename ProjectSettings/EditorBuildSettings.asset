@@ -8,3 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Demo/Portals/Scenes/Main.unity
     guid: 1837cdd10d77d554895c5fedf4350e17
+  m_configObjects: {}

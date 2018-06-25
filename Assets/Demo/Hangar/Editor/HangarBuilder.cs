@@ -15,6 +15,7 @@ public static class HangarBuilder {
 		PrepareStreamingAssets();
 		MarkAssetBundles();
 		AssetBundlesBuilder.BuildActiveTarget();
+		AssetDatabase.Refresh();
 	}
 
 	[MenuItem ("Custom/Hangar/** Build project only")]
