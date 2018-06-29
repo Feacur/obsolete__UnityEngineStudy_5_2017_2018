@@ -1,16 +1,18 @@
-[Bb]uilds/
-
-# Project caches
+# Unity project caches
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 
-# IDE caches
+# Custom data
+[Bb]uilds/
+
+# IDE
 /.vs/
 /.idea/
 /.vscode/
 
-# Solutions and projects
+# Local
 /*.sln
 /*.csproj
 /*.sln.DotSettings.user
+*.code-workspace
