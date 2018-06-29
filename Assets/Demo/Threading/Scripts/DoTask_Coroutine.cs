@@ -26,6 +26,6 @@ This will take 1000 frames to finish"
 			Thread.Sleep(2);
 			yield return null;
 		}
-		Debug.LogFormat("Finished DoTask in {0} ms", sw.Elapsed.TotalMilliseconds);
+		Debug.Log($"Finished DoTask in {sw.Elapsed.TotalMilliseconds} ms");
 	}
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Custom.Singleton;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ namespace Custom.Data
 
 		public Coroutine LoadAsync(string url, Action<AssetBundle> callback = null)
 		{
-			var result = cache.SingleOrDefault(it => it.key == url);
+			var result = cache.Find(it => it.key == url);
 			if (result != null)
 			{
 				callback?.Invoke(result.value);
@@ -39,7 +38,7 @@ namespace Custom.Data
 
 		public void Unload(string url, bool unloadAllLoadedObjects = true)
 		{
-			var result = cache.SingleOrDefault(it => it.key == url);
+			var result = cache.Find(it => it.key == url);
 			result?.value.Unload(unloadAllLoadedObjects);
 		}
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Custom.Singleton;
 using UnityEngine;
 
@@ -23,7 +22,7 @@ public class ScreensRegistry : AutoInstanceMonoBehaviour<ScreensRegistry>
 
 	public T Get<T>() where T : MonoBehaviour {
 		return registry
-			.Select(it => it.GetComponent<T>())
-			.FirstOrDefault(it => it != null);
+			.ConvertAll(it => it.GetComponent<T>())
+			.Find(it => it != null);
 	}
 }

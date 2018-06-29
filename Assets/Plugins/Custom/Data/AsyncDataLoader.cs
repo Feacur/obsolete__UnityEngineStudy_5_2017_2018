@@ -23,11 +23,11 @@ namespace Custom.Data
 
 			if (!assetBundle)
 			{
-				Debug.LogErrorFormat("Asset bundle is null");
+				Debug.LogError("Asset bundle is null");
 			}
 			else if (!assetBundle.Contains(assetPath))
 			{
-				Debug.LogErrorFormat("{0} does not contain {1}", assetBundle.name, assetPath);
+				Debug.LogError($"{assetBundle.name} does not contain {assetPath}");
 			}
 			else if (typeof(T) == typeof(byte[]))
 			{
@@ -50,10 +50,7 @@ namespace Custom.Data
 				result = loadAssetAsync.asset as T;
 			}
 
-			if (callback != null)
-			{
-				callback.Invoke(result);
-			}
+			callback?.Invoke(result);
 		}
 
 		///
@@ -86,11 +83,11 @@ namespace Custom.Data
 
 				if (!string.IsNullOrEmpty(www.error))
 				{
-					Debug.LogErrorFormat("Error loading {0}\r\n{1}", url, www.error);
+					Debug.LogError($"Error loading {url}{Environment.NewLine}{www.error}");
 				}
 				else if (www.bytesDownloaded == 0)
 				{
-					Debug.LogErrorFormat("Loaded zero bytes from {0}", url);
+					Debug.LogError($"Loaded zero bytes from {url}");
 				}
 				else if (typeof(T) == typeof(byte[]))
 				{

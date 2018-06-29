@@ -71,7 +71,7 @@ namespace Demo.Hangar {
 			});
 
 			if (!tankPrefab) {
-				Debug.LogErrorFormat("Tank prefab hasn't been loaded: {0}, {1}", tankConfig.assetBundle, tankConfig.prefab);
+				Debug.LogError($"Tank prefab hasn't been loaded: {tankConfig.assetBundle}, {tankConfig.prefab}");
 				yield break;
 			}
 

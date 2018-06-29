@@ -20,8 +20,8 @@ namespace Custom.Data
 #if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 		public static readonly bool realAssetBundles = false;
 #else
-	public static readonly bool realAssetBundles = true;
-	#endif
+		public static readonly bool realAssetBundles = true;
+#endif
 
 		///
 		/// From WWW description: https://docs.unity3d.com/ScriptReference/WWW.html
@@ -34,8 +34,8 @@ namespace Custom.Data
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_WSA_8_1 || UNITY_WSA_10_0
 				return $"file:///{Application.streamingAssetsPath}";
 #else
-			return Application.streamingAssetsPath;
-			#endif
+				return Application.streamingAssetsPath;
+#endif
 			}
 		}
 
@@ -58,12 +58,12 @@ namespace Custom.Data
 			return null;
 		}
 #else
-	public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
-		return StartCoroutine(
-			LoadAssetAsyncCoroutine(assetBundlePath, assetPath, callback)
-		);
-	}
-	#endif
+		public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
+			return StartCoroutine(
+				LoadAssetAsyncCoroutine(assetBundlePath, assetPath, callback)
+			);
+		}
+#endif
 
 #if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 		public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode)
@@ -93,22 +93,22 @@ namespace Custom.Data
 			}
 		}
 #else
-	public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
-		AssetBundle assetBundle = null;
-		yield return LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => {
-			assetBundle = resultValue;
-		});
+		public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
+			AssetBundle assetBundle = null;
+			yield return LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => {
+				assetBundle = resultValue;
+			});
 
-		if (!assetBundle) {
-			Debug.LogErrorFormat($"Asset bundle hasn't been loaded: {assetBundlePath}");
-			yield break;
-		}
+			if (!assetBundle) {
+				Debug.LogError($"Asset bundle hasn't been loaded: {assetBundlePath}");
+				yield break;
+			}
 
-		foreach (var scenePath in assetBundle.GetAllScenePaths()) {
-			yield return SceneManager.LoadSceneAsync(scenePath, mode);
+			foreach (var scenePath in assetBundle.GetAllScenePaths()) {
+				yield return SceneManager.LoadSceneAsync(scenePath, mode);
+			}
 		}
-	}
-	#endif
+#endif
 
 		private IEnumerator LoadAssetAsyncCoroutine<T>(string assetBundlePath, string assetName, Action<T> callback)
 			where T : UnityEngine.Object

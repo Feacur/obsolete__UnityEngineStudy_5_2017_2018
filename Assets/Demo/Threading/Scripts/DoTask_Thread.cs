@@ -21,6 +21,6 @@ This will take some frames to finish"
 		for (int i = 0; i < 1000; i++) {
 			Thread.Sleep(2);
 		}
-		Debug.LogFormat("Finished DoTask in {0} ms", sw.Elapsed.TotalMilliseconds);
+		Debug.Log($"Finished DoTask in {sw.Elapsed.TotalMilliseconds} ms");
 	}
 }

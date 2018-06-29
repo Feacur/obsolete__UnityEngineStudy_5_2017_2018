@@ -36,7 +36,7 @@ public static class AssetBundlesBuilder {
 	[MenuItem ("Custom/List asset bundles")]
 	public static void ListAssetBundles () {
 		var names = AssetDatabase.GetAllAssetBundleNames();
-		Debug.LogFormat("Found asset bundles: {0}", string.Join(", ", names));
+		Debug.Log($"Found asset bundles: {string.Join(", ", names)}");
 	}
 
 	[MenuItem ("Custom/* Build asset bundles")]
