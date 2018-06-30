@@ -1,0 +1,29 @@
+{
+    "files.exclude":
+    {
+        // visible for user
+        ".vscode/": false,
+        // visible for OmniSharp
+        "*.csproj": false,
+        "*.sln": false,
+        // repository
+        ".git/": true,
+        // Unity folders
+        "Library/": true,
+        "[Tt]emp/": true,
+        "[Oo]bj/": true,
+        "ProjectSettings/": true,
+        "Packages/": true,
+        // Unity files
+        "**/*.meta": true,
+        "**/*.prefab": true,
+        "**/*.unity": true,
+        "**/*.asset": true,
+        "**/*.mat": true,
+        // project
+        "Assets/**/Prefabs": true,
+        "Assets/**/Scenes": true,
+        "Assets/**/Materials": true,
+        "Assets/ProBuilder Data": true
+    }
+}

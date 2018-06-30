@@ -14,12 +14,10 @@ namespace Custom.Data
 		/// StartCoroutine(assetBundle.LoadCoroutine<T>(assetPath, (resultValue) => { ... }));
 		/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(assetBundle, assetPath, (resultValue) => { ... }));
 		///
-		/// It is advised to make a wrapper handling StartCoroutine(); part.
-		///
 		public static IEnumerator LoadCoroutine<T>(this AssetBundle assetBundle, string assetPath, Action<T> callback)
 			where T : class
 		{
-			T result = null;
+			T result = default(T);
 
 			if (!assetBundle)
 			{
@@ -34,14 +32,14 @@ namespace Custom.Data
 				var loadAssetAsync = assetBundle.LoadAssetAsync(assetPath);
 				yield return loadAssetAsync;
 				var textAsset = loadAssetAsync.asset as TextAsset;
-				result = textAsset ? textAsset.bytes as T : null;
+				result = textAsset ? textAsset.bytes as T : default(T);
 			}
 			else if (typeof(T) == typeof(string))
 			{
 				var loadAssetAsync = assetBundle.LoadAssetAsync(assetPath);
 				yield return loadAssetAsync;
 				var textAsset = loadAssetAsync.asset as TextAsset;
-				result = textAsset ? textAsset.text as T : null;
+				result = textAsset ? textAsset.text as T : default(T);
 			}
 			else
 			{
@@ -60,30 +58,18 @@ namespace Custom.Data
 		/// Intended to be used something like
 		/// StartCoroutine(AsyncDataLoader.LoadCoroutine<T>(url, (resultValue) => { ... }));
 		///
-		/// It is advised to make a wrapper handling StartCoroutine(); part.
-		///
-		public static IEnumerator LoadCoroutine<T>(string url, Action<T> callback, float idleTimeoutSeconds = 10,
-			float idleProgressThreshold = float.Epsilon) where T : class
+		public static IEnumerator LoadCoroutine<T>(string url, Action<T> callback)
+			where T : class
 		{
-			T result = null;
+			T result = default(T);
 
 			using (var www = new WWW(url))
 			{
-				if (idleTimeoutSeconds <= 0)
-				{
-					yield return www;
-				}
-				else
-				{
-					for (var e = WaitLoadingWithIdleTimeoutCoroutine(www, idleTimeoutSeconds, idleProgressThreshold); e.MoveNext();)
-					{
-						yield return e.Current;
-					}
-				}
+				yield return www;
 
 				if (!string.IsNullOrEmpty(www.error))
 				{
-					Debug.LogError($"Error loading {url}{Environment.NewLine}{www.error}");
+					Debug.LogError($"Error loading {url}:{Environment.NewLine}{www.error}");
 				}
 				else if (www.bytesDownloaded == 0)
 				{
@@ -105,12 +91,6 @@ namespace Custom.Data
 				{
 					result = www.GetAudioClipCompressed() as T;
 				}
-#if !(UNITY_ANDROID || UNITY_IOS || UNITY_WEBGL)
-				else if (typeof(T) == typeof(MovieTexture))
-				{
-					result = www.GetMovieTexture() as T;
-				}
-#endif
 				else if (typeof(T) == typeof(AssetBundle))
 				{
 					result = www.assetBundle as T;
@@ -118,29 +98,6 @@ namespace Custom.Data
 			}
 
 			callback?.Invoke(result);
-		}
-
-		private static IEnumerator WaitLoadingWithIdleTimeoutCoroutine(WWW www, float idleTimeoutSeconds,
-			float idleProgressThreshold)
-		{
-			float stepSeconds = 0.1f;
-			float idleSeconds = 0;
-			float lastProgress = www.progress;
-			while (!www.isDone && (idleSeconds < idleTimeoutSeconds))
-			{
-				float progressDelta = www.progress - lastProgress;
-				lastProgress = www.progress;
-				if ((progressDelta < 0) || (progressDelta > idleProgressThreshold))
-				{
-					idleSeconds = 0;
-				}
-				else
-				{
-					idleSeconds += stepSeconds;
-				}
-
-				yield return new WaitForSecondsRealtime(stepSeconds);
-			}
 		}
 	}
 }

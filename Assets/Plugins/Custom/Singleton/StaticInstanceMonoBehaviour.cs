@@ -16,6 +16,8 @@ namespace Custom.Singleton
 		// API
 		//
 
+		public static bool destroyed { get; private set; }
+
 		private static T _instance;
 
 		public static T instance
@@ -27,7 +29,9 @@ namespace Custom.Singleton
 					return _instance;
 				}
 
-				return FindObjectOfType<T>();
+				_instance = FindObjectOfType<T>();
+				destroyed = false;
+				return _instance;
 			}
 		}
 
@@ -37,9 +41,17 @@ namespace Custom.Singleton
 
 		protected void Awake()
 		{
-			if (!_instance)
+			if (!_instance || destroyed)
 			{
 				_instance = (T) this;
+			}
+		}
+
+		protected void OnDestroy()
+		{
+			if (ReferenceEquals(this, _instance))
+			{
+				destroyed = true;
 			}
 		}
 	}

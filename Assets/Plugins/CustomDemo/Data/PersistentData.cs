@@ -9,19 +9,17 @@ namespace Custom.Data
 	///
 	public static partial class PersistentData
 	{
-		public static readonly BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-		public static void WriteBinary<T>(string subPath, T data) where T : class
+		public static void WriteYaml<T>(string subPath, T data) where T : class
 		{
 			string path = $"{Application.persistentDataPath}/{subPath}";
 			Directory.CreateDirectory(Path.GetDirectoryName(path));
-			using (var streamWriter = File.Create(path))
+			using (var streamWriter = File.CreateText(path))
 			{
-				binaryFormatter.Serialize(streamWriter, data);
+				YamlWrapper.serializer.Serialize(streamWriter, data);
 			}
 		}
 
-		public static T ReadBinary<T>(string subPath) where T : class
+		public static T ReadYaml<T>(string subPath) where T : class
 		{
 			string path = $"{Application.persistentDataPath}/{subPath}";
 			if (!File.Exists(path))
@@ -29,9 +27,9 @@ namespace Custom.Data
 				return null;
 			}
 
-			using (var streamReader = File.Open(path, FileMode.Open, FileAccess.Read))
+			using (var streamReader = File.OpenText(path))
 			{
-				return binaryFormatter.Deserialize(streamReader) as T;
+				return YamlWrapper.deserializer.Deserialize<T>(streamReader);
 			}
 		}
 	}
