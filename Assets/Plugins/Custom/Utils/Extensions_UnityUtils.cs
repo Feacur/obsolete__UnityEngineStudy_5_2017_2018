@@ -17,12 +17,12 @@ namespace Custom.Utils
 			Object.Destroy(reference, delay);
 			reference = null;
 		}
-        
-        public static void StopCoroutine(this MonoBehaviour parent, ref Coroutine coroutine)
-        {
-            if (coroutine == null) { return; }
+
+		public static void StopCoroutine(this MonoBehaviour parent, ref Coroutine coroutine)
+		{
+			if (coroutine == null) { return; }
 			parent.StopCoroutine(coroutine);
 			coroutine = null;
-        }
+		}
 	}
 }

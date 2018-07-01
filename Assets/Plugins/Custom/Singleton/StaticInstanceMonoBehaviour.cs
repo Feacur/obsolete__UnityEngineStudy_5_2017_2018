@@ -43,7 +43,7 @@ namespace Custom.Singleton
 		{
 			if (!_instance || destroyed)
 			{
-				_instance = (T) this;
+				_instance = (T)this;
 			}
 		}
 

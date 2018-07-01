@@ -17,7 +17,7 @@ public class TapInput : AutoInstanceMonoBehaviour<TapInput>
 {
 	private const int REQUIRED_TOUCHES = 1;
 	private const int MOUSE_BUTTON = 0;
-	
+
 	public EventData eventData = new EventData();
 
 	public EventDataEvent onStart = new EventDataEvent();
@@ -26,42 +26,51 @@ public class TapInput : AutoInstanceMonoBehaviour<TapInput>
 	private bool activeState;
 	private int previousTouchesCount;
 
-	private void Update() {
-		#if UNITY_EDITOR
-		if (UnityEditor.EditorApplication.isRemoteConnected) {
+	private void Update()
+	{
+#if UNITY_EDITOR
+		if (UnityEditor.EditorApplication.isRemoteConnected)
+		{
 			UpdateWithTouches();
 		}
-		else {
+		else
+		{
 			UpdateWithMouse();
 		}
-		#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS
 		UpdateWithTouches();
-		#elif UNITY_STANDALONE || UNITY_WEBGL
+#elif UNITY_STANDALONE || UNITY_WEBGL
 		UpdateWithMouse();
-		#endif
+#endif
 	}
 
-	private void UpdateWithMouse() {
+	private void UpdateWithMouse()
+	{
 		int touchCount = Input.GetMouseButton(MOUSE_BUTTON) ? REQUIRED_TOUCHES : 0;
 		AbstractUpdate(touchCount, Input.mousePosition);
 	}
 
-	private void UpdateWithTouches() {
-		if (Input.touchCount != REQUIRED_TOUCHES) {
+	private void UpdateWithTouches()
+	{
+		if (Input.touchCount != REQUIRED_TOUCHES)
+		{
 			AbstractUpdate(Input.touchCount, eventData.previousPosition);
 		}
-		else {
+		else
+		{
 			var touch = Input.touches[0];
 			AbstractUpdate(Input.touchCount, touch.position);
 		}
 	}
 
-	private void AbstractUpdate(int touchesCount, Vector2 currentPosition) {
+	private void AbstractUpdate(int touchesCount, Vector2 currentPosition)
+	{
 		eventData.currentPosition = currentPosition;
 		eventData.currentTime = Time.realtimeSinceStartup;
-		
+
 		bool canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (previousTouchesCount < REQUIRED_TOUCHES);
-		if (!activeState && canBeActivated) {
+		if (!activeState && canBeActivated)
+		{
 			activeState = true;
 			eventData.startPosition = eventData.currentPosition;
 			eventData.startTime = eventData.currentTime;
@@ -69,7 +78,8 @@ public class TapInput : AutoInstanceMonoBehaviour<TapInput>
 		}
 
 		bool shouldBeDeactivated = (touchesCount == 0);
-		if (activeState && shouldBeDeactivated) {
+		if (activeState && shouldBeDeactivated)
+		{
 			activeState = false;
 			onEnd.Invoke(eventData);
 		}
@@ -82,9 +92,10 @@ public class TapInput : AutoInstanceMonoBehaviour<TapInput>
 	//
 	//
 	//
-	
+
 	[Serializable]
-	public class EventData {
+	public class EventData
+	{
 		// Position data
 		public Vector2 startPosition;
 		public Vector2 previousPosition;

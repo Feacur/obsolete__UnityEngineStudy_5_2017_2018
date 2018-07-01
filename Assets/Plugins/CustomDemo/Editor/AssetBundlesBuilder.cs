@@ -9,7 +9,8 @@ using UnityEngine;
 /// There is a function exposed to editor to use:
 /// <see cref="BuildActiveTarget"> builds asset bundles using current chosen platform.
 ///
-public static class AssetBundlesBuilder {
+public static class AssetBundlesBuilder
+{
 	private static readonly string assetBundlesSubPath = "AssetBundles";
 
 	private static readonly Dictionary<BuildTarget, BuildAssetBundleOptions> buildOptions = new Dictionary<BuildTarget, BuildAssetBundleOptions> {
@@ -26,21 +27,24 @@ public static class AssetBundlesBuilder {
 
 	public static string AssetBundlesManifestPath => $"{AssetBundlesPath}/AssetBundles.manifest";
 
-	public static AssetBundleManifest Build (BuildTarget buildTarget) {
+	public static AssetBundleManifest Build(BuildTarget buildTarget)
+	{
 		Directory.CreateDirectory(AssetBundlesPath);
 		return BuildPipeline.BuildAssetBundles(
 			AssetBundlesPath, buildOptions[buildTarget], buildTarget
 		);
 	}
 
-	[MenuItem ("Custom/List asset bundles")]
-	public static void ListAssetBundles () {
+	[MenuItem("Custom/List asset bundles")]
+	public static void ListAssetBundles()
+	{
 		var names = AssetDatabase.GetAllAssetBundleNames();
 		Debug.Log($"Found asset bundles: {string.Join(", ", names)}");
 	}
 
-	[MenuItem ("Custom/* Build asset bundles")]
-	public static AssetBundleManifest BuildActiveTarget () {
+	[MenuItem("Custom/* Build asset bundles")]
+	public static AssetBundleManifest BuildActiveTarget()
+	{
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

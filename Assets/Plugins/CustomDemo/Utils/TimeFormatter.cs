@@ -1,7 +1,7 @@
 namespace Custom.Utils
 {
 	///
-	/// Код для перевода секунд в формат XXt:XXt
+	/// Converts seconds into a formatted string [XXt:XXt]
 	///
 	public static class TimeFormatter
 	{
@@ -11,7 +11,7 @@ namespace Custom.Utils
 			int totalMinutes = totalSeconds / 60;
 			if (totalMinutes == 0)
 			{
-				return $"{seconds:D2}s";
+				return $"{0:D2}m:{seconds:D2}s";
 			}
 
 			int minutes = totalMinutes % 60;

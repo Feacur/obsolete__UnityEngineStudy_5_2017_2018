@@ -27,8 +27,7 @@ namespace Custom.Data
 
 			return LoadDataAsync<AssetBundle>(url, (resultValue) =>
 			{
-				cache.Add(new Entry()
-				{
+				cache.Add(new Entry {
 					key = url,
 					value = resultValue
 				});
@@ -42,7 +41,8 @@ namespace Custom.Data
 			result?.value.Unload(unloadAllLoadedObjects);
 		}
 
-		private Coroutine LoadDataAsync<T>(string url, Action<T> callback) where T : class
+		private Coroutine LoadDataAsync<T>(string url, Action<T> callback)
+			where T : class
 		{
 			return StartCoroutine(AsyncDataLoader.LoadCoroutine(url, callback));
 		}

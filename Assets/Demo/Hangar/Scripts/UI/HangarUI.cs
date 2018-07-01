@@ -97,6 +97,7 @@ namespace Demo.Hangar {
 			foreach (var tankConfig in tankConfigs) {
 				CreateTankUI(tankConfig);
 			}
+			if (tankConfigs.Length == 0) { return; }
 			HangarConfigProvider.SetSelectedTank(tankConfigs[0]);
 		}
 		

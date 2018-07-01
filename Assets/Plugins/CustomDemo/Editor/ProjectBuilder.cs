@@ -10,7 +10,8 @@ using UnityEngine;
 /// <see cref="BuildActiveTarget"> builds project using current chosen platform.
 /// <see cref="BuildWithAssetBundlesActiveTarget"> builds asset bundles AND project using current chosen platform.
 ///
-public static class ProjectBuilder {
+public static class ProjectBuilder
+{
 	private static readonly Dictionary<BuildTarget, string> locationPathTemplates = new Dictionary<BuildTarget, string> {
 		{BuildTarget.StandaloneWindows,        "Builds/Windows/{0}.exe"},
 		{BuildTarget.StandaloneWindows64,      "Builds/Windows64/{0}.exe"},
@@ -30,7 +31,8 @@ public static class ProjectBuilder {
 		{BuildTarget.Android,                  BuildOptions.None}
 	};
 
-	public static BuildReport Build (BuildTarget buildTarget) {
+	public static BuildReport Build(BuildTarget buildTarget)
+	{
 		var options = new BuildPlayerOptions();
 		options.locationPathName = string.Format(locationPathTemplates[buildTarget], PlayerSettings.productName);
 		options.options = buildOptions[buildTarget];
@@ -39,19 +41,22 @@ public static class ProjectBuilder {
 		options.target = buildTarget;
 		return BuildPipeline.BuildPlayer(options);
 	}
-	
-	public static BuildReport BuildWithAssetBundles (BuildTarget buildTarget) {
+
+	public static BuildReport BuildWithAssetBundles(BuildTarget buildTarget)
+	{
 		AssetBundlesBuilder.Build(buildTarget);
 		return Build(buildTarget);
 	}
 
-	[MenuItem ("Custom/** Build project only")]
-	public static BuildReport BuildActiveTarget () {
+	[MenuItem("Custom/** Build project only")]
+	public static BuildReport BuildActiveTarget()
+	{
 		return Build(EditorUserBuildSettings.activeBuildTarget);
 	}
 
-	[MenuItem ("Custom/*** Build project with asset bundles")]
-	public static BuildReport BuildActiveTarget_WithAssetBundles () {
+	[MenuItem("Custom/*** Build project with asset bundles")]
+	public static BuildReport BuildActiveTarget_WithAssetBundles()
+	{
 		return BuildWithAssetBundles(EditorUserBuildSettings.activeBuildTarget);
 	}
 }

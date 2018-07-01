@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 #define EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+#endif
 
 using System;
 using System.Collections;
@@ -17,7 +19,7 @@ namespace Custom.Data
 	///
 	public class StreamingData : AutoInstanceMonoBehaviour<StreamingData>
 	{
-#if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+#if EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 		public static readonly bool realAssetBundles = false;
 #else
 		public static readonly bool realAssetBundles = true;
@@ -44,12 +46,13 @@ namespace Custom.Data
 			return LoadAssetBundleAsyncInternal(assetBundlePath, callback);
 		}
 
-		public Coroutine LoadDataAsync<T>(string subPath, Action<T> callback) where T : class
+		public Coroutine LoadDataAsync<T>(string subPath, Action<T> callback)
+			where T : class
 		{
 			return LoadDataAsyncInternal(subPath, callback);
 		}
 
-#if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+#if EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 		public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback)
 			where T : UnityEngine.Object
 		{
@@ -58,14 +61,16 @@ namespace Custom.Data
 			return null;
 		}
 #else
-		public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback) where T : UnityEngine.Object {
+		public Coroutine LoadAssetAsync<T>(string assetBundlePath, string assetPath, Action<T> callback)
+			where T : UnityEngine.Object
+		{
 			return StartCoroutine(
 				LoadAssetAsyncCoroutine(assetBundlePath, assetPath, callback)
 			);
 		}
 #endif
 
-#if UNITY_EDITOR && EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
+#if EMULATE_ASSET_BUNDLES_IN_EDIT_MODE
 		public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode)
 		{
 			// 'subpath1/subpath2/subpath3' -> 'subpath3'
@@ -93,7 +98,8 @@ namespace Custom.Data
 			}
 		}
 #else
-		public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode) {
+		public IEnumerator LoadScenesAsync(string assetBundlePath, LoadSceneMode mode)
+		{
 			AssetBundle assetBundle = null;
 			yield return LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => {
 				assetBundle = resultValue;
@@ -116,15 +122,18 @@ namespace Custom.Data
 			AssetBundle assetBundle = null;
 			yield return LoadAssetBundleAsyncInternal(assetBundlePath, (resultValue) => { assetBundle = resultValue; });
 
-			for (var e = assetBundle.LoadCoroutine(assetName, callback); e.MoveNext();)
+			if (!assetBundle)
 			{
-				yield return e.Current;
+				Debug.LogError($"Asset bundle hasn't been loaded: {assetBundlePath}");
+				yield break;
 			}
+
+			yield return assetBundle.LoadCoroutine(assetName, callback);
 		}
 
-		private Coroutine LoadAssetBundleAsyncInternal(string assetBundlePath, Action<AssetBundle> callback)
+		private Coroutine LoadAssetBundleAsyncInternal(string subPath, Action<AssetBundle> callback)
 		{
-			string url = $"{StreamingAssetsUrl}/{assetBundlePath}";
+			string url = $"{StreamingAssetsUrl}/{subPath}";
 			return AssetBundlesCache.LoadAsync(url, callback);
 		}
 

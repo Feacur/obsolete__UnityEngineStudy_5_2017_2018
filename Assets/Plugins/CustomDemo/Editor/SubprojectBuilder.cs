@@ -2,26 +2,31 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public static class SubprojectBuilder {
+public static class SubprojectBuilder
+{
 	private static readonly string projectPath = "Assets";
 	private static readonly string streamingAssetsSubPath = "StreamingAssets";
 
-	public static void PrepareStreamingAssets (string subprojectSubPath) {
+	public static void PrepareStreamingAssets(string subprojectSubPath)
+	{
 		string subprojectPath = $"{projectPath}/{subprojectSubPath}";
 		string streamingAssetsPath = $"{subprojectPath}/{streamingAssetsSubPath}";
 
 		// delete previous
-		if (Directory.Exists(Application.streamingAssetsPath)) {
+		if (Directory.Exists(Application.streamingAssetsPath))
+		{
 			Directory.Delete(Application.streamingAssetsPath, true);
 		}
 
 		// prepare directories
-		foreach (var path in Directory.GetDirectories(streamingAssetsPath, "*", SearchOption.AllDirectories)) {
+		foreach (var path in Directory.GetDirectories(streamingAssetsPath, "*", SearchOption.AllDirectories))
+		{
 			Directory.CreateDirectory(path.Replace(subprojectPath, projectPath));
 		}
 
 		// copy files
-		foreach (var path in Directory.GetFiles(streamingAssetsPath, "*.*", SearchOption.AllDirectories)) {
+		foreach (var path in Directory.GetFiles(streamingAssetsPath, "*.*", SearchOption.AllDirectories))
+		{
 			File.Copy(path, path.Replace(subprojectPath, projectPath), true);
 		}
 

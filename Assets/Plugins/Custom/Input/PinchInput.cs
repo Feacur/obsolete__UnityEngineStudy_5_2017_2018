@@ -21,7 +21,7 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 {
 	private const int REQUIRED_TOUCHES = 2;
 	private const int MOUSE_BUTTON = 1;
-	
+
 	public EventData eventData = new EventData();
 
 	public EventDataEvent onStart = new EventDataEvent();
@@ -40,38 +40,47 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 	private float mouseScrollIdleTime;
 	private float mousePinchMagnitude;
 
-	private void Update() {
-		#if UNITY_EDITOR
-		if (UnityEditor.EditorApplication.isRemoteConnected) {
+	private void Update()
+	{
+#if UNITY_EDITOR
+		if (UnityEditor.EditorApplication.isRemoteConnected)
+		{
 			UpdateWithTouches();
 		}
-		else {
+		else
+		{
 			UpdateWithMouse();
 		}
-		#elif UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS
 		UpdateWithTouches();
-		#elif UNITY_STANDALONE || UNITY_WEBGL
+#elif UNITY_STANDALONE || UNITY_WEBGL
 		UpdateWithMouse();
-		#endif
+#endif
 	}
 
-	private void UpdateWithMouse() {
+	private void UpdateWithMouse()
+	{
 		int touchCount = Input.GetMouseButton(MOUSE_BUTTON) ? REQUIRED_TOUCHES : 0;
-		if (touchCount == 0) {
-			if ((Input.mouseScrollDelta.y < -Mathf.Epsilon) || (Mathf.Epsilon < Input.mouseScrollDelta.y)) {
+		if (touchCount == 0)
+		{
+			if ((Input.mouseScrollDelta.y < -Mathf.Epsilon) || (Mathf.Epsilon < Input.mouseScrollDelta.y))
+			{
 				mouseScrollIdleTime = 0;
 			}
-			else {
+			else
+			{
 				mouseScrollIdleTime = Mathf.Min(mouseScrollIdleTime + Time.unscaledDeltaTime, mouseScrollIdleTimeThreshold);
 			}
 			touchCount = (mouseScrollIdleTime < mouseScrollIdleTimeThreshold) ? REQUIRED_TOUCHES : 0;
 		}
 
-		if (touchCount != REQUIRED_TOUCHES) {
+		if (touchCount != REQUIRED_TOUCHES)
+		{
 			mousePinchMagnitude = 0;
 			AbstractUpdate(touchCount, Input.mousePosition, eventData.previousPinchMagnitude);
 		}
-		else {
+		else
+		{
 			mousePinchMagnitude = Mathf.Clamp(
 				mousePinchMagnitude + Input.mouseScrollDelta.y * mouseScrollToPinch,
 				mousePinchMagnitudeMin - mousePinchMagnitudeBase,
@@ -85,11 +94,14 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 		}
 	}
 
-	private void UpdateWithTouches() {
-		if (Input.touchCount != REQUIRED_TOUCHES) {
+	private void UpdateWithTouches()
+	{
+		if (Input.touchCount != REQUIRED_TOUCHES)
+		{
 			AbstractUpdate(Input.touchCount, eventData.previousPosition, eventData.previousPinchMagnitude);
 		}
-		else {
+		else
+		{
 			var touch1 = Input.touches[0];
 			var touch2 = Input.touches[1];
 			AbstractUpdate(
@@ -100,13 +112,15 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 		}
 	}
 
-	private void AbstractUpdate(int touchesCount, Vector2 currentPosition, float currentPinchMagnitude) {
+	private void AbstractUpdate(int touchesCount, Vector2 currentPosition, float currentPinchMagnitude)
+	{
 		eventData.currentPosition = currentPosition;
 		eventData.currentPinchMagnitude = currentPinchMagnitude;
 		eventData.currentTime = Time.realtimeSinceStartup;
-		
+
 		bool canBeActivated = (touchesCount == REQUIRED_TOUCHES) && (previousTouchesCount < REQUIRED_TOUCHES);
-		if (!activeState && canBeActivated) {
+		if (!activeState && canBeActivated)
+		{
 			activeState = true;
 			eventData.previousPinchMagnitude = eventData.currentPinchMagnitude;
 			eventData.startPosition = eventData.currentPosition;
@@ -117,12 +131,14 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 
 		bool positionChanged = (eventData.DeltaPosition.sqrMagnitude > Mathf.Epsilon);
 		bool pinchChanged = (eventData.DeltaPinchMagnitude < -Mathf.Epsilon) || (Mathf.Epsilon < eventData.DeltaPinchMagnitude);
-		if (activeState && (positionChanged || pinchChanged)) {
+		if (activeState && (positionChanged || pinchChanged))
+		{
 			onMove.Invoke(eventData);
 		}
 
 		bool shouldBeDeactivated = (touchesCount == 0);
-		if (activeState && shouldBeDeactivated) {
+		if (activeState && shouldBeDeactivated)
+		{
 			activeState = false;
 			onEnd.Invoke(eventData);
 		}
@@ -136,9 +152,10 @@ public class PinchInput : AutoInstanceMonoBehaviour<PinchInput>
 	//
 	//
 	//
-	
+
 	[Serializable]
-	public class EventData {
+	public class EventData
+	{
 		// Position data
 		public Vector2 startPosition;
 		public Vector2 previousPosition;

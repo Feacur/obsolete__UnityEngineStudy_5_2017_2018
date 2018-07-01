@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Custom.Data;
 using Custom.Singleton;
 using UnityEngine;
@@ -74,31 +75,40 @@ namespace Demo.Hangar {
 		//
 
 		private IEnumerator LoadCoroutine() {
-			TanksCollectionConfig tanksCollectionConfig = null;
-			yield return StreamingData.LoadDataAsync<string>(tanksCollectionConfigSubPath, (resultValue) => {
-				tanksCollectionConfig = YamlWrapper.Deserialize<TanksCollectionConfig>(resultValue);
+			string[] tankConfigPaths = null;
+			yield return LoadConfig<TanksCollectionConfig>(tanksCollectionConfigSubPath, (resultValue) => {
+				tankConfigPaths = (resultValue != null)
+					? resultValue.tankConfigs
+					: new string[0];
 			});
 
-			int tankConfigIndex = 0;
-			var tankConfigs = new TankConfig[tanksCollectionConfig.tankConfigs.Length];
-			foreach (string tankConfigSubPath in tanksCollectionConfig.tankConfigs) {
-				yield return StreamingData.LoadDataAsync<string>(tankConfigSubPath, (resultValue) => {
-					var tankConfig = YamlWrapper.Deserialize<TankConfig>(resultValue);
-					tankConfigs[tankConfigIndex] = tankConfig;
-					tankConfigIndex++;
+			var tankConfigs = new List<TankConfig>();
+			foreach (var tankConfigPath in tankConfigPaths) {
+				yield return LoadConfig<TankConfig>(tankConfigPath, (resultValue) => {
+					if (resultValue != null) { tankConfigs.Add(resultValue); }
 				});
 			}
-			SetTanksCollection(tankConfigs);
+			SetTanksCollection(tankConfigs.ToArray());
 
-			var persistentUserConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
-			if (persistentUserConfig != null) {
-				SetUser(persistentUserConfig);
-				yield break;
+			var userConfig = PersistentData.ReadYaml<UserConfig>(userConfigSubPath);
+			if (userConfig == null) {
+				yield return LoadConfig<UserConfig>(userConfigSubPath, (resultValue) => {
+					userConfig = resultValue ?? new UserConfig {
+						ownedTanksUids = new List<string>()
+					};
+				});
 			}
-			
-			yield return StreamingData.LoadDataAsync<string>(userConfigSubPath, (resultValue) => {
-				var userConfig = YamlWrapper.Deserialize<UserConfig>(resultValue);
-				SetUser(userConfig);
+			SetUser(userConfig);
+		}
+		
+		public Coroutine LoadConfig<T>(string subPath, Action<T> callback)
+			where T : class
+		{
+			return StreamingData.LoadDataAsync<string>(subPath, (resultValue) => {
+				T result = string.IsNullOrEmpty(resultValue)
+					? default(T)
+					: YamlWrapper.Deserialize<T>(resultValue);
+				callback.Invoke(result);
 			});
 		}
 
