@@ -4,7 +4,7 @@ Properties {
 }
 
 SubShader {
-    Tags { "RenderType"="Opaque" }
+    Tags { "Queue"="Geometry" "RenderType"="Opaque" }
     LOD 100
 
     Pass {
@@ -15,13 +15,15 @@ SubShader {
 
             #include "UnityCG.cginc"
 
-            struct appdata_t {
+            struct appdata_t
+            {
                 float4 vertex : POSITION;
                 float2 texcoord : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
-            struct v2f {
+            struct v2f
+            {
                 float4 vertex : SV_POSITION;
                 float4 screenPos : TEXCOORD0;
             };

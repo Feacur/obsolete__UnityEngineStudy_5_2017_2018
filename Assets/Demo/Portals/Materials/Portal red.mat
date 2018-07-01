@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Portal red
   m_Shader: {fileID: 4800000, guid: 71acd5b31ac41e64fae7f52de7a26308, type: 3}
