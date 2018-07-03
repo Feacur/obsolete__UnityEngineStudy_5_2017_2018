@@ -1,4 +1,4 @@
-Shader "MeshDraw/Color"
+Shader "Custom/MeshDraw/Color"
 {
     SubShader
     {
@@ -13,7 +13,7 @@ Shader "MeshDraw/Color"
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.0
-            #include "ColorBase.cginc"
+            #include "MeshDraw_ColorBase.cginc"
             ENDCG
         }
     }

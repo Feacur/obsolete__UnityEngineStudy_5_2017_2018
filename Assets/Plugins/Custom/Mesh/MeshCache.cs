@@ -3,9 +3,15 @@ using UnityEngine;
 public static class MeshCache
 {
 	private static Mesh boxSolid;
-	public static Mesh BoxSolid()
+	private static Mesh boxWireframe;
+	public static Mesh Box(MeshMode mode)
 	{
-		if (!boxSolid) { boxSolid = MeshGenerator.BoxSolid(); }
-		return boxSolid;
+		switch (mode) {
+		case MeshMode.Solid:
+			return boxSolid ? boxSolid : (boxSolid = MeshGenerator.BoxSolid());
+		case MeshMode.Wireframe:
+			return boxWireframe ? boxWireframe : (boxWireframe = MeshGenerator.BoxWireframe());
+		}
+		return null;
 	}
 }

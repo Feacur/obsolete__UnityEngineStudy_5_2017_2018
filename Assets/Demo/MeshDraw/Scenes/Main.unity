@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa5996ed31d88d4eae5fd36e3ef9cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 0
   color: {r: 0.9150943, g: 0.5597128, b: 0, a: 1}
 --- !u!4 &601898847
 Transform:

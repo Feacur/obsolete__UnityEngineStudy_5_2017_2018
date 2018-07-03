@@ -7,7 +7,7 @@ public static partial class MeshDraw
 	public static Material GetMaterial()
 	{
 		if (!material) {
-			var shader = Shader.Find("MeshDraw/Color");
+			var shader = Shader.Find("Custom/MeshDraw/Color");
 			material = new Material(shader);
 		}
 		return material;
