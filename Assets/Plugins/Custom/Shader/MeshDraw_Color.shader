@@ -10,6 +10,7 @@ Shader "Custom/MeshDraw/Color"
             Blend SrcAlpha OneMinusSrcAlpha
 
             CGPROGRAM
+            #pragma shader_feature NORMALS_ON
             #pragma vertex vert
             #pragma fragment frag
             #pragma target 2.0
