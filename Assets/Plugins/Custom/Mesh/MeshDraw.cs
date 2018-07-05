@@ -3,9 +3,9 @@ using UnityEngine.Rendering;
 
 public static partial class MeshDraw
 {
-	public static void DrawMesh(MeshType type, MeshMode mode, Vector3 position, Quaternion rotation, Color color)
+	public static void DrawMesh(MeshType type, MeshMode mode, Vector3 position, Quaternion rotation, Color color, int[] ints)
 	{
-		var mesh = MeshCache.Mesh(type, mode);
+		var mesh = MeshCache.Mesh(type, mode, ints);
 		
 		var material = GetMaterial(mode);
 

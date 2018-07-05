@@ -2,13 +2,13 @@ using UnityEngine;
 
 public static class MeshCache
 {
-	public static Mesh Mesh(MeshType type, MeshMode mode)
+	public static Mesh Mesh(MeshType type, MeshMode mode, params int[] ints)
 	{
 		switch (type) {
 		case MeshType.Box:
 			return Box(mode);
 		case MeshType.Sphere:
-			return Sphere(mode);
+			return Sphere(mode, ints[0], ints[1]);
 		case MeshType.SpehereBox:
 			return SphereBox(mode);
 		}
@@ -34,15 +34,15 @@ public static class MeshCache
 	private static Mesh sphereWireframe;
 	private static Mesh sphereDense;
 	private static Mesh sphereSparse;
-	public static Mesh Sphere(MeshMode mode)
+	public static Mesh Sphere(MeshMode mode, int longitude, int latitude)
 	{
 		switch (mode) {
 		case MeshMode.Wireframe:
-			return sphereWireframe ? sphereWireframe : (sphereWireframe = MeshGenerator.SphereWireframe());
+			return sphereWireframe ? sphereWireframe : (sphereWireframe = MeshGenerator.SphereWireframe(longitude, latitude));
 		case MeshMode.Dense:
-			return sphereDense ? sphereDense : (sphereDense = MeshGenerator.SphereDense());
+			return sphereDense ? sphereDense : (sphereDense = MeshGenerator.SphereDense(longitude, latitude));
 		case MeshMode.Sparse:
-			return sphereSparse ? sphereSparse : (sphereSparse = MeshGenerator.SphereSparse());
+			return sphereSparse ? sphereSparse : (sphereSparse = MeshGenerator.SphereSparse(longitude, latitude));
 		}
 		return null;
 	}
