@@ -13,24 +13,14 @@ public static partial class MeshGenerator
 		new Vector3( 0.5f,  0.5f,  0.5f),
 	};
 
-	public static Mesh BoxSolid()
-	{
-		var vertices = boxVertices;
-		int[] indices = {
-			2, 1, 0, /**/ 1, 2, 3, // back
-			4, 5, 6, /**/ 7, 6, 5, // front
-			4, 2, 0, /**/ 2, 4, 6, // left
-			1, 3, 5, /**/ 7, 5, 3, // right
-			0, 1, 4, /**/ 5, 4, 1, // bottom
-			6, 3, 2, /**/ 3, 6, 7, // top
-		};
-
-		Mesh mesh = new Mesh {
-			vertices = vertices,
-		};
-		mesh.SetIndices(indices, MeshTopology.Triangles, 0);
-		return mesh;
-	}
+	private static readonly Vector3[] boxNormals = {
+		new Vector3( 0,  0, -1),
+		new Vector3( 0,  0,  1),
+		new Vector3(-1,  0,  0),
+		new Vector3( 1,  0,  0),
+		new Vector3( 0, -1,  0),
+		new Vector3( 0,  1,  0),
+	};
 	
 	public static Mesh BoxWireframe()
 	{
@@ -48,7 +38,26 @@ public static partial class MeshGenerator
 		return mesh;
 	}
 
-	public static Mesh BoxNormals()
+	public static Mesh BoxDense()
+	{
+		var vertices = boxVertices;
+		int[] indices = {
+			2, 1, 0, /**/ 1, 2, 3, // back
+			4, 5, 6, /**/ 7, 6, 5, // front
+			4, 2, 0, /**/ 2, 4, 6, // left
+			1, 3, 5, /**/ 7, 5, 3, // right
+			0, 1, 4, /**/ 5, 4, 1, // bottom
+			6, 3, 2, /**/ 3, 6, 7, // top
+		};
+
+		Mesh mesh = new Mesh {
+			vertices = vertices,
+		};
+		mesh.SetIndices(indices, MeshTopology.Triangles, 0);
+		return mesh;
+	}
+
+	public static Mesh BoxSparse()
 	{
 		Vector3[] vertices = {
 			boxVertices[0], boxVertices[1], boxVertices[2], boxVertices[3], // back
@@ -67,12 +76,12 @@ public static partial class MeshGenerator
 			22, 21, 20, /**/ 21, 22, 23, // top
 		};
 		Vector3[] normals = {
-			Vector3.back, Vector3.back, Vector3.back, Vector3.back,
-			Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward,
-			Vector3.left, Vector3.left, Vector3.left, Vector3.left,
-			Vector3.right, Vector3.right, Vector3.right, Vector3.right,
-			Vector3.down, Vector3.down, Vector3.down, Vector3.down,
-			Vector3.up, Vector3.up, Vector3.up, Vector3.up,
+			boxNormals[0], boxNormals[0], boxNormals[0], boxNormals[0],
+			boxNormals[1], boxNormals[1], boxNormals[1], boxNormals[1],
+			boxNormals[2], boxNormals[2], boxNormals[2], boxNormals[2],
+			boxNormals[3], boxNormals[3], boxNormals[3], boxNormals[3],
+			boxNormals[4], boxNormals[4], boxNormals[4], boxNormals[4],
+			boxNormals[5], boxNormals[5], boxNormals[5], boxNormals[5],
 		};
 
 		Mesh mesh = new Mesh {

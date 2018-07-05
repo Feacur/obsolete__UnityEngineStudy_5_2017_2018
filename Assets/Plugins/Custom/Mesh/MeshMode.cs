@@ -1,6 +1,6 @@
 public enum MeshMode
 {
-	Solid,
 	Wireframe,
-	Normals,
+	Dense,
+	Sparse,
 }
