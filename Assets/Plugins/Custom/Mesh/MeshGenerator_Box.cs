@@ -24,7 +24,7 @@ public static partial class MeshGenerator
 	
 	public static Mesh BoxWireframe()
 	{
-		var vertices = boxVertices;
+		Vector3[] vertices = boxVertices;
 		int[] indices = {
 			0, 1, /**/ 1, 3, /**/ 3, 2, /**/ 2, 0, // back
 			4, 5, /**/ 5, 7, /**/ 7, 6, /**/ 6, 4, // front
@@ -40,7 +40,7 @@ public static partial class MeshGenerator
 
 	public static Mesh BoxDense()
 	{
-		var vertices = boxVertices;
+		Vector3[] vertices = boxVertices;
 		int[] indices = {
 			2, 1, 0, /**/ 1, 2, 3, // back
 			4, 5, 6, /**/ 7, 6, 5, // front

@@ -4,3 +4,10 @@ public enum MeshMode
 	Dense,
 	Sparse,
 }
+
+public enum MeshType
+{
+	Box,
+	Sphere,
+	SpehereBox,
+}
