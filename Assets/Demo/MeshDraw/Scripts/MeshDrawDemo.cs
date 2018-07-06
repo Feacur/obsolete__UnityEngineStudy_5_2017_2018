@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 
-public class MeshDrawDemo : MonoBehaviour
-{
-	public MeshType type;
-	public MeshMode mode;
-	public Color color;
-	public int[] ints;
-
-	void Update ()
+namespace Demo.MeshDraw {
+	public class MeshDrawDemo : MonoBehaviour
 	{
-		transform.rotation *= Quaternion.Euler(0, Mathf.Rad2Deg * Time.deltaTime, 0);
-		MeshDraw.DrawMesh(type, mode, transform.position, transform.rotation, color, ints);
+		public MeshType type;
+		public MeshMode mode;
+		public Color color;
+		public int[] ints;
+
+		void Update ()
+		{
+			global::MeshDraw.DrawMesh(type, mode, transform.position, transform.rotation, color, ints);
+		}
 	}
 }

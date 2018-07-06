@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class MeshCache
@@ -8,7 +9,7 @@ public static class MeshCache
 		case MeshType.Box:
 			return Box(mode);
 		case MeshType.Sphere:
-			return Sphere(mode, ints[0], ints[1]);
+			return Sphere(mode, Mathf.Clamp(ints[0], 3, 32), Mathf.Clamp(ints[1], 3, 32));
 		case MeshType.SpehereBox:
 			return SphereBox(mode);
 		}
@@ -31,20 +32,36 @@ public static class MeshCache
 		return null;
 	}
 	
-	private static Mesh sphereWireframe;
-	private static Mesh sphereDense;
-	private static Mesh sphereSparse;
+	private static Dictionary<int, Mesh> sphereWireframe = new Dictionary<int, Mesh>();
+	private static Dictionary<int, Mesh> sphereDense = new Dictionary<int, Mesh>();
+	private static Dictionary<int, Mesh> sphereSparse = new Dictionary<int, Mesh>();
 	public static Mesh Sphere(MeshMode mode, int longitude, int latitude)
 	{
+		int key = (longitude << 16) | latitude;
+		Mesh mesh = null;
 		switch (mode) {
 		case MeshMode.Wireframe:
-			return sphereWireframe ? sphereWireframe : (sphereWireframe = MeshGenerator.SphereWireframe(longitude, latitude));
+			if (!sphereWireframe.TryGetValue(key, out mesh)) {
+				mesh = MeshGenerator.SphereWireframe(longitude, latitude);
+				sphereWireframe.Add(key, mesh);
+			}
+			break;
+
 		case MeshMode.Dense:
-			return sphereDense ? sphereDense : (sphereDense = MeshGenerator.SphereDense(longitude, latitude));
+			if (!sphereDense.TryGetValue(key, out mesh)) {
+				mesh = MeshGenerator.SphereDense(longitude, latitude);
+				sphereDense.Add(key, mesh);
+			}
+			break;
+
 		case MeshMode.Sparse:
-			return sphereSparse ? sphereSparse : (sphereSparse = MeshGenerator.SphereSparse(longitude, latitude));
+			if (!sphereSparse.TryGetValue(key, out mesh)) {
+				mesh = MeshGenerator.SphereSparse(longitude, latitude);
+				sphereSparse.Add(key, mesh);
+			}
+			break;
 		}
-		return null;
+		return mesh;
 	}
 	
 	private static Mesh sphereBoxWireframe;
