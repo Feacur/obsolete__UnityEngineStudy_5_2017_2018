@@ -4,38 +4,36 @@ public static partial class MeshGenerator
 {
 	public static Mesh SphereWireframe(int latitude, int longitude)
 	{
+		Vector3[] vertices = SphereVertices(latitude, longitude);
+
 		int longitudeSegments = longitude - 1;
 		int latitudeCircles = longitude - 2;
-
-		Vector3[] vertices = SphereVertices(latitude, longitude);
 
 		int[] indices = new int[
 			latitude * (latitudeCircles + longitudeSegments) * 2
 		];
 		
 		int i = 0;
-
-		for (int x = 0; x < latitude; ++x) {
-			int iBase = 0;
-			
-			indices[i++] = iBase;
-			indices[i++] = iBase = 1 + iBase + x;
-			
-			for (int y = 1; y < latitudeCircles; ++y) {
-				indices[i++] = iBase;
-				indices[i++] = iBase = iBase + latitude;
+		
+		for (int x = 1; x <= latitude; ++x) {
+			int index = x;
+			indices[i++] = 0;
+			for (int y = 0; y < latitudeCircles; ++y) {
+				indices[i++] = index;
+				indices[i++] = index;
+				index += latitude;
 			}
-			
-			indices[i++] = iBase;
 			indices[i++] = vertices.Length - 1;
 		}
 		
 		for (int y = 0; y < latitudeCircles; ++y) {
 			int iBase = 1 + y * latitude;
-			for (int x = 0; x < latitude; ++x) {
+			indices[i++] = iBase;
+			for (int x = 1; x < latitude; ++x) {
 				indices[i++] = iBase + x;
-				indices[i++] = iBase + ((x + 1) % latitude);
+				indices[i++] = iBase + x;
 			}
+			indices[i++] = iBase;
 		}
 
 		Mesh mesh = new Mesh {
