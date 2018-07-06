@@ -4,9 +4,6 @@ public static partial class MeshGenerator
 {
 	public static Mesh SphereWireframe(int latitude, int longitude)
 	{
-		latitude = Mathf.Max(latitude, 3);
-		longitude = Mathf.Max(longitude, 3);
-
 		int longitudeSegments = longitude - 1;
 		int latitudeCircles = longitude - 2;
 
