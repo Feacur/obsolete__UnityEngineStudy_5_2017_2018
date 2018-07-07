@@ -2,36 +2,27 @@ using UnityEngine;
 
 public static partial class MeshDraw
 {
-	private static Material materialWireframe;
-	private static Material materialDense;
-	private static Material materialSparse;
+	private static Material material;
+	private static Material materialN;
 
-	public static Material GetMaterial(MeshMode mode)
-	{
-		switch (mode) {
-		case MeshMode.Wireframe:
-			if (!materialWireframe) {
+	public static Material GetMaterial(bool normals)
+	{		
+		if (normals) {
+			if (!materialN) {
 				var shader = Shader.Find("Custom/MeshDraw/Color");
-				materialWireframe = new Material(shader);
-				materialWireframe.DisableKeyword("NORMALS_ON");
+				materialN = new Material(shader);
+				materialN.EnableKeyword("NORMALS_ON");
 			}
-			return materialWireframe;
-		case MeshMode.Dense:
-			if (!materialDense) {
-				var shader = Shader.Find("Custom/MeshDraw/Color");
-				materialDense = new Material(shader);
-				materialDense.DisableKeyword("NORMALS_ON");
-			}
-			return materialDense;
-		case MeshMode.Sparse:
-			if (!materialSparse) {
-				var shader = Shader.Find("Custom/MeshDraw/Color");
-				materialSparse = new Material(shader);
-				materialSparse.EnableKeyword("NORMALS_ON");
-			}
-			return materialSparse;
+			return materialN;
 		}
-		return null;
+		else {
+			if (!material) {
+				var shader = Shader.Find("Custom/MeshDraw/Color");
+				material = new Material(shader);
+				material.DisableKeyword("NORMALS_ON");
+			}
+			return material;
+		}
 	}
 	
 	private static MaterialPropertyBlock materialPropertyBlock;

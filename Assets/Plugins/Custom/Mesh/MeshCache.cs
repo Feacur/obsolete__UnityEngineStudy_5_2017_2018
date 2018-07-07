@@ -25,6 +25,7 @@ public static class MeshCache
 		case MeshMode.Wireframe:
 			return boxWireframe ? boxWireframe : (boxWireframe = MeshGenerator.BoxWireframe());
 		case MeshMode.Dense:
+		case MeshMode.DenseNormals:
 			return boxDense ? boxDense : (boxDense = MeshGenerator.BoxDense());
 		case MeshMode.Sparse:
 			return boxSparse ? boxSparse : (boxSparse = MeshGenerator.BoxSparse());
@@ -54,6 +55,13 @@ public static class MeshCache
 			}
 			break;
 
+		case MeshMode.DenseNormals:
+			if (!sphereDense.TryGetValue(key, out mesh)) {
+				mesh = MeshGenerator.SphereDenseNormals(longitude, latitude);
+				sphereDense.Add(key, mesh);
+			}
+			break;
+
 		case MeshMode.Sparse:
 			if (!sphereSparse.TryGetValue(key, out mesh)) {
 				mesh = MeshGenerator.SphereSparse(longitude, latitude);
@@ -73,6 +81,7 @@ public static class MeshCache
 		case MeshMode.Wireframe:
 			return sphereBoxWireframe ? sphereBoxWireframe : (sphereBoxWireframe = MeshGenerator.SphereBoxWireframe());
 		case MeshMode.Dense:
+		case MeshMode.DenseNormals:
 			return sphereBoxDense ? sphereBoxDense : (sphereBoxDense = MeshGenerator.SphereBoxDense());
 		case MeshMode.Sparse:
 			return sphereBoxSparse ? sphereBoxSparse : (sphereBoxSparse = MeshGenerator.SphereBoxSparse());

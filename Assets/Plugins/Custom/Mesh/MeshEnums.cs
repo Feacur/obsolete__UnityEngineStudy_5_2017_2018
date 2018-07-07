@@ -2,6 +2,7 @@ public enum MeshMode
 {
 	Wireframe,
 	Dense,
+	DenseNormals,
 	Sparse,
 }
 

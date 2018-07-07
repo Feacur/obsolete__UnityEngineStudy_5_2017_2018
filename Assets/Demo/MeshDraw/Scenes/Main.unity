@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  mode: 2
+  mode: 0
   color: {r: 0.9150943, g: 0.5597128, b: 0, a: 1}
   ints: 0c00000009000000
 --- !u!1 &1842870780

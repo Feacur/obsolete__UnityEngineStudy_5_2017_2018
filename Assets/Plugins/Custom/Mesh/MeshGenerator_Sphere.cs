@@ -26,12 +26,38 @@ public static partial class MeshGenerator
 		return mesh;
 	}
 
+	public static Mesh SphereDenseNormals(int latitude, int longitude)
+	{
+		Vector3[] vertices = SphereVerticesDense(latitude, longitude);
+		int[] indices = SphereIndicesDense(latitude, longitude);
+
+		int[] indicesLines = SphereIndicesLines(latitude, longitude);
+		Vector3[] normals = new Vector3[vertices.Length];
+		for (int i = 0; i < indicesLines.Length; i += 2) {
+			int i0 = indicesLines[i + 0];
+			int i1 = indicesLines[i + 1];
+
+			var line = vertices[i1] - vertices[i0];
+			normals[i0] -= line;
+			normals[i1] += line;
+		}
+		
+		for (int i = 0; i < normals.Length; i++) {
+			normals[i] = Vector3.Normalize(normals[i]);
+		}
+
+		Mesh mesh = new Mesh {
+			vertices = vertices,
+			normals = normals,
+		};
+		mesh.SetIndices(indices, MeshTopology.Triangles, 0);
+		return mesh;
+	}
+
 	public static Mesh SphereSparse(int latitude, int longitude)
 	{
 		Vector3[] verticesDense = SphereVerticesDense(latitude, longitude);
 		int[] indicesDense = SphereIndicesDense(latitude, longitude);
-
-		int latitudeStrips = longitude - 3;
 
 		Vector3[] vertices = new Vector3[indicesDense.Length];
 		int[] indices = new int[indicesDense.Length * 3];
@@ -42,15 +68,14 @@ public static partial class MeshGenerator
 		
 		Vector3[] normals = new Vector3[vertices.Length];
 		for (int i = 0; i < vertices.Length; i += 3) {
-			var normal = Vector3.Cross(
+			var normal = Vector3.Normalize(Vector3.Cross(
 				vertices[i + 1] - vertices[i + 0],
 				vertices[i + 2] - vertices[i + 1]
-			);
+			));
 			normals[i + 0] = normal;
 			normals[i + 1] = normal;
 			normals[i + 2] = normal;
 		}
-
 
 		Mesh mesh = new Mesh {
 			vertices = vertices,
