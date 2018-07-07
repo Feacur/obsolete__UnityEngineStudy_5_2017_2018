@@ -4,41 +4,9 @@ public static partial class MeshGenerator
 {
 	public static Mesh SphereWireframe(int latitude, int longitude)
 	{
-		Vector3[] vertices = SphereVertices(latitude, longitude);
-
-		int longitudeSegments = longitude - 1;
-		int latitudeCircles = longitude - 2;
-
-		int[] indices = new int[
-			latitude * (latitudeCircles + longitudeSegments) * 2
-		];
+		Vector3[] vertices = SphereVerticesDense(latitude, longitude);
+		int[] indices = SphereIndicesLines(latitude, longitude);
 		
-		int i = 0;
-		
-		for (int x = 0; x < latitude; ++x) { // longitude lines
-			int index = x + 1;
-			
-			indices[i++] = 0;
-			for (int y = 0; y < latitudeCircles; ++y) {
-				indices[i++] = index;
-				indices[i++] = index;
-				
-				index += latitude;
-			}
-			indices[i++] = vertices.Length - 1;
-		}
-		
-		for (int y = 0; y < latitudeCircles; ++y) { // latitude circles
-			int iBase = y * latitude + 1;
-
-			indices[i++] = iBase;
-			for (int x = 1; x < latitude; ++x) {
-				indices[i++] = iBase + x;
-				indices[i++] = iBase + x;
-			}
-			indices[i++] = iBase;
-		}
-
 		Mesh mesh = new Mesh {
 			vertices = vertices,
 		};
@@ -48,40 +16,8 @@ public static partial class MeshGenerator
 
 	public static Mesh SphereDense(int latitude, int longitude)
 	{
-		Vector3[] vertices = SphereVertices(latitude, longitude);
-		
-		int latitudeStrips  = longitude - 3;
-
-		int[] indices = new int[
-			latitude * (latitudeStrips + 1) * 2 * 3
-		];
-
-		int i = 0;
-		
-		for (int x = 0; x < latitude; ++x) {
-			int iBase = 1;
-			int xNext = (x + 1) % latitude;
-
-			indices[i++] = 0;
-			indices[i++] = iBase + x;
-			indices[i++] = iBase + xNext;
-
-			for (int y = 0; y < latitudeStrips; ++y) {
-				indices[i++] = iBase + xNext;
-				indices[i++] = iBase + x;
-				indices[i++] = iBase + latitude + x;
-				
-				indices[i++] = iBase + latitude + x;
-				indices[i++] = iBase + latitude + xNext;
-				indices[i++] = iBase + xNext;
-				
-				iBase += latitude;
-			}
-
-			indices[i++] = iBase + xNext;
-			indices[i++] = iBase + x;
-			indices[i++] = vertices.Length - 1;
-		}
+		Vector3[] vertices = SphereVerticesDense(latitude, longitude);
+		int[] indices = SphereIndicesDense(latitude, longitude);
 
 		Mesh mesh = new Mesh {
 			vertices = vertices,
@@ -92,9 +28,29 @@ public static partial class MeshGenerator
 
 	public static Mesh SphereSparse(int latitude, int longitude)
 	{
-		Vector3[] vertices = { };
-		int[] indices = { };
-		Vector3[] normals = { };
+		Vector3[] verticesDense = SphereVerticesDense(latitude, longitude);
+		int[] indicesDense = SphereIndicesDense(latitude, longitude);
+
+		int latitudeStrips = longitude - 3;
+
+		Vector3[] vertices = new Vector3[indicesDense.Length];
+		int[] indices = new int[indicesDense.Length * 3];
+		for (int i = 0; i < indicesDense.Length; i++) {
+			vertices[i] = verticesDense[indicesDense[i]];
+			indices[i] = i;
+		}
+		
+		Vector3[] normals = new Vector3[vertices.Length];
+		for (int i = 0; i < vertices.Length; i += 3) {
+			var normal = Vector3.Cross(
+				vertices[i + 1] - vertices[i + 0],
+				vertices[i + 2] - vertices[i + 1]
+			);
+			normals[i + 0] = normal;
+			normals[i + 1] = normal;
+			normals[i + 2] = normal;
+		}
+
 
 		Mesh mesh = new Mesh {
 			vertices = vertices,
@@ -104,7 +60,7 @@ public static partial class MeshGenerator
 		return mesh;
 	}
 	
-	private static Vector3[] SphereVertices(int latitude, int longitude)
+	private static Vector3[] SphereVerticesDense(int latitude, int longitude)
 	{
 		int longitudeSegments = longitude - 1;
 		int latitudeCircles   = longitude - 2;
@@ -138,5 +94,82 @@ public static partial class MeshGenerator
 		}
 
 		return vertices;
+	}
+	
+	private static int[] SphereIndicesLines(int latitude, int longitude)
+	{
+		int longitudeSegments = longitude - 1;
+		int latitudeCircles = longitude - 2;
+		int indexLast = 1 + latitudeCircles * latitude;
+
+		int[] indices = new int[
+			latitude * (latitudeCircles + longitudeSegments) * 2
+		];
+		
+		int i = 0;
+		
+		for (int x = 0; x < latitude; ++x) { // longitude lines
+			int index = x + 1;
+			
+			indices[i++] = 0;
+			for (int y = 0; y < latitudeCircles; ++y) {
+				indices[i++] = index;
+				indices[i++] = index;
+				
+				index += latitude;
+			}
+			indices[i++] = indexLast;
+		}
+		
+		for (int y = 0; y < latitudeCircles; ++y) { // latitude circles
+			int iBase = y * latitude + 1;
+
+			indices[i++] = iBase;
+			for (int x = 1; x < latitude; ++x) {
+				indices[i++] = iBase + x;
+				indices[i++] = iBase + x;
+			}
+			indices[i++] = iBase;
+		}
+
+		return indices;
+	}
+
+	private static int[] SphereIndicesDense(int latitude, int longitude)
+	{
+		int latitudeCircles = longitude - 2;
+		int latitudeStrips  = longitude - 3;
+		int indexLast = 1 + latitudeCircles * latitude;
+
+		int[] indices = new int[
+			latitude * (latitudeStrips + 1) * 2 * 3
+		];
+
+		for (int x = 0, i = 0; x < latitude; ++x) { // longitude strips
+			int iBase = 1;
+			int xNext = (x + 1) % latitude;
+
+			indices[i++] = 0;
+			indices[i++] = iBase + x;
+			indices[i++] = iBase + xNext;
+
+			for (int y = 0; y < latitudeStrips; ++y) {
+				indices[i++] = iBase + xNext;
+				indices[i++] = iBase + x;
+				indices[i++] = iBase + latitude + x;
+				
+				indices[i++] = iBase + latitude + x;
+				indices[i++] = iBase + latitude + xNext;
+				indices[i++] = iBase + xNext;
+				
+				iBase += latitude;
+			}
+
+			indices[i++] = iBase + xNext;
+			indices[i++] = iBase + x;
+			indices[i++] = indexLast;
+		}
+
+		return indices;
 	}
 }
