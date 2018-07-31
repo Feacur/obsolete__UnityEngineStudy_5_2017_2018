@@ -21,8 +21,8 @@ namespace Custom.Utils
 				return $"{minutes:D2}m:{seconds:D2}s";
 			}
 
-			int hours = totalMinutes % 24;
-			int totalDays = totalMinutes / 24;
+			int hours = totalHours % 24;
+			int totalDays = totalHours / 24;
 			if (totalDays == 0)
 			{
 				return $"{hours:D2}h:{minutes:D2}m";
