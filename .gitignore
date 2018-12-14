@@ -1,18 +1,15 @@
 # Unity project caches
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
+/Library/
+/Temp/
+/obj/
+/Logs/
 
 # Custom data
-/[Bb]uilds/
-/Assets/ProBuilder Data*
+/Assets/StreamingAssets*
+/Builds/
 
 # IDE
 /.vs/
 /.idea/
-/.vscode/
-
-# Local
 /*.sln
 /*.csproj
-/*.sln.DotSettings.user

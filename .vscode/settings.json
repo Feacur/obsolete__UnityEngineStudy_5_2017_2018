@@ -1,0 +1,13 @@
+{
+    "files.exclude":
+    {
+        "**/.vs" : true,
+        "**/.idea" : true,
+        "**/Library" : true,
+        "**/Logs" : true,
+        "**/obj" : true,
+        "**/Temp" : true,
+        "*.sln" : true,
+        "*.csproj" : true,
+    }
+}
